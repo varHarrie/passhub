@@ -3,7 +3,6 @@
   "extends": ["tslint-config-standard", "tslint-react"],
   "rules": {
     "align": [true, "parameters", "statements"],
-    "import-blacklist": [true, "styled-components"],
     "indent": [true, "spaces", 2],
     "interface-name": [true, "never-prefix"],
     "jsx-boolean-value": [true, "never"],
