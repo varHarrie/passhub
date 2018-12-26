@@ -12,7 +12,12 @@
     "max-classes-per-file": true,
     "max-line-length": [true, 120],
     "member-ordering": [true, "static-before-instance"],
-    "member-access": [true, "check-accessor", "check-constructor", "check-parameter-property"],
+    "member-access": [
+      true,
+      "check-accessor",
+      "check-constructor",
+      "check-parameter-property"
+    ],
     "no-any": false,
     "no-bitwise": false,
     "no-console": false,

@@ -1,0 +1,63 @@
+{
+  "Import and export": {
+    "scope": "javascript,typescript",
+    "prefix": "ie",
+    "body": ["import $1 from './$1'", "", "export default $1", ""],
+    "description": "Import and export"
+  },
+  "Typescript React Component": {
+    "scope": "typescriptreact",
+    "prefix": "comp",
+    "body": [
+      "import * as React from 'react'",
+      "import styled from 'styled-components/macro'",
+      "",
+      "export interface Props {$3}",
+      "",
+      "export interface State {$4}",
+      "",
+      "export default class ${1:${TM_FILENAME_BASE}} extends React.Component<Props, State> {",
+      "",
+      "  public static defaultProps: Partial<Props> = {}",
+      "",
+      "  public constructor (props: Props) {",
+      "    super(props)",
+      "",
+      "    this.state = {}",
+      "  }",
+      "",
+      "  public render () {",
+      "    const {} = this.props",
+      "",
+      "    return (",
+      "      <Wrapper>${1:TM_FILENAME_BASE }</Wrapper>",
+      "    )",
+      "  }",
+      "",
+      "}",
+      "",
+      "const Wrapper = styled.div``",
+      ""
+    ],
+    "description": "Typescript React Component"
+  },
+  "Typescript React Stateless Component": {
+    "scope": "typescriptreact",
+    "prefix": "func",
+    "body": [
+      "interface ${1:${TM_FILENAME_BASE}}Props {$3}",
+      "",
+      "function ${1:${TM_FILENAME_BASE}} (props: ${1:${TM_FILENAME_BASE}}Props) {",
+      "  return (",
+      "    <div>$2</div>",
+      "  )",
+      "}"
+    ],
+    "description": "Typescript React Stateless Component"
+  },
+  "Tag Component": {
+    "scope": "typescriptreact",
+    "prefix": "tag",
+    "body": "const ${1:Wrapper} = styled.${2:div}`$3`"
+  }
+}
