@@ -14,6 +14,7 @@ export interface Props {
   prefix?: React.ReactNode
   suffix?: React.ReactNode
   onChange?: React.ChangeEventHandler
+  onKeyDown?: React.KeyboardEventHandler
 }
 
 export interface State {}
@@ -33,19 +34,21 @@ export default class Input extends React.Component<Props, State> {
       size,
       prefix,
       suffix,
-      onChange
+      onChange,
+      onKeyDown
     } = this.props
 
     return (
       <Wrapper className={className} size={size}>
-        {prefix}
+        {prefix && <Prefix>{prefix}</Prefix>}
         <OriginalInput
           value={value}
           type={type}
           placeholder={placeholder}
           onChange={onChange}
+          onKeyDown={onKeyDown}
         />
-        {suffix}
+        {suffix && <Suffix>{suffix}</Suffix>}
       </Wrapper>
     )
   }
@@ -62,15 +65,17 @@ const Wrapper = styled.label<{ size: InputSize }>`
   align-items: center;
   width: 100%;
   height: ${(p) => p.theme.input.sizes[p.size]};
+  line-height: 1em;
   outline: none;
   color: ${(p) => p.theme.input.color};
   background: ${(p) => p.theme.input.background};
   border-radius: ${(p) => p.theme.input.borderRadius};
   border: ${(p) => p.theme.input.border};
-  transition: background 0.3s;
+  transition: all 0.3s;
 
-  &:focus {
-    background: #c9c9c9;
+  &:focus-within {
+    color: ${(p) => p.theme.input.focusColor};
+    border: ${(p) => p.theme.input.focusBorder};
   }
 `
 
@@ -80,4 +85,12 @@ const OriginalInput = styled.input`
   border: none;
   background: none;
   outline: none;
+`
+
+const Prefix = styled.span`
+  margin-right: 8px;
+`
+
+const Suffix = styled.span`
+  margin-left: 8px;
 `

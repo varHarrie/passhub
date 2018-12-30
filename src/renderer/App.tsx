@@ -16,10 +16,10 @@ class App extends React.Component<Props, State> {
     return (
       <ThemeProvider theme={theme}>
         <Wrapper>
-          <WindowActions />
           <BrowserRouter>
             <Route path='/' component={LoginView} />
           </BrowserRouter>
+          <WindowActions />
           <GlobalStyle />
         </Wrapper>
       </ThemeProvider>

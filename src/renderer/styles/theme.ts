@@ -22,10 +22,14 @@ export interface Theme {
       large: string
     }
     color: string
+    focusColor: string
     background: string
+    focusBackground: string
     border: string
+    focusBorder: string
     borderRadius: string
   }
+  icon: {}
 }
 
 export const theme: Theme = {
@@ -51,9 +55,13 @@ export const theme: Theme = {
       medium: '6px',
       large: '8px'
     },
-    color: 'inherit',
+    color: '#999',
+    focusColor: '#525A5B',
     background: '#fff',
+    focusBackground: '#fff',
     border: '1px solid #E0E0E0',
+    focusBorder: '1px solid #999',
     borderRadius: '3px'
-  }
+  },
+  icon: {}
 }

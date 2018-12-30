@@ -3,6 +3,7 @@ import * as React from 'react'
 import { styled } from '../../styles'
 import Logo from '../../components/Logo'
 import Input from '../../components/Input'
+import Icon from '../../components/Icon'
 
 export interface Props {}
 
@@ -27,7 +28,11 @@ export default class LoginView extends React.Component<Props, State> {
     return (
       <Wrapper>
         <Logo />
-        <PasswordInput size='large' visible={inputVisible} />
+        <PasswordInput
+          size='large'
+          visible={inputVisible}
+          suffix={<Icon type='Lock' />}
+        />
       </Wrapper>
     )
   }
@@ -49,6 +54,5 @@ const PasswordInput = styled(Input).attrs({ type: 'password' })<{
   margin-top: ${(p) => (p.visible ? '24px' : '5px')};
   width: 320px;
   opacity: ${(p) => (p.visible ? 1 : 0)};
-  transition: opacity 0.3s, margin-top 0.3s;
   -webkit-app-region: no-drag;
 `

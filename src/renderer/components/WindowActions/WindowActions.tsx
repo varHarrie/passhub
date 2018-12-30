@@ -3,6 +3,7 @@ import { X, Minus } from 'react-feather'
 
 import { styled } from '../../styles'
 import { ipcRenderer } from 'electron'
+import Icon from '../Icon'
 
 function onMinimize () {
   ipcRenderer.send('minimize')
@@ -18,10 +19,10 @@ export default function WindowActions (props: WindowActionsProps) {
   return (
     <Wrapper>
       <Button onClick={onMinimize}>
-        <Minus size={14} />
+        <Icon type='Minus' />
       </Button>
       <Button onClick={onClose}>
-        <X size={14} />
+        <Icon type='X' />
       </Button>
     </Wrapper>
   )
