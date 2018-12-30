@@ -32,6 +32,7 @@ const Wrapper = styled.div`
   z-index: 999;
   top: 0;
   right: 0;
+  -webkit-app-region: no-drag;
 `
 
 const Button = styled.div`

@@ -14,7 +14,7 @@ export const GlobalStyle = createGlobalStyle`
     height: 100%;
   }
 
-  div, span, input, button, form {
+  div, span, form, input, button, label {
     box-sizing: border-box;
   }
 `

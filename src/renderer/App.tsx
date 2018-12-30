@@ -4,6 +4,8 @@ import { hot } from 'react-hot-loader/root'
 import WindowActions from './components/WindowActions'
 import { GlobalStyle } from './styles/global'
 import { styled, ThemeProvider, theme } from './styles'
+import { BrowserRouter, Route } from 'react-router-dom'
+import LoginView from './views/LoginView'
 
 export interface Props {}
 
@@ -15,6 +17,9 @@ class App extends React.Component<Props, State> {
       <ThemeProvider theme={theme}>
         <Wrapper>
           <WindowActions />
+          <BrowserRouter>
+            <Route path='/' component={LoginView} />
+          </BrowserRouter>
           <GlobalStyle />
         </Wrapper>
       </ThemeProvider>
