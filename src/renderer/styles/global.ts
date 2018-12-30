@@ -2,6 +2,19 @@ import { createGlobalStyle } from './styled'
 
 export const GlobalStyle = createGlobalStyle`
   html {
-    background: #F3F3F3;
+    height: 100%;
+  }
+
+  body {
+    margin: 0;
+    height: 100%;
+  }
+
+  #root {
+    height: 100%;
+  }
+
+  div, span, input, button, form {
+    box-sizing: border-box;
   }
 `
