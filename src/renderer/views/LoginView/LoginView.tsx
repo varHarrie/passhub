@@ -1,6 +1,6 @@
 import * as React from 'react'
 
-import { styled } from '../../styles'
+import { styled, ThemeConsumer } from '../../styles'
 import Logo from '../../components/Logo'
 import Input from '../../components/Input'
 import Icon from '../../components/Icon'
@@ -26,14 +26,18 @@ export default class LoginView extends React.Component<Props, State> {
     const { inputVisible } = this.state
 
     return (
-      <Wrapper>
-        <Logo />
-        <PasswordInput
-          size='large'
-          visible={inputVisible}
-          suffix={<Icon type='Lock' />}
-        />
-      </Wrapper>
+      <ThemeConsumer>
+        {(theme) => (
+          <Wrapper>
+            <Logo background={theme.login.logoBackground} />
+            <PasswordInput
+              size='large'
+              visible={inputVisible}
+              suffix={<Icon type='Lock' />}
+            />
+          </Wrapper>
+        )}
+      </ThemeConsumer>
     )
   }
 }

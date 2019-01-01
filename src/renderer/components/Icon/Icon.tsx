@@ -26,4 +26,8 @@ export default class Icon extends React.Component<Props, State> {
 
 const Wrapper = styled.div`
   color: inherit;
+
+  svg {
+    vertical-align: middle;
+  }
 `

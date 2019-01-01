@@ -1,15 +1,23 @@
 import * as React from 'react'
 import styled from 'styled-components'
 
-export interface Props {}
+export type LogoSize = 'small' | 'large'
+
+export interface Props {
+  size: LogoSize
+  background: string
+}
 
 export interface State {}
 
 export default class Logo extends React.Component<Props, State> {
-  public static defaultProps: Partial<Props> = {}
+  public static defaultProps: Partial<Props> = {
+    size: 'large',
+    background: '#999'
+  }
 
   public render () {
-    const {} = this.props
+    const { size, background } = this.props
 
     const mainPath = `
       m16.002,46l-16,0l0,-28a17.883,17.883 0 0 1 5.272,-12.728a17.882,
@@ -27,7 +35,7 @@ export default class Logo extends React.Component<Props, State> {
     `
 
     return (
-      <Wrapper>
+      <Wrapper size={size} background={background}>
         <svg
           xmlns='http://www.w3.org/2000/svg'
           width='42'
@@ -44,12 +52,21 @@ export default class Logo extends React.Component<Props, State> {
   }
 }
 
-const Wrapper = styled.div`
+const logoSizes = {
+  small: '32px',
+  large: '80px'
+}
+
+const Wrapper = styled.div<{ size: LogoSize; background: string }>`
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 80px;
-  height: 80px;
-  border-radius: 15px;
-  background: #999;
+  width: ${(p) => logoSizes[p.size]};
+  height: ${(p) => logoSizes[p.size]};
+  border-radius: 18.75%;
+  background: ${(p) => p.background};
+
+  svg {
+    width: 50%;
+  }
 `

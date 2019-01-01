@@ -1,11 +1,12 @@
 import * as React from 'react'
 import { hot } from 'react-hot-loader/root'
+import { BrowserRouter, Route } from 'react-router-dom'
 
 import WindowActions from './components/WindowActions'
-import { GlobalStyle } from './styles/global'
-import { styled, ThemeProvider, theme } from './styles'
-import { BrowserRouter, Route } from 'react-router-dom'
 import LoginView from './views/LoginView'
+import MainView from './views/MainView'
+import { GlobalStyle } from './styles/global'
+import { styled, theme, ThemeProvider } from './styles'
 
 export interface Props {}
 
@@ -15,13 +16,14 @@ class App extends React.Component<Props, State> {
   public render () {
     return (
       <ThemeProvider theme={theme}>
-        <Wrapper>
-          <BrowserRouter>
-            <Route path='/' component={LoginView} />
-          </BrowserRouter>
-          <WindowActions />
-          <GlobalStyle />
-        </Wrapper>
+        <BrowserRouter>
+          <Wrapper>
+            <Route path='/login' component={LoginView} />
+            <Route path='/' component={MainView} />
+            <WindowActions />
+            <GlobalStyle />
+          </Wrapper>
+        </BrowserRouter>
       </ThemeProvider>
     )
   }

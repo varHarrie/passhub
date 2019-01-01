@@ -12,6 +12,8 @@ export const GlobalStyle = createGlobalStyle`
 
   #root {
     height: 100%;
+    font-size: ${(p) => p.theme.window.fontSize};
+    font-family: ${(p) => p.theme.window.fontFamily};
   }
 
   div, span, form, input, button, label {
