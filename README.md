@@ -1,3 +1,4 @@
-# Passhub
-
-A password manager.
+<center>
+  <img src="./assets/logo.png"/>
+  <div>Coming soon...</div>
+</center>
