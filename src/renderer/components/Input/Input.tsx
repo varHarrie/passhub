@@ -1,4 +1,5 @@
 import * as React from 'react'
+
 import { styled } from '../../styles'
 
 export type InputType = 'text' | 'password' | 'textarea'
@@ -9,61 +10,52 @@ export interface Props {
   className?: string
   value?: string
   placeholder?: string
-  type: InputType
-  size: InputSize
+  solid?: boolean
+  type?: InputType
+  size?: InputSize
   prefix?: React.ReactNode
   suffix?: React.ReactNode
   onChange?: React.ChangeEventHandler
   onKeyDown?: React.KeyboardEventHandler
+  onBlur?: React.FocusEventHandler
 }
 
 export interface State {}
 
 export default class Input extends React.Component<Props, State> {
-  public static defaultProps: Partial<Props> = {
-    type: 'text',
-    size: 'large'
+  private refInput = React.createRef<HTMLInputElement>()
+
+  public focus = () => {
+    const $input = this.refInput.current
+    if ($input) $input.focus()
   }
 
   public render () {
     const {
       className,
-      value,
-      placeholder,
-      type,
-      size,
+      solid,
+      size = 'medium',
       prefix,
       suffix,
-      onChange,
-      onKeyDown
+      ...inputProps
     } = this.props
 
     return (
-      <Wrapper className={className} size={size}>
+      <Wrapper className={className} size={size} solid={solid}>
         {prefix && <Prefix>{prefix}</Prefix>}
-        <OriginalInput
-          value={value}
-          type={type}
-          placeholder={placeholder}
-          onChange={onChange}
-          onKeyDown={onKeyDown}
-        />
+        <OriginalInput ref={this.refInput} {...inputProps} />
         {suffix && <Suffix>{suffix}</Suffix>}
       </Wrapper>
     )
   }
 }
 
-const sizes: { [key in InputSize]: number } = {
-  medium: 32,
-  large: 36
-}
-
-const Wrapper = styled.label<{ size: InputSize }>`
-  padding: ${(p) => p.theme.input.padding[p.size]};
+const Wrapper = styled.label<{ size: InputSize; solid?: boolean }>`
+  padding: 0 8px;
   display: flex;
   align-items: center;
   width: 100%;
+  min-width: 0;
   height: ${(p) => p.theme.input.sizes[p.size]};
   line-height: 1em;
   outline: none;
@@ -77,11 +69,24 @@ const Wrapper = styled.label<{ size: InputSize }>`
     color: ${(p) => p.theme.input.focusColor};
     border: ${(p) => p.theme.input.focusBorder};
   }
+
+  ${(p) =>
+    p.solid &&
+    `
+      background: ${p.theme.input.solidBackground};
+      border: ${p.theme.input.solidBorder};
+
+      &:focus-within {
+        background: ${p.theme.input.solidFocusBackground};
+        border: ${p.theme.input.solidFocusBackground};
+      }
+    `}
 `
 
 const OriginalInput = styled.input`
   display: block;
   flex: 1;
+  min-width: 0;
   border: none;
   background: none;
   outline: none;

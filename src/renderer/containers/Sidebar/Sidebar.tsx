@@ -1,24 +1,46 @@
 import * as React from 'react'
 import styled from 'styled-components'
+import { observer } from 'mobx-react'
+
+import GroupAddition from '../../components/GroupAddition'
+import GroupItem from '../../components/GroupItem'
 import Logo from '../../components/Logo'
+import ScrollArea from '../../components/ScrollArea'
 import { ThemeConsumer } from '../../styles'
-import Icon from '../../components/Icon'
+import { appStore } from '../../stores'
+import { IconType } from '../../models/base'
 
 export interface Props {}
 
 export interface State {}
 
+@observer
 export default class Sidebar extends React.Component<Props, State> {
-  public static defaultProps: Partial<Props> = {}
+  public componentDidMount () {
+    appStore.listGroup()
+  }
 
-  public constructor (props: Props) {
-    super(props)
+  private onGroupAdd = (icon: IconType, title: string) => {
+    title = title.trim()
+    if (!title) throw new Error('Title is required')
 
-    this.state = {}
+    return appStore.addGroup(icon, title)
+  }
+
+  private onGroupSelect = (id: string) => {
+    appStore.selectGroup(id)
   }
 
   public render () {
-    const {} = this.props
+    const groups = appStore.groups.map((group) => (
+      <GroupItem
+        key={group.id}
+        icon={group.icon}
+        title={group.title}
+        active={!!appStore.group && group.id === appStore.group.id}
+        onClick={() => this.onGroupSelect(group.id)}
+      />
+    ))
 
     return (
       <ThemeConsumer>
@@ -29,22 +51,8 @@ export default class Sidebar extends React.Component<Props, State> {
               <Title>Passhub</Title>
             </Header>
             <Container>
-              <GroupItem>
-                <GroupIcon type='Folder' />
-                <GroupTitle>All</GroupTitle>
-              </GroupItem>
-              <GroupItem active>
-                <GroupIcon type='Folder' />
-                <GroupTitle>Emails</GroupTitle>
-              </GroupItem>
-              <GroupItem>
-                <GroupIcon type='Folder' />
-                <GroupTitle>Accounts</GroupTitle>
-              </GroupItem>
-              <GroupItem>
-                <GroupIcon type='Folder' />
-                <GroupTitle>Games</GroupTitle>
-              </GroupItem>
+              {groups}
+              <GroupAddition onConfirm={this.onGroupAdd} />
             </Container>
           </Wrapper>
         )}
@@ -73,41 +81,7 @@ const Title = styled.div`
   color: ${(p) => p.theme.sidebar.titleColor};
 `
 
-const Container = styled.div``
-
-const GroupItem = styled.div<{ active?: boolean }>`
-  position: relative;
-  display: flex;
-  padding: 0 14px;
-  align-items: center;
-  height: ${(p) => p.theme.sidebar.itemHeight};
-  background: ${(p) => p.theme.sidebar.itemBackground};
-  color: ${(p) =>
-    p.active
-      ? p.theme.sidebar.itemTitleActiveColor
-      : p.theme.sidebar.itemTitleColor};
-  cursor: pointer;
-  transition: all 0.3s;
-
-  &:hover {
-    background: ${(p) => p.theme.sidebar.itemHoverBackground};
-  }
-
-  &::after {
-    position: absolute;
-    top: 0;
-    left: 0;
-    display: block;
-    content: '';
-    width: ${(p) => (p.active ? p.theme.sidebar.itemMarkActiveWidth : 0)};
-    height: ${(p) => p.theme.sidebar.itemMarkHeight};
-    background: ${(p) => p.theme.sidebar.itemMarkBackground};
-    transition: all 0.3s;
-  }
-`
-
-const GroupIcon = styled(Icon)``
-
-const GroupTitle = styled.div`
-  margin-left: 12px;
+const Container = styled(ScrollArea)`
+  flex: 1;
+  min-height: 0;
 `

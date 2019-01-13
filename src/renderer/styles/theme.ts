@@ -47,19 +47,54 @@ export interface Theme {
       medium: string
       large: string
     }
-    padding: {
-      medium: string
-      large: string
-    }
     color: string
     focusColor: string
     background: string
     focusBackground: string
     border: string
     focusBorder: string
+    placeholderColor: string
+    solidColor: string
+    solidFocusColor: string
+    solidBackground: string
+    solidFocusBackground: string
+    solidBorder: string
+    solidFocusBorder: string
+    solidPlaceholderColor: string
     borderRadius: string
   }
-  icon: {}
+  button: {
+    sizes: {
+      medium: string
+      large: string
+    }
+    color: string
+    hoverColor: string
+    activeColor: string
+    background: string
+    hoverBackground: string
+    activeBackground: string
+    border: string
+    hoverBorder: string
+    activeBorder: string
+    solidColor: string
+    solidHoverColor: string
+    solidActiveColor: string
+    solidBackground: string
+    solidHoverBackground: string
+    solidActiveBackground: string
+    solidBorder: string
+    solidHoverBorder: string
+    solidActiveBorder: string
+    borderRadius: string
+  }
+  icon: {
+    sizes: {
+      small: string
+      medium: string
+      large: string
+    }
+  }
 }
 
 export const theme: Theme = {
@@ -111,17 +146,52 @@ export const theme: Theme = {
       medium: '32px',
       large: '36px'
     },
-    padding: {
-      medium: '6px',
-      large: '8px'
-    },
     color: '#999',
     focusColor: '#525A5B',
     background: '#fff',
     focusBackground: '#fff',
     border: '1px solid #E0E0E0',
     focusBorder: '1px solid #999',
+    placeholderColor: '#E0E0E0',
+    solidColor: '#999',
+    solidFocusColor: '#525A5B',
+    solidBackground: '#F6F6F6',
+    solidFocusBackground: '#E0E0E0',
+    solidBorder: 'none',
+    solidFocusBorder: 'none',
+    solidPlaceholderColor: '#E0E0E0',
     borderRadius: '3px'
   },
-  icon: {}
+  button: {
+    sizes: {
+      medium: '32px',
+      large: '36px'
+    },
+    color: '#999',
+    hoverColor: '#525A5B',
+    activeColor: '#525A5B',
+    background: 'transparent',
+    hoverBackground: 'transparent',
+    activeBackground: '#F6F6F6',
+    border: '1px solid #E0E0E0',
+    hoverBorder: '1px solid #E0E0E0',
+    activeBorder: '1px solid #E0E0E0',
+    solidColor: '#999',
+    solidHoverColor: '#525A5B',
+    solidActiveColor: '#525A5B',
+    solidBackground: '#F6F6F6',
+    solidHoverBackground: '#F6F6F6',
+    solidActiveBackground: '#E0E0E0',
+    solidBorder: 'none',
+    solidHoverBorder: 'none',
+    solidActiveBorder: 'none',
+    borderRadius: '3px'
+  },
+  icon: {
+    sizes: {
+      small: '16px',
+      medium: '28px',
+      large: '32px'
+    }
+  }
 }
