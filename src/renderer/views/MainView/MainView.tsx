@@ -1,34 +1,39 @@
 import * as React from 'react'
+import { Provider } from 'mobx-react'
+import { RouteComponentProps } from 'react-router'
 
 import Editor from '../../containers/Editor'
 import List from '../../containers/List'
 import Sidebar from '../../containers/Sidebar'
 import { styled } from '../../styles'
+import { appStore } from '../../stores'
 
-export interface Props {}
+export interface Props extends RouteComponentProps {}
 
 export interface State {}
 
 export default class MainView extends React.Component<Props, State> {
-  public static defaultProps: Partial<Props> = {}
-
-  public constructor (props: Props) {
-    super(props)
-
-    this.state = {}
+  public componentDidMount () {
+    if (!appStore.initialized) {
+      this.props.history.push('/login')
+    }
   }
 
   public render () {
-    const {} = this.props
+    if (!appStore.initialized) {
+      return null
+    }
 
     return (
-      <Wrapper>
-        <Sidebar />
-        <Divider />
-        <List />
-        <Divider />
-        <Editor />
-      </Wrapper>
+      <Provider>
+        <Wrapper>
+          <Sidebar />
+          <Divider />
+          <List />
+          <Divider />
+          <Editor />
+        </Wrapper>
+      </Provider>
     )
   }
 }

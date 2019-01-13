@@ -1,18 +1,23 @@
 import * as React from 'react'
+import { keyframes } from 'styled-components'
+import { RouteComponentProps } from 'react-router'
 
-import { styled, ThemeConsumer } from '../../styles'
-import Logo from '../../components/Logo'
-import Input from '../../components/Input'
 import Icon from '../../components/Icon'
+import Input from '../../components/Input'
+import Logo from '../../components/Logo'
+import { styled, ThemeConsumer } from '../../styles'
+import { appStore } from '../../stores'
 
-export interface Props {}
+export interface Props extends RouteComponentProps {}
 
 export interface State {
+  password: string
   inputVisible: boolean
 }
 
 export default class LoginView extends React.Component<Props, State> {
   public state: State = {
+    password: '',
     inputVisible: false
   }
 
@@ -22,8 +27,21 @@ export default class LoginView extends React.Component<Props, State> {
     }, 100)
   }
 
+  private onPasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    this.setState({ password: e.target.value })
+  }
+
+  private onConfirm = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.keyCode !== 13) return
+
+    const password = this.state.password.trim()
+    console.log(password)
+    appStore.initialize()
+    this.props.history.push('/')
+  }
+
   public render () {
-    const { inputVisible } = this.state
+    const { password, inputVisible } = this.state
 
     return (
       <ThemeConsumer>
@@ -33,7 +51,10 @@ export default class LoginView extends React.Component<Props, State> {
             <PasswordInput
               size='large'
               visible={inputVisible}
+              value={password}
               suffix={<Icon type='Lock' />}
+              onChange={this.onPasswordChange}
+              onKeyDown={this.onConfirm}
             />
           </Wrapper>
         )}
@@ -41,6 +62,12 @@ export default class LoginView extends React.Component<Props, State> {
     )
   }
 }
+
+const inputAnimation = keyframes`
+  0% { margin-top: 5px; opacity: 0; }
+  25% { margin-top: 5px; opacity: 0; }
+  100% { margin-top: 24px; opacity: 1; }
+`
 
 const Wrapper = styled.div`
   display: flex;
