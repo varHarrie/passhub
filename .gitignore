@@ -2,3 +2,5 @@ node_modules/
 release/
 dist/
 ui/
+
+data.json
