@@ -19,4 +19,22 @@ export const GlobalStyle = createGlobalStyle`
   div, span, form, input, button, label {
     box-sizing: border-box;
   }
+
+  ::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+  }
+
+  ::-webkit-scrollbar-track-piece {
+    background-color: transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #ccc;
+    cursor: pointer;
+
+    &:hover {
+      background: #aaa;
+    }
+  }
 `
