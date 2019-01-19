@@ -1,20 +1,21 @@
+import { FileAdapter } from 'persiston/adapters/file-adapter'
+import { Persiston } from 'persiston'
+
 import { Entry } from '../models/entry'
 import { Group } from '../models/group'
-import { Collection, DataStore, FileAdapter } from '../libs/data-store'
+import { Field } from '../models/field'
 
-export default class PasshubStore extends DataStore {
+export default class PasshubStore extends Persiston {
   public static connect (filename: string) {
-    const adapter = new FileAdapter(filename, {
-      initialValues: {},
-      serialize: JSON.stringify,
-      deserialize: JSON.parse
-    })
-    return new PasshubStore(adapter)
+    const adapter = new FileAdapter(filename)
+    const store = new PasshubStore(adapter)
+
+    return store.load()
   }
 
-  public groups: Collection<Group> = this.collection('groups')
+  public groups = this.collection<Group>('groups')
 
-  public entries: Collection<Entry> = this.collection('entries')
+  public entries = this.collection<Entry>('entries')
 
-  public fields: Collection<Entry> = this.collection('fields')
+  public fields = this.collection<Field>('fields')
 }

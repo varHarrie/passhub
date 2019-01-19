@@ -16,10 +16,6 @@ export interface State {}
 
 @observer
 export default class Sidebar extends React.Component<Props, State> {
-  public componentDidMount () {
-    appStore.listGroup()
-  }
-
   private onGroupAdd = (icon: IconType, title: string) => {
     title = title.trim()
     if (!title) throw new Error('Title is required')

@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { hot } from 'react-hot-loader/root'
-import { BrowserRouter, Route } from 'react-router-dom'
+import { BrowserRouter, Route, Switch } from 'react-router-dom'
 
 import WindowActions from './components/WindowActions'
 import LoginView from './views/LoginView'
@@ -18,8 +18,10 @@ class App extends React.Component<Props, State> {
       <ThemeProvider theme={theme}>
         <BrowserRouter>
           <Wrapper>
-            <Route path='/login' component={LoginView} />
-            <Route path='/' component={MainView} />
+            <Switch>
+              <Route path='/login' component={LoginView} />
+              <Route path='/' component={MainView} />
+            </Switch>
             <WindowActions />
             <GlobalStyle />
           </Wrapper>

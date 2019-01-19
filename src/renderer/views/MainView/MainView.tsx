@@ -1,10 +1,9 @@
 import * as React from 'react'
-import { Provider } from 'mobx-react'
-import { RouteComponentProps } from 'react-router'
+import { observer } from 'mobx-react'
+import { Route, RouteComponentProps } from 'react-router'
 
-import Editor from '../../containers/Editor'
-import List from '../../containers/List'
 import Sidebar from '../../containers/Sidebar'
+import GroupView from '../GroupView'
 import { styled } from '../../styles'
 import { appStore } from '../../stores'
 
@@ -12,9 +11,12 @@ export interface Props extends RouteComponentProps {}
 
 export interface State {}
 
+@observer
 export default class MainView extends React.Component<Props, State> {
   public componentDidMount () {
-    if (!appStore.initialized) {
+    if (appStore.initialized) {
+      appStore.listGroups()
+    } else {
       this.props.history.push('/login')
     }
   }
@@ -25,15 +27,11 @@ export default class MainView extends React.Component<Props, State> {
     }
 
     return (
-      <Provider>
-        <Wrapper>
-          <Sidebar />
-          <Divider />
-          <List />
-          <Divider />
-          <Editor />
-        </Wrapper>
-      </Provider>
+      <Wrapper>
+        <Sidebar />
+        <Divider />
+        <Route path='/:id' component={GroupView} />
+      </Wrapper>
     )
   }
 }

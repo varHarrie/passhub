@@ -30,22 +30,20 @@ export default class AppStore {
   }
 
   @action
-  public initialize () {
-    try {
-      this.store = PasshubStore.connect('./data.json')
-    } catch (error) {
-      console.error(error)
-    }
+  public async initialize () {
+    this.store = await PasshubStore.connect('./data.json')
   }
 
   @action
-  public listGroup () {
-    this.groups = this.store.groups.find()
+  public async listGroups () {
+    console.log(this.store.groups)
+    this.groups = await this.store.groups.find()
+    console.log(this.groups)
   }
 
   @action
-  public addGroup (icon: IconType, title: string) {
-    const group: Group = {
+  public async addGroup (icon: IconType, title: string) {
+    const group = {
       icon,
       title,
       id: uuid.v4(),
@@ -53,25 +51,48 @@ export default class AppStore {
       modifiedAt: Date.now()
     }
 
-    this.store.groups.insert(group)
-    this.groups.push(group)
-    this.group = group
+    return this.store.groups.insert(group)
   }
 
   @action
-  public removeGroup (id: string) {
-    this.groups = this.groups.filter((group) => group.id !== id)
-
-    if (this.group && this.group.id === id) {
-      this.selectGroup(id)
-    }
+  public async updateGroup (groupId: string, icon: IconType, title: string) {
+    return this.store.groups.updateOne({ id: groupId }, { icon, title })
   }
 
   @action
-  public selectGroup (id: string) {
-    const index = this.groups.findIndex((group) => group.id === id)
+  public removeGroup (groupId: string) {
+    return this.store.groups.removeOne({ id: groupId })
+  }
+
+  @action
+  public async selectGroup (groupId: string) {
+    const index = this.groups.findIndex((group) => group.id === groupId)
     this.group = this.groups[index] || null
 
-    if (!this.group) return
+    return this.listEntities()
+  }
+
+  @action
+  public async listEntities () {
+    const group = this.group
+    this.entries = group ? await this.store.entries.find({ id: group.id }) : []
+  }
+
+  @action
+  public async addEntity () {
+    const group = this.group
+    if (!group) return
+
+    const entry = {
+      icon: 'File' as IconType,
+      title: '',
+      description: '',
+      id: uuid.v4(),
+      groupId: group.id,
+      createdAt: Date.now(),
+      modifiedAt: Date.now()
+    }
+
+    this.store.entries.insert(entry)
   }
 }

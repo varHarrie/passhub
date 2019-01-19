@@ -31,12 +31,12 @@ export default class LoginView extends React.Component<Props, State> {
     this.setState({ password: e.target.value })
   }
 
-  private onConfirm = (e: React.KeyboardEvent<HTMLInputElement>) => {
+  private onConfirm = async (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.keyCode !== 13) return
 
     const password = this.state.password.trim()
     console.log(password)
-    appStore.initialize()
+    await appStore.initialize()
     this.props.history.push('/')
   }
 
