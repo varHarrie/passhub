@@ -1,5 +1,4 @@
 import * as React from 'react'
-import { keyframes } from 'styled-components'
 import { RouteComponentProps } from 'react-router'
 
 import Icon from '../../components/Icon'
@@ -62,12 +61,6 @@ export default class LoginView extends React.Component<Props, State> {
     )
   }
 }
-
-const inputAnimation = keyframes`
-  0% { margin-top: 5px; opacity: 0; }
-  25% { margin-top: 5px; opacity: 0; }
-  100% { margin-top: 24px; opacity: 1; }
-`
 
 const Wrapper = styled.div`
   display: flex;

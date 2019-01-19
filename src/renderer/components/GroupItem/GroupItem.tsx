@@ -1,34 +1,27 @@
 import * as React from 'react'
-import styled from 'styled-components'
 
 import Icon from '../Icon'
 import { noop } from '../../libs/utils'
 import { IconType } from '../../models/base'
+import { styled } from '../../styles'
 
 export interface Props {
+  className?: string
   icon: IconType
   title: string
   active?: boolean
-  onClick: React.MouseEventHandler<HTMLDivElement>
+  onClick?: React.MouseEventHandler<HTMLDivElement>
 }
 
-export interface State {}
+export default function GroupItem (props: Props) {
+  const { className, icon, title, active, onClick = noop } = props
 
-export default class GroupItem extends React.Component<Props, State> {
-  public static defaultProps: Partial<Props> = {
-    onClick: noop
-  }
-
-  public render () {
-    const { icon, title, active, onClick } = this.props
-
-    return (
-      <Wrapper active={active} onClick={onClick}>
-        <Icon type={icon} />
-        <Title>{title}</Title>
-      </Wrapper>
-    )
-  }
+  return (
+    <Wrapper className={className} active={active} onClick={onClick}>
+      <Icon type={icon} />
+      <Title>{title}</Title>
+    </Wrapper>
+  )
 }
 
 const Wrapper = styled.div<{ active?: boolean }>`

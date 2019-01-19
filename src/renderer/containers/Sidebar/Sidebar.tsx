@@ -1,12 +1,11 @@
 import * as React from 'react'
-import styled from 'styled-components'
 import { observer } from 'mobx-react'
 
 import GroupAddition from '../../components/GroupAddition'
 import GroupItem from '../../components/GroupItem'
 import Logo from '../../components/Logo'
 import ScrollArea from '../../components/ScrollArea'
-import { ThemeConsumer } from '../../styles'
+import { styled, ThemeConsumer } from '../../styles'
 import { appStore } from '../../stores'
 import { IconType } from '../../models/base'
 
@@ -16,11 +15,12 @@ export interface State {}
 
 @observer
 export default class Sidebar extends React.Component<Props, State> {
-  private onGroupAdd = (icon: IconType, title: string) => {
+  private onGroupAdd = async (icon: IconType, title: string) => {
     title = title.trim()
     if (!title) throw new Error('Title is required')
 
-    return appStore.addGroup(icon, title)
+    const group = await appStore.addGroup(icon, title)
+    this.onGroupSelect(group.id)
   }
 
   private onGroupSelect = (id: string) => {

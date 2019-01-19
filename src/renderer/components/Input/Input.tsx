@@ -20,35 +20,26 @@ export interface Props {
   onBlur?: React.FocusEventHandler
 }
 
-export interface State {}
+function Input (props: Props, refInput: React.Ref<HTMLInputElement> | null) {
+  const {
+    className,
+    solid,
+    size = 'medium',
+    prefix,
+    suffix,
+    ...inputProps
+  } = props
 
-export default class Input extends React.Component<Props, State> {
-  private refInput = React.createRef<HTMLInputElement>()
-
-  public focus = () => {
-    const $input = this.refInput.current
-    if ($input) $input.focus()
-  }
-
-  public render () {
-    const {
-      className,
-      solid,
-      size = 'medium',
-      prefix,
-      suffix,
-      ...inputProps
-    } = this.props
-
-    return (
-      <Wrapper className={className} size={size} solid={solid}>
-        {prefix && <Prefix>{prefix}</Prefix>}
-        <OriginalInput ref={this.refInput} {...inputProps} />
-        {suffix && <Suffix>{suffix}</Suffix>}
-      </Wrapper>
-    )
-  }
+  return (
+    <Wrapper className={className} size={size} solid={solid}>
+      {prefix && <Prefix>{prefix}</Prefix>}
+      <OriginalInput ref={refInput} {...inputProps} />
+      {suffix && <Suffix>{suffix}</Suffix>}
+    </Wrapper>
+  )
 }
+
+export default React.forwardRef(Input)
 
 const Wrapper = styled.label<{ size: InputSize; solid?: boolean }>`
   padding: 0 8px;

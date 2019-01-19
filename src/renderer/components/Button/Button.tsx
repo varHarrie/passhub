@@ -3,7 +3,7 @@ import { styled } from '../../styles'
 
 export type ButtonSize = 'medium' | 'large'
 
-export interface Props {
+interface Props {
   className?: string
   solid?: boolean
   size?: ButtonSize
@@ -11,23 +11,14 @@ export interface Props {
   onClick?: React.MouseEventHandler
 }
 
-export interface State {}
+export default function Button (props: Props) {
+  const { className, solid, size = 'medium', children, onClick } = props
 
-export default class Button extends React.Component<Props, State> {
-  public render () {
-    const { className, solid, size = 'medium', children, onClick } = this.props
-
-    return (
-      <Wrapper
-        className={className}
-        solid={solid}
-        size={size}
-        onClick={onClick}
-      >
-        {children}
-      </Wrapper>
-    )
-  }
+  return (
+    <Wrapper className={className} solid={solid} size={size} onClick={onClick}>
+      {children}
+    </Wrapper>
+  )
 }
 
 const Wrapper = styled.button<{ solid?: boolean; size: ButtonSize }>`

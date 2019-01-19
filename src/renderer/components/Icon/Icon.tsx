@@ -7,28 +7,20 @@ import { IconType } from '../../models/base'
 export type IconSize = 'small' | 'medium' | 'large'
 
 export interface Props {
+  className?: string
   type: IconType
-  size: IconSize
+  size?: IconSize
 }
 
-export interface State {}
+export default function Icon (props: Props) {
+  const { className, type, size = 'small' } = props
+  const Image = Feather[type]
 
-export default class Icon extends React.Component<Props, State> {
-  public static defaultProps: Partial<Props> = {
-    size: 'small'
-  }
-
-  public render () {
-    const { type, size } = this.props
-
-    const Image = Feather[type]
-
-    return (
-      <Wrapper size={size}>
-        <Image />
-      </Wrapper>
-    )
-  }
+  return (
+    <Wrapper className={className} size={size}>
+      <Image />
+    </Wrapper>
+  )
 }
 
 const Wrapper = styled.div<{ size: IconSize }>`

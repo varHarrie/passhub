@@ -45,13 +45,18 @@
     "scope": "typescriptreact",
     "prefix": "func",
     "body": [
+      "import * as React from 'react'",
+      "import styled from 'styled-components/macro'",
+      "",
       "interface ${1:${TM_FILENAME_BASE}}Props {$3}",
       "",
       "function ${1:${TM_FILENAME_BASE}} (props: ${1:${TM_FILENAME_BASE}}Props) {",
       "  return (",
-      "    <div>$2</div>",
+      "    <Wrapper>$2</Wrapper>",
       "  )",
-      "}"
+      "}",
+      "",
+      "const Wrapper = styled.div``"
     ],
     "description": "Typescript React Stateless Component"
   },

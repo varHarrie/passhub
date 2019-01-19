@@ -1,9 +1,8 @@
 import * as React from 'react'
-import { X, Minus } from 'react-feather'
-
-import { styled } from '../../styles'
 import { ipcRenderer } from 'electron'
+
 import Icon from '../Icon'
+import { styled } from '../../styles'
 
 function onMinimize () {
   ipcRenderer.send('minimize')
@@ -13,11 +12,15 @@ function onClose () {
   ipcRenderer.send('close')
 }
 
-export interface WindowActionsProps {}
+export interface Props {
+  className?: string
+}
 
-export default function WindowActions (props: WindowActionsProps) {
+export default function WindowActions (props: Props) {
+  const { className } = props
+
   return (
-    <Wrapper>
+    <Wrapper className={className}>
       <Button onClick={onMinimize}>
         <Icon type='Minus' />
       </Button>

@@ -36,9 +36,7 @@ export default class AppStore {
 
   @action
   public async listGroups () {
-    console.log(this.store.groups)
     this.groups = await this.store.groups.find()
-    console.log(this.groups)
   }
 
   @action

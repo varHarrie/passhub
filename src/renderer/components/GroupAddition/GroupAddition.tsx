@@ -1,83 +1,81 @@
 import * as React from 'react'
-import styled from 'styled-components'
 
 import GroupItem from '../GroupItem'
-import Icon from '../Icon/Icon'
+import Icon from '../Icon'
 import Input from '../Input'
 import { noop } from '../../libs/utils'
 import { IconType } from '../../models/base'
+import { styled } from '../../styles'
 
 export interface Props {
-  onConfirm: (icon: IconType, title: string) => void
+  className?: string
+  onConfirm?: (icon: IconType, title: string) => void
 }
 
-export interface State {
-  editable: boolean
-  icon: IconType
-  title: string
-}
+export default function GroupAddition (props: Props) {
+  const { className, onConfirm = noop } = props
+  const refInput = React.useRef<HTMLInputElement>(null)
 
-export default class GroupAddition extends React.Component<Props, State> {
-  public static defaultProps: Partial<Props> = {
-    onConfirm: noop
-  }
+  const [editable, setEditable] = React.useState<boolean>(false)
+  const [icon, setIcon] = React.useState<IconType>('Archive')
+  const [title, setTitle] = React.useState<string>('')
 
-  public state: State = {
-    editable: false,
-    icon: 'Archive',
-    title: ''
-  }
+  const onEditStart = React.useCallback(() => {
+    setEditable(true)
+    setIcon('Archive')
+    setTitle('')
+  }, [])
 
-  private refInput = React.createRef<Input>()
+  const onTitleChange = React.useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      setTitle(e.target.value)
+    },
+    []
+  )
 
-  private onEditStart = () => {
-    this.setState({ editable: true, icon: 'Archive', title: '' }, () => {
-      const $input = this.refInput.current
-      if ($input) $input.focus()
-    })
-  }
+  const onInputBlur = React.useCallback(() => setEditable(false), [])
 
-  private onTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    this.setState({ title: e.target.value })
-  }
+  const onInputKeydown = React.useCallback(
+    (e: React.KeyboardEvent<HTMLInputElement>) => {
+      const keyCode = e.keyCode
 
-  private onInputBlur = () => {
-    this.setState({ editable: false })
-  }
+      if (keyCode !== 13) return
+      if (!title) return
 
-  private onInputKeydown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    const { icon, title } = this.state
-    const keyCode = e.keyCode
+      onConfirm(icon, title)
+      setEditable(false)
+    },
+    [icon, title]
+  )
 
-    if (keyCode !== 13) return
-    if (!title) return
+  React.useEffect(
+    () => {
+      if (editable) {
+        const $input = refInput.current
+        if ($input) $input.focus()
+      }
+    },
+    [editable]
+  )
 
-    this.props.onConfirm(icon, title)
-    this.setState({ editable: false })
-  }
-
-  public render () {
-    const { editable, icon, title } = this.state
-
-    return (
-      <Wrapper>
-        {editable ? (
-          <CenteredInput
-            ref={this.refInput}
-            value={title}
-            placeholder='Group Title'
-            prefix={<Icon type={icon} />}
-            suffix={<Icon type='CornerDownLeft' />}
-            onChange={this.onTitleChange}
-            onBlur={this.onInputBlur}
-            onKeyDown={this.onInputKeydown}
-          />
-        ) : (
-          <GroupItem icon='Plus' title='New' onClick={this.onEditStart} />
-        )}
-      </Wrapper>
-    )
-  }
+  return (
+    <Wrapper className={className}>
+      {editable ? (
+        <CenteredInput
+          ref={refInput}
+          value={title}
+          placeholder='Group Title'
+          prefix={<Icon type={icon} />}
+          suffix={<Icon type='CornerDownLeft' />}
+          onChange={onTitleChange}
+          onBlur={onInputBlur}
+          onKeyDown={onInputKeydown}
+        />
+      ) : (
+        <GroupItem icon='Plus' title='New' onClick={onEditStart} />
+      )}
+    </Wrapper>
+  )
 }
 
 const Wrapper = styled.div`

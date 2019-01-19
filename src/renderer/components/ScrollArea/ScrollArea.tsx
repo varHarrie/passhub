@@ -9,39 +9,19 @@ export interface Props {
   children?: React.ReactNode
 }
 
-export interface State {
-  state: ScrollState
-}
+export default function ScrollArea (props: Props) {
+  const { className, children } = props
 
-export default class ScrollArea extends React.Component<Props, State> {
-  private refContainer = React.createRef<HTMLDivElement>()
+  const [state, setState] = React.useState<ScrollState>('normal')
+  const refContainer = React.useRef<HTMLDivElement>(null)
 
-  public state: State = {
-    state: 'normal'
-  }
-
-  public componentDidMount () {
-    const $container = this.refContainer.current
-    if (!$container) return
-
-    $container.addEventListener('scroll', this.onUpdate)
-    window.addEventListener('resize', this.onUpdate)
-  }
-
-  public componentWillUnmount () {
-    const $container = this.refContainer.current
-    if (!$container) return
-
-    $container.removeEventListener('scroll', this.onUpdate)
-    window.removeEventListener('resize', this.onUpdate)
-  }
-
-  private onUpdate = () => {
-    const $container = this.refContainer.current
+  const onUpdate = React.useCallback(() => {
+    const $container = refContainer.current
     if (!$container) return
 
     const { scrollTop, scrollHeight, clientHeight } = $container
-    const state =
+
+    setState(
       scrollHeight === clientHeight
         ? 'normal'
         : scrollTop === 0
@@ -49,22 +29,26 @@ export default class ScrollArea extends React.Component<Props, State> {
         : scrollTop < scrollHeight - clientHeight
         ? 'center'
         : 'bottom'
-
-    this.setState({ state })
-  }
-
-  public render () {
-    const { className, children } = this.props
-    const { state } = this.state
-
-    return (
-      <Wrapper className={className}>
-        <TopShadow visible={state === 'center' || state === 'bottom'} />
-        <Container ref={this.refContainer}>{children}</Container>
-        <BottomShadow visible={state === 'center' || state === 'top'} />
-      </Wrapper>
     )
-  }
+  }, [])
+
+  React.useEffect(() => {
+    refContainer.current!.addEventListener('scroll', onUpdate)
+    window.addEventListener('reset', onUpdate)
+
+    return () => {
+      refContainer.current!.removeEventListener('scroll', onUpdate)
+      window.removeEventListener('resize', onUpdate)
+    }
+  }, [])
+
+  return (
+    <Wrapper className={className}>
+      <TopShadow visible={state === 'center' || state === 'bottom'} />
+      <Container ref={refContainer}>{children}</Container>
+      <BottomShadow visible={state === 'center' || state === 'top'} />
+    </Wrapper>
+  )
 }
 
 const Wrapper = styled.div`

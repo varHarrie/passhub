@@ -1,24 +1,24 @@
 import * as React from 'react'
-import styled from 'styled-components'
-import { Entry } from '../../models/entry'
+
 import Icon from '../Icon'
+import { Entry } from '../../models/entry'
+import { styled } from '../../styles'
 
 export interface Props {
+  className?: string
   data: Entry
 }
 
 export interface State {}
 
-export default class EntryItem extends React.Component<Props, State> {
-  public render () {
-    const { data } = this.props
+export default function EntryItem (props: Props) {
+  const { className, data } = props
 
-    return (
-      <Wrapper>
-        <Icon type={data.icon} size='large' />
-      </Wrapper>
-    )
-  }
+  return (
+    <Wrapper className={className}>
+      <Icon type={data.icon} size='large' />
+    </Wrapper>
+  )
 }
 
 const Wrapper = styled.div``
