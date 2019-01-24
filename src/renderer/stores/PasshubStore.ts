@@ -3,7 +3,6 @@ import { Persiston } from 'persiston'
 
 import { Entry } from '../models/entry'
 import { Group } from '../models/group'
-import { Field } from '../models/field'
 
 export default class PasshubStore extends Persiston {
   public static connect (filename: string) {
@@ -16,6 +15,4 @@ export default class PasshubStore extends Persiston {
   public groups = this.collection<Group>('groups')
 
   public entries = this.collection<Entry>('entries')
-
-  public fields = this.collection<Field>('fields')
 }

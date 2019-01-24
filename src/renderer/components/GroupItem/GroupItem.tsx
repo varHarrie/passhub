@@ -37,6 +37,7 @@ const Wrapper = styled.div<{ active?: boolean }>`
       ? p.theme.sidebar.itemTitleActiveColor
       : p.theme.sidebar.itemTitleColor};
   cursor: pointer;
+  user-select: none;
   transition: all 0.3s;
 
   &:hover {

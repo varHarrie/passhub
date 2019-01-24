@@ -30,7 +30,7 @@ export default class MainView extends React.Component<Props, State> {
       <Wrapper>
         <Sidebar />
         <Divider />
-        <Route path='/:id' component={GroupView} />
+        <Route path='/:groupId' component={GroupView} />
       </Wrapper>
     )
   }

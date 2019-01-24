@@ -1,5 +1,6 @@
 import * as React from 'react'
 import { observer } from 'mobx-react'
+import { RouteComponentProps, withRouter } from 'react-router'
 
 import GroupAddition from '../../components/GroupAddition'
 import GroupItem from '../../components/GroupItem'
@@ -9,12 +10,12 @@ import { styled, ThemeConsumer } from '../../styles'
 import { appStore } from '../../stores'
 import { IconType } from '../../models/base'
 
-export interface Props {}
+export interface Props extends RouteComponentProps {}
 
 export interface State {}
 
 @observer
-export default class Sidebar extends React.Component<Props, State> {
+class Sidebar extends React.Component<Props, State> {
   private onGroupAdd = async (icon: IconType, title: string) => {
     title = title.trim()
     if (!title) throw new Error('Title is required')
@@ -25,6 +26,7 @@ export default class Sidebar extends React.Component<Props, State> {
 
   private onGroupSelect = (id: string) => {
     appStore.selectGroup(id)
+    this.props.history.push(`/${id}`)
   }
 
   public render () {
@@ -56,6 +58,8 @@ export default class Sidebar extends React.Component<Props, State> {
     )
   }
 }
+
+export default withRouter(Sidebar)
 
 const Wrapper = styled.div`
   display: flex;

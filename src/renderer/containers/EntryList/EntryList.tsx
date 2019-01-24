@@ -1,4 +1,6 @@
 import * as React from 'react'
+import { RouteComponentProps, withRouter } from 'react-router'
+import { observer } from 'mobx-react'
 
 import Button from '../../components/Button'
 import EntryItem from '../../components/EntryItem'
@@ -6,36 +8,54 @@ import Icon from '../../components/Icon'
 import Input from '../../components/Input'
 import ScrollArea from '../../components/ScrollArea'
 import { styled } from '../../styles'
+import { appStore } from '../../stores'
+import { Entry } from '../../models/entry'
 
-export interface Props {}
+export interface Props extends RouteComponentProps<{ groupId: string }> {}
 
 export interface State {}
 
-export default class List extends React.Component<Props, State> {
-  public static defaultProps: Partial<Props> = {}
+@observer
+class EntryList extends React.Component<Props, State> {
+  private onEntryAdd = async () => {
+    const entry = await appStore.addEntry()
+    if (!entry) return
 
-  public constructor (props: Props) {
-    super(props)
+    appStore.selectEntry(entry.id)
+  }
 
-    this.state = {}
+  private onEntrySelect = (entry: Entry) => {
+    appStore.selectEntry(entry.id)
+
+    const groupId = this.props.match.params.groupId
+    this.props.history.push(`/${groupId}/${entry.id}`)
   }
 
   public render () {
-    const {} = this.props
+    const entries = appStore.entries.map((entry) => (
+      <EntryItem
+        key={entry.id}
+        data={entry}
+        active={!!appStore.entry && appStore.entry.id === entry.id}
+        onClick={this.onEntrySelect}
+      />
+    ))
 
     return (
       <Wrapper>
         <Header>
           <SearchInput solid prefix={<Icon type='Search' />} />
-          <SearchButton solid>
+          <SearchButton solid onClick={this.onEntryAdd}>
             <Icon type='Plus' />
           </SearchButton>
         </Header>
-        <Container>{/* <EntryItem entry={}>test</EntryItem> */}</Container>
+        <Container>{entries}</Container>
       </Wrapper>
     )
   }
 }
+
+export default withRouter(EntryList)
 
 const Wrapper = styled.div`
   display: flex;

@@ -49,17 +49,22 @@ export default class AppStore {
       modifiedAt: Date.now()
     }
 
-    return this.store.groups.insert(group)
+    await this.store.groups.insert(group)
+    await this.listGroups()
+
+    return group
   }
 
   @action
   public async updateGroup (groupId: string, icon: IconType, title: string) {
-    return this.store.groups.updateOne({ id: groupId }, { icon, title })
+    await this.store.groups.updateOne({ id: groupId }, { icon, title })
+    await this.listGroups()
   }
 
   @action
-  public removeGroup (groupId: string) {
-    return this.store.groups.removeOne({ id: groupId })
+  public async removeGroup (groupId: string) {
+    await this.store.groups.removeOne({ id: groupId })
+    await this.listGroups()
   }
 
   @action
@@ -67,30 +72,59 @@ export default class AppStore {
     const index = this.groups.findIndex((group) => group.id === groupId)
     this.group = this.groups[index] || null
 
-    return this.listEntities()
+    return this.listEntries()
   }
 
   @action
-  public async listEntities () {
-    const group = this.group
-    this.entries = group ? await this.store.entries.find({ id: group.id }) : []
+  public async listEntries () {
+    this.entries = this.group
+      ? await this.store.entries.find({ groupId: this.group.id }, '-fields')
+      : []
   }
 
   @action
-  public async addEntity () {
+  public async addEntry () {
     const group = this.group
     if (!group) return
 
     const entry = {
       icon: 'File' as IconType,
-      title: '',
-      description: '',
+      title: 'Title',
+      description: 'Description',
+      fields: [],
       id: uuid.v4(),
       groupId: group.id,
       createdAt: Date.now(),
       modifiedAt: Date.now()
     }
 
-    this.store.entries.insert(entry)
+    await this.store.entries.insert(entry)
+    await this.listEntries()
+
+    return entry
+  }
+
+  @action
+  public async updateEntry (entryId: string, entryAttrs: Partial<Entry>) {
+    await this.store.entries.updateOne({ id: entryId }, entryAttrs)
+    await this.listEntries()
+  }
+
+  @action
+  public async selectEntry (entryId: string) {
+    const index = this.entries.findIndex((entry) => entry.id === entryId)
+    this.entry = this.entries[index] || null
+
+    return this.listFields()
+  }
+
+  @action
+  public async listFields () {
+    const entryId = this.entry && this.entry.id
+    const entry = entryId
+      ? await this.store.entries.findOne({ id: entryId }, 'fields')
+      : null
+
+    this.fields = entry ? entry.fields : []
   }
 }
