@@ -68,14 +68,15 @@
     "@types/react-router-dom": "^4.3.1",
     "@types/styled-components": "^4.1.6",
     "@types/uuid": "^3.4.4",
-    "mobx": "^5.9.0",
-    "mobx-react": "^5.4.3",
     "persiston": "0.1.0-alpha.1",
     "react": "^16.8.0-alpha.0",
     "react-dom": "^16.8.0-alpha.0",
     "react-feather": "^1.1.5",
     "react-router": "^4.3.1",
     "react-router-dom": "^4.3.1",
+    "redux": "^4.0.1",
+    "redux-react-hook": "^3.0.2",
+    "redux-thunk": "^2.3.0",
     "styled-components": "^4.1.3",
     "uuid": "^3.3.2"
   }

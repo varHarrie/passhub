@@ -7,11 +7,10 @@ export type LogoSize = 'small' | 'large'
 export interface Props {
   className?: string
   size?: LogoSize
-  background: string
 }
 
 export default function Logo (props: Props) {
-  const { className, size = 'large', background = '#999' } = props
+  const { className, size = 'large' } = props
 
   const mainPath = `
     m16.002,46l-16,0l0,-28a17.883,17.883 0 0 1 5.272,-12.728a17.882,
@@ -29,7 +28,7 @@ export default function Logo (props: Props) {
   `
 
   return (
-    <Wrapper className={className} size={size} background={background}>
+    <Wrapper className={className} size={size}>
       <svg
         xmlns='http://www.w3.org/2000/svg'
         width='42'
@@ -50,14 +49,14 @@ const logoSizes = {
   large: '80px'
 }
 
-const Wrapper = styled.div<{ size: LogoSize; background: string }>`
+const Wrapper = styled.div<{ size: LogoSize }>`
   display: flex;
   align-items: center;
   justify-content: center;
   width: ${(p) => logoSizes[p.size]};
   height: ${(p) => logoSizes[p.size]};
   border-radius: 18.75%;
-  background: ${(p) => p.background};
+  background: #999;
 
   svg {
     width: 50%;

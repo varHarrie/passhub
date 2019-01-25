@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { RouteComponentProps, withRouter } from 'react-router'
-import { observer } from 'mobx-react'
+import { useMappedState } from 'redux-react-hook'
 
 import Button from '../../components/Button'
 import EntryItem from '../../components/EntryItem'
@@ -8,51 +8,58 @@ import Icon from '../../components/Icon'
 import Input from '../../components/Input'
 import ScrollArea from '../../components/ScrollArea'
 import { styled } from '../../styles'
-import { appStore } from '../../stores'
 import { Entry } from '../../models/entry'
+import { addEntry, selectEntry, useDispatch } from '../../store/actions'
+import { RootState } from '../../store'
 
 export interface Props extends RouteComponentProps<{ groupId: string }> {}
 
-export interface State {}
+function EntryList (props: Props) {
+  const mapState = React.useCallback(
+    (state: RootState) => ({
+      entries: state.entries,
+      entry: state.entry
+    }),
+    []
+  )
 
-@observer
-class EntryList extends React.Component<Props, State> {
-  private onEntryAdd = async () => {
-    const entry = await appStore.addEntry()
-    if (!entry) return
+  const groupId = props.match.params.groupId
+  const { entries, entry } = useMappedState(mapState)
+  const dispatch = useDispatch()
 
-    appStore.selectEntry(entry.id)
-  }
+  const onEntryAdd = React.useCallback(() => {
+    // todo: scroll to end
+    dispatch(addEntry())
+  }, [])
 
-  private onEntrySelect = (entry: Entry) => {
-    appStore.selectEntry(entry.id)
+  const onEntrySelect = React.useCallback(
+    (e: Entry) => {
+      dispatch(selectEntry(e.id))
+      props.history.push(`/${groupId}/${e.id}`)
+    },
+    [groupId]
+  )
 
-    const groupId = this.props.match.params.groupId
-    this.props.history.push(`/${groupId}/${entry.id}`)
-  }
+  const items = entries.map((e) => (
+    <EntryItem
+      key={e.id}
+      data={e}
+      active={!!entry && entry.id === e.id}
+      onClick={onEntrySelect}
+    />
+  ))
 
-  public render () {
-    const entries = appStore.entries.map((entry) => (
-      <EntryItem
-        key={entry.id}
-        data={entry}
-        active={!!appStore.entry && appStore.entry.id === entry.id}
-        onClick={this.onEntrySelect}
-      />
-    ))
-
-    return (
-      <Wrapper>
-        <Header>
-          <SearchInput solid prefix={<Icon type='Search' />} />
-          <SearchButton solid onClick={this.onEntryAdd}>
-            <Icon type='Plus' />
-          </SearchButton>
-        </Header>
-        <Container>{entries}</Container>
-      </Wrapper>
-    )
-  }
+  return (
+    <Wrapper>
+      <Header>
+        <SearchInput solid prefix={<Icon type='Search' />} />
+        <SearchButton solid onClick={onEntryAdd}>
+          <Icon type='Plus' />
+        </SearchButton>
+      </Header>
+      <Container>{items}</Container>
+    </Wrapper>
+  )
 }
 
 export default withRouter(EntryList)

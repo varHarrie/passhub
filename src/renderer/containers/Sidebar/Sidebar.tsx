@@ -1,62 +1,65 @@
 import * as React from 'react'
-import { observer } from 'mobx-react'
 import { RouteComponentProps, withRouter } from 'react-router'
+import { useMappedState } from 'redux-react-hook'
 
 import GroupAddition from '../../components/GroupAddition'
 import GroupItem from '../../components/GroupItem'
 import Logo from '../../components/Logo'
 import ScrollArea from '../../components/ScrollArea'
 import { styled, ThemeConsumer } from '../../styles'
-import { appStore } from '../../stores'
 import { IconType } from '../../models/base'
+import { RootState } from '../../store'
+import { addGroup, selectGroup, useDispatch } from '../../store/actions'
 
 export interface Props extends RouteComponentProps {}
 
-export interface State {}
+function Sidebar (props: Props) {
+  const mapState = React.useCallback(
+    (state: RootState) => ({
+      groups: state.groups,
+      group: state.group
+    }),
+    []
+  )
 
-@observer
-class Sidebar extends React.Component<Props, State> {
-  private onGroupAdd = async (icon: IconType, title: string) => {
-    title = title.trim()
-    if (!title) throw new Error('Title is required')
+  const { groups, group } = useMappedState(mapState)
+  const dispatch = useDispatch()
 
-    const group = await appStore.addGroup(icon, title)
-    this.onGroupSelect(group.id)
+  const onGroupAdd = async (icon: IconType, title: string) => {
+    if (title) dispatch(addGroup(icon, title))
   }
 
-  private onGroupSelect = (id: string) => {
-    appStore.selectGroup(id)
-    this.props.history.push(`/${id}`)
+  const onGroupSelect = (id: string) => {
+    dispatch(selectGroup(id))
+    props.history.push(`/${id}`)
   }
 
-  public render () {
-    const groups = appStore.groups.map((group) => (
-      <GroupItem
-        key={group.id}
-        icon={group.icon}
-        title={group.title}
-        active={!!appStore.group && group.id === appStore.group.id}
-        onClick={() => this.onGroupSelect(group.id)}
-      />
-    ))
+  const items = groups.map((g) => (
+    <GroupItem
+      key={g.id}
+      icon={g.icon}
+      title={g.title}
+      active={!!group && group.id === g.id}
+      onClick={() => onGroupSelect(g.id)}
+    />
+  ))
 
-    return (
-      <ThemeConsumer>
-        {(theme) => (
-          <Wrapper>
-            <Header>
-              <Logo size='small' background={theme.sidebar.logoBackground} />
-              <Title>Passhub</Title>
-            </Header>
-            <Container>
-              {groups}
-              <GroupAddition onConfirm={this.onGroupAdd} />
-            </Container>
-          </Wrapper>
-        )}
-      </ThemeConsumer>
-    )
-  }
+  return (
+    <ThemeConsumer>
+      {(theme) => (
+        <Wrapper>
+          <Header>
+            <StyledLogo size='small' />
+            <Title>Passhub</Title>
+          </Header>
+          <Container>
+            {items}
+            <GroupAddition onConfirm={onGroupAdd} />
+          </Container>
+        </Wrapper>
+      )}
+    </ThemeConsumer>
+  )
 }
 
 export default withRouter(Sidebar)
@@ -74,6 +77,10 @@ const Header = styled.div`
   padding: 0 14px;
   height: 56px;
   -webkit-app-region: drag;
+`
+
+const StyledLogo = styled(Logo)`
+  background: ${(p) => p.theme.sidebar.logoBackground};
 `
 
 const Title = styled.div`

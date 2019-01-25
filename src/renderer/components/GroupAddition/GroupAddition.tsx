@@ -28,7 +28,7 @@ export default function GroupAddition (props: Props) {
 
   const onTitleChange = React.useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
-      setTitle(e.target.value)
+      setTitle(e.target.value.trim())
     },
     []
   )
@@ -48,15 +48,12 @@ export default function GroupAddition (props: Props) {
     [icon, title]
   )
 
-  React.useEffect(
-    () => {
-      if (editable) {
-        const $input = refInput.current
-        if ($input) $input.focus()
-      }
-    },
-    [editable]
-  )
+  React.useEffect(() => {
+    if (editable) {
+      const $input = refInput.current
+      if ($input) $input.focus()
+    }
+  }, [editable])
 
   return (
     <Wrapper className={className}>

@@ -4,62 +4,53 @@ import { RouteComponentProps } from 'react-router'
 import Icon from '../../components/Icon'
 import Input from '../../components/Input'
 import Logo from '../../components/Logo'
+import Database from '../../Database'
 import { styled, ThemeConsumer } from '../../styles'
-import { appStore } from '../../stores'
 
 export interface Props extends RouteComponentProps {}
 
-export interface State {
-  password: string
-  inputVisible: boolean
-}
+export default function LoginView (props: Props) {
+  const [password, setPassword] = React.useState<string>('')
+  const [inputVisible, setInputVisible] = React.useState<boolean>(false)
 
-export default class LoginView extends React.Component<Props, State> {
-  public state: State = {
-    password: '',
-    inputVisible: false
-  }
+  const onPasswordChange = React.useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      setPassword(e.target.value.trim())
+    },
+    []
+  )
 
-  public componentDidMount () {
-    setTimeout(() => {
-      this.setState({ inputVisible: true })
-    }, 100)
-  }
+  const onConfirm = React.useCallback(
+    async (e: React.KeyboardEvent) => {
+      if (e.keyCode !== 13) return
 
-  private onPasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    this.setState({ password: e.target.value })
-  }
+      await Database.connect('./data.json')
+      props.history.push('/')
+    },
+    [password]
+  )
 
-  private onConfirm = async (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.keyCode !== 13) return
+  React.useEffect(() => {
+    setInputVisible(true)
+  }, [])
 
-    const password = this.state.password.trim()
-    console.log(password)
-    await appStore.initialize()
-    this.props.history.push('/')
-  }
-
-  public render () {
-    const { password, inputVisible } = this.state
-
-    return (
-      <ThemeConsumer>
-        {(theme) => (
-          <Wrapper>
-            <Logo background={theme.login.logoBackground} />
-            <PasswordInput
-              size='large'
-              visible={inputVisible}
-              value={password}
-              suffix={<Icon type='Lock' />}
-              onChange={this.onPasswordChange}
-              onKeyDown={this.onConfirm}
-            />
-          </Wrapper>
-        )}
-      </ThemeConsumer>
-    )
-  }
+  return (
+    <ThemeConsumer>
+      {(theme) => (
+        <Wrapper>
+          <StyledLogo />
+          <PasswordInput
+            size='large'
+            visible={inputVisible}
+            value={password}
+            suffix={<Icon type='Lock' />}
+            onChange={onPasswordChange}
+            onKeyDown={onConfirm}
+          />
+        </Wrapper>
+      )}
+    </ThemeConsumer>
+  )
 }
 
 const Wrapper = styled.div`
@@ -70,6 +61,10 @@ const Wrapper = styled.div`
   width: 100%;
   height: 100%;
   -webkit-app-region: drag;
+`
+
+const StyledLogo = styled(Logo)`
+  background: ${(p) => p.theme.login.logoBackground};
 `
 
 const PasswordInput = styled(Input).attrs({ type: 'password' })<{

@@ -7,26 +7,12 @@ import { styled } from '../../styles'
 export interface Props
   extends RouteComponentProps<{ groupId: string; entryId: string }> {}
 
-export interface State {}
-
-export default class EntryView extends React.Component<Props, State> {
-  public static defaultProps: Partial<Props> = {}
-
-  public constructor (props: Props) {
-    super(props)
-
-    this.state = {}
-  }
-
-  public render () {
-    const {} = this.props
-
-    return (
-      <Wrapper>
-        <Editor />
-      </Wrapper>
-    )
-  }
+export default function EntryView (props: Props) {
+  return (
+    <Wrapper>
+      <Editor />
+    </Wrapper>
+  )
 }
 
 const Wrapper = styled.div`

@@ -1,39 +1,38 @@
 import * as React from 'react'
-import { observer } from 'mobx-react'
 import { Route, RouteComponentProps } from 'react-router'
 
 import Sidebar from '../../containers/Sidebar'
+import Database from '../../Database'
 import GroupView from '../GroupView'
 import { styled } from '../../styles'
-import { appStore } from '../../stores'
+import { listGroups, useDispatch } from '../../store/actions'
 
 export interface Props extends RouteComponentProps {}
 
-export interface State {}
+export default function MainView (props: Props) {
+  const dispatch = useDispatch()
 
-@observer
-export default class MainView extends React.Component<Props, State> {
-  public componentDidMount () {
-    if (appStore.initialized) {
-      appStore.listGroups()
+  React.useEffect(() => {
+    if (Database.instance) {
+      dispatch(listGroups())
     } else {
-      this.props.history.push('/login')
-    }
-  }
-
-  public render () {
-    if (!appStore.initialized) {
-      return null
+      props.history.push('/login')
     }
 
-    return (
-      <Wrapper>
-        <Sidebar />
-        <Divider />
-        <Route path='/:groupId' component={GroupView} />
-      </Wrapper>
-    )
-  }
+    return () => {
+      Database.disconnect()
+    }
+  }, [])
+
+  if (!Database.instance) return null
+
+  return (
+    <Wrapper>
+      <Sidebar />
+      <Divider />
+      <Route path='/:groupId' component={GroupView} />
+    </Wrapper>
+  )
 }
 
 const Wrapper = styled.div`
