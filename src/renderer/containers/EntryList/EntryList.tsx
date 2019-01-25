@@ -9,7 +9,7 @@ import Input from '../../components/Input'
 import ScrollArea from '../../components/ScrollArea'
 import { styled } from '../../styles'
 import { Entry } from '../../models/entry'
-import { addEntry, selectEntry, useDispatch } from '../../store/actions'
+import { addEntry, useDispatch } from '../../store/actions'
 import { RootState } from '../../store'
 
 export interface Props extends RouteComponentProps<{ groupId: string }> {}
@@ -27,14 +27,14 @@ function EntryList (props: Props) {
   const { entries, entry } = useMappedState(mapState)
   const dispatch = useDispatch()
 
-  const onEntryAdd = React.useCallback(() => {
+  const onEntryAdd = React.useCallback(async () => {
     // todo: scroll to end
-    dispatch(addEntry())
-  }, [])
+    const e = await dispatch(addEntry())
+    props.history.push(`/${groupId}/${e.id}`)
+  }, [groupId])
 
   const onEntrySelect = React.useCallback(
     (e: Entry) => {
-      dispatch(selectEntry(e.id))
       props.history.push(`/${groupId}/${e.id}`)
     },
     [groupId]

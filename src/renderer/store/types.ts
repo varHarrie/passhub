@@ -1,4 +1,7 @@
-import { ThunkDispatch } from 'redux-thunk'
+import {
+  ThunkAction as OriginalThunkAction,
+  ThunkDispatch as OriginalThunkDispatch
+} from 'redux-thunk'
 
 export type Action<T extends string, P = undefined, M = undefined> = {
   type: T
@@ -14,7 +17,7 @@ export type ActionType<F> = F extends ActionCreator<infer T, infer P, infer M>
   ? { type: T; payload: P; meta: M }
   : never
 
-export function createAction<T extends string, P, M> (
+export function createAction<T extends string, P = undefined, M = undefined> (
   type: T,
   payload?: P,
   meta?: M
@@ -22,4 +25,8 @@ export function createAction<T extends string, P, M> (
   return { type, payload, meta }
 }
 
-export type Dispatch = ThunkDispatch<any, any, any>
+export type ThunkAction<R> = OriginalThunkAction<R, any, any, any>
+
+export type ThunkDispatch = <A>(
+  action: A
+) => A extends ThunkAction<infer R> ? R : A

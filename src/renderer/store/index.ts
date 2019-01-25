@@ -22,6 +22,6 @@ export const rootReducer = combineReducers<RootState>({
   entries,
   entry,
   fields
-})
+} as any)
 
 export default createStore(rootReducer, applyMiddleware(thunk))

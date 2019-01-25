@@ -9,7 +9,7 @@ import ScrollArea from '../../components/ScrollArea'
 import { styled, ThemeConsumer } from '../../styles'
 import { IconType } from '../../models/base'
 import { RootState } from '../../store'
-import { addGroup, selectGroup, useDispatch } from '../../store/actions'
+import { addGroup, useDispatch } from '../../store/actions'
 
 export interface Props extends RouteComponentProps {}
 
@@ -25,14 +25,18 @@ function Sidebar (props: Props) {
   const { groups, group } = useMappedState(mapState)
   const dispatch = useDispatch()
 
-  const onGroupAdd = async (icon: IconType, title: string) => {
-    if (title) dispatch(addGroup(icon, title))
-  }
+  const onGroupAdd = React.useCallback(
+    async (icon: IconType, title: string) => {
+      if (!title) return
+      const g = await dispatch(addGroup(icon, title))
+      props.history.push(`/${g.id}`)
+    },
+    []
+  )
 
-  const onGroupSelect = (id: string) => {
-    dispatch(selectGroup(id))
+  const onGroupSelect = React.useCallback((id: string) => {
     props.history.push(`/${id}`)
-  }
+  }, [])
 
   const items = groups.map((g) => (
     <GroupItem

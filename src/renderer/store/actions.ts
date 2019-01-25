@@ -1,9 +1,10 @@
 import * as uuid from 'uuid'
 import { useDispatch as originUseDispatch } from 'redux-react-hook'
+import { ThunkAction } from 'redux-thunk'
 
 import Database from '../Database'
 import { Group } from '../models/group'
-import { ActionType, createAction, Dispatch } from './types'
+import { ActionType, createAction, ThunkDispatch } from './types'
 import { IconType } from '../models/base'
 import {
   CHANGE_ENTRIES,
@@ -18,13 +19,11 @@ import { Entry } from '../models/entry'
 import { Field } from '../models/field'
 import { RootState } from '.'
 
-// todo: select由route调用
-
-export function setGroups (groups: Group[]) {
+export function changeGroups (groups: Group[]) {
   return createAction(CHANGE_GROUPS, groups)
 }
 
-export function setGroup (group: Group | null) {
+export function changeGroup (group: Group | null) {
   return createAction(CHANGE_GROUP, group)
 }
 
@@ -32,11 +31,11 @@ export function modifyGroup (groupId: string, groupAttrs: Partial<Group>) {
   return createAction(MODIFY_GROUP, { ...groupAttrs, id: groupId })
 }
 
-export function setEntries (entries: Entry[]) {
+export function changeEntries (entries: Entry[]) {
   return createAction(CHANGE_ENTRIES, entries)
 }
 
-export function setEntry (entry: Entry | null) {
+export function changeEntry (entry: Entry | null) {
   return createAction(CHANGE_ENTRY, entry)
 }
 
@@ -44,19 +43,19 @@ export function modifyEntry (entryId: string, entryAttrs: Partial<Entry>) {
   return createAction(MODIFY_ENTRY, { ...entryAttrs, id: entryId })
 }
 
-export function setFields (fields: Field[]) {
+export function changeFields (fields: Field[]) {
   return createAction(CHANGE_FIELDS, fields)
 }
 
 export function listGroups () {
-  return async (dispatch: Dispatch) => {
+  return async (dispatch: ThunkDispatch) => {
     const groups = await Database.instance.groups.find()
-    dispatch(setGroups(groups))
+    dispatch(changeGroups(groups))
   }
 }
 
 export function addGroup (icon: IconType, title: string) {
-  return async (dispatch: Dispatch) => {
+  return async (dispatch: ThunkDispatch) => {
     const group = await Database.instance.groups.insert({
       icon,
       title,
@@ -65,58 +64,54 @@ export function addGroup (icon: IconType, title: string) {
       modifiedAt: Date.now()
     })
 
-    dispatch(listGroups())
-    dispatch(setGroup(group))
+    await dispatch(listGroups())
+    return group
   }
 }
 
 export function updateGroup (groupId: string, icon: IconType, title: string) {
-  return async (dispatch: Dispatch) => {
+  return async (dispatch: ThunkDispatch) => {
     await Database.instance.groups.updateOne({ id: groupId }, { icon, title })
-    dispatch(listGroups())
+    await dispatch(listGroups())
     dispatch(modifyGroup(groupId, { icon, title }))
   }
 }
 
 export function removeGroup (groupId: string) {
-  return async (dispatch: Dispatch, getState: () => RootState) => {
+  return async (dispatch: ThunkDispatch) => {
     await Database.instance.groups.removeOne({ id: groupId })
-    dispatch(listGroups())
-
-    const group = getState().group
-    if (group && group.id === groupId) {
-      dispatch(setGroup(null))
-    }
+    await dispatch(listGroups())
   }
 }
 
-export function selectGroup (groupId: string) {
-  return (dispatch: Dispatch, getState: () => RootState) => {
-    const group = getState().groups.find((g) => g.id === groupId) || null
-    dispatch(setGroup(group))
-    dispatch(setEntry(null))
-    dispatch(listEntries())
+export function selectGroup (groupId?: string) {
+  return async (dispatch: ThunkDispatch, getState: () => RootState) => {
+    const group =
+      (groupId && getState().groups.find((g) => g.id === groupId)) || null
+
+    await dispatch(listEntries())
+    dispatch(changeGroup(group))
   }
 }
 
 export function listEntries () {
-  return async (dispatch: Dispatch, getState: () => RootState) => {
+  return async (dispatch: ThunkDispatch, getState: () => RootState) => {
     const group = getState().group
     const entries = group
       ? await Database.instance.entries.find({ groupId: group.id }, '-fields')
       : []
 
-    dispatch(setEntries(entries))
+    dispatch(changeEntries(entries))
   }
 }
 
-export function addEntry () {
-  return async (dispatch: Dispatch, getState: () => RootState) => {
+export function addEntry (): ThunkAction<any, any, any, any> {
+  return async (dispatch: ThunkDispatch, getState: () => RootState) => {
     const group = getState().group
     if (!group) return
 
     const entry = await Database.instance.entries.insert({
-      icon: 'File' as IconType,
+      icon: 'File',
       title: 'Untitled',
       description: 'Description',
       fields: [],
@@ -126,58 +121,54 @@ export function addEntry () {
       modifiedAt: Date.now()
     })
 
-    dispatch(listEntries())
-    dispatch(setEntry(entry))
+    await dispatch(listEntries())
+    return entry
   }
 }
 
 export function updateEntry (entryId: string, entryAttrs: Partial<Entry>) {
-  return async (dispatch: Dispatch) => {
+  return async (dispatch: ThunkDispatch) => {
     await Database.instance.entries.updateOne({ id: entryId }, entryAttrs)
-
-    dispatch(listEntries())
+    await dispatch(listEntries())
     dispatch(modifyEntry(entryId, entryAttrs))
   }
 }
 
 export function removeEntry (entryId: string) {
-  return async (dispatch: Dispatch, getState: () => RootState) => {
+  return async (dispatch: ThunkDispatch) => {
     await Database.instance.entries.removeOne({ id: entryId })
-    dispatch(listEntries())
-
-    const entry = getState().entry
-    if (entry && entry.id === entryId) {
-      dispatch(setEntry(null))
-    }
+    await dispatch(listEntries())
   }
 }
 
-export function selectEntry (entryId: string) {
-  return (dispatch: Dispatch, getState: () => RootState) => {
-    const entry = getState().entries.find((e) => e.id === entryId) || null
-    dispatch(setEntry(entry))
-    dispatch(listFields())
+export function selectEntry (entryId?: string) {
+  return async (dispatch: ThunkDispatch, getState: () => RootState) => {
+    const entry =
+      (entryId && getState().entries.find((e) => e.id === entryId)) || null
+
+    await dispatch(listFields())
+    dispatch(changeEntry(entry))
   }
 }
 
 export function listFields () {
-  return async (dispatch: Dispatch, getState: () => RootState) => {
+  return async (dispatch: ThunkDispatch, getState: () => RootState) => {
     const entry = getState().entry
     const e = entry
       ? await Database.instance.entries.findOne({ id: entry.id }, 'fields')
       : null
 
-    dispatch(setFields(e ? e.fields : []))
+    dispatch(changeFields(e ? e.fields : []))
   }
 }
 
-export const useDispatch = (originUseDispatch as any) as () => Dispatch
+export const useDispatch = originUseDispatch as (() => ThunkDispatch)
 
 export type Actions =
-  | ActionType<typeof setGroups>
-  | ActionType<typeof setGroup>
+  | ActionType<typeof changeGroups>
+  | ActionType<typeof changeGroup>
   | ActionType<typeof modifyGroup>
-  | ActionType<typeof setEntries>
-  | ActionType<typeof setEntry>
+  | ActionType<typeof changeEntries>
+  | ActionType<typeof changeEntry>
   | ActionType<typeof modifyEntry>
-  | ActionType<typeof setFields>
+  | ActionType<typeof changeFields>
