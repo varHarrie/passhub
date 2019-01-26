@@ -89,8 +89,8 @@ export function selectGroup (groupId?: string) {
     const group =
       (groupId && getState().groups.find((g) => g.id === groupId)) || null
 
-    await dispatch(listEntries())
     dispatch(changeGroup(group))
+    await dispatch(listEntries())
   }
 }
 
@@ -146,8 +146,8 @@ export function selectEntry (entryId?: string) {
     const entry =
       (entryId && getState().entries.find((e) => e.id === entryId)) || null
 
-    await dispatch(listFields())
     dispatch(changeEntry(entry))
+    await dispatch(listFields())
   }
 }
 
