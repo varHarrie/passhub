@@ -10,14 +10,15 @@ export interface Props {
   className?: string
   type: IconType
   size?: IconSize
+  onClick?: React.MouseEventHandler
 }
 
 export default function Icon (props: Props) {
-  const { className, type, size = 'small' } = props
+  const { className, type, size = 'small', onClick } = props
   const Image = Feather[type]
 
   return (
-    <Wrapper className={className} size={size}>
+    <Wrapper className={className} size={size} onClick={onClick}>
       <Image />
     </Wrapper>
   )
@@ -30,4 +31,5 @@ const Wrapper = styled.div<{ size: IconSize }>`
   width: ${(p) => p.theme.icon.sizes[p.size]};
   height: ${(p) => p.theme.icon.sizes[p.size]};
   color: inherit;
+  user-select: none;
 `

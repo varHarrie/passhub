@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { hot } from 'react-hot-loader/root'
+// import { hot } from 'react-hot-loader/root'
 import { HashRouter, Route, Switch } from 'react-router-dom'
 import { StoreContext } from 'redux-react-hook'
 
@@ -12,7 +12,7 @@ import { styled, theme, ThemeProvider } from './styles'
 
 export interface Props {}
 
-function App (props: Props) {
+export default function App (props: Props) {
   return (
     <StoreContext.Provider value={store}>
       <ThemeProvider theme={theme}>
@@ -31,7 +31,7 @@ function App (props: Props) {
   )
 }
 
-export default hot(App)
+// export default hot(App)
 
 const Wrapper = styled.div`
   height: 100%;

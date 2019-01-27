@@ -6,6 +6,7 @@ import {
   CHANGE_GROUP,
   CHANGE_GROUPS,
   MODIFY_ENTRY,
+  MODIFY_FIELD,
   MODIFY_GROUP
 } from './constants'
 import { Actions } from './actions'
@@ -61,6 +62,11 @@ export const fields = (state: Field[] = [], action: Actions) => {
   switch (action.type) {
     case CHANGE_FIELDS:
       return action.payload
+
+    case MODIFY_FIELD:
+      const newFields = [...state]
+      newFields.splice(action.payload.index, 1, action.payload.field)
+      return newFields
 
     default:
       return state

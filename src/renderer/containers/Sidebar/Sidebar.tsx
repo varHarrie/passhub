@@ -11,17 +11,14 @@ import { IconType } from '../../models/base'
 import { RootState } from '../../store'
 import { addGroup, useDispatch } from '../../store/actions'
 
+const mapState = (state: RootState) => ({
+  groups: state.groups,
+  group: state.group
+})
+
 export interface Props extends RouteComponentProps {}
 
 function Sidebar (props: Props) {
-  const mapState = React.useCallback(
-    (state: RootState) => ({
-      groups: state.groups,
-      group: state.group
-    }),
-    []
-  )
-
   const { groups, group } = useMappedState(mapState)
   const dispatch = useDispatch()
 

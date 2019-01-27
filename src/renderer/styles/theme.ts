@@ -101,7 +101,7 @@ export const theme: Theme = {
   window: {
     fontSize: '14px',
     fontFamily: 'consolas',
-    background: '#fff',
+    background: '#FFF',
     border: '1px solid #e0e0e0',
     shadow: '0 2x 12px rgba(0, 0, 0, 0.1)',
     actionWidth: '42px',
@@ -136,10 +136,10 @@ export const theme: Theme = {
   },
   list: {
     width: '250px',
-    background: '#fff'
+    background: '#FFF'
   },
   editor: {
-    background: '#fff'
+    background: '#FFF'
   },
   input: {
     sizes: {
@@ -148,8 +148,8 @@ export const theme: Theme = {
     },
     color: '#999',
     focusColor: '#525A5B',
-    background: '#fff',
-    focusBackground: '#fff',
+    background: '#FFF',
+    focusBackground: '#FFF',
     border: '1px solid #E0E0E0',
     focusBorder: '1px solid #999',
     placeholderColor: '#E0E0E0',
@@ -170,8 +170,8 @@ export const theme: Theme = {
     color: '#999',
     hoverColor: '#525A5B',
     activeColor: '#525A5B',
-    background: 'transparent',
-    hoverBackground: 'transparent',
+    background: '#FFF',
+    hoverBackground: '#FFF',
     activeBackground: '#F6F6F6',
     border: '1px solid #E0E0E0',
     hoverBorder: '1px solid #E0E0E0',

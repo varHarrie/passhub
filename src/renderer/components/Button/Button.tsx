@@ -1,4 +1,5 @@
 import * as React from 'react'
+
 import { styled } from '../../styles'
 
 export type ButtonSize = 'medium' | 'large'
@@ -11,15 +12,13 @@ interface Props {
   onClick?: React.MouseEventHandler
 }
 
-export default function Button (props: Props) {
-  const { className, solid, size = 'medium', children, onClick } = props
+function Button (props: Props, ref: React.Ref<HTMLButtonElement>) {
+  const { size = 'medium', ...rest } = props
 
-  return (
-    <Wrapper className={className} solid={solid} size={size} onClick={onClick}>
-      {children}
-    </Wrapper>
-  )
+  return <Wrapper ref={ref} size={size} {...rest} />
 }
+
+export default React.forwardRef(Button)
 
 const Wrapper = styled.button<{ solid?: boolean; size: ButtonSize }>`
   padding: 0 8px;

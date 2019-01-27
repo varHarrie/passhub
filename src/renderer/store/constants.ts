@@ -7,3 +7,4 @@ export const CHANGE_ENTRY = 'CHANGE_ENTRY'
 export const MODIFY_ENTRY = 'MODIFY_ENTRY'
 
 export const CHANGE_FIELDS = 'CHANGE_FIELDS'
+export const MODIFY_FIELD = 'MODIFY_FIELD'

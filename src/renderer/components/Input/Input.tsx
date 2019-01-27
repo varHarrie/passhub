@@ -20,7 +20,7 @@ export interface Props {
   onBlur?: React.FocusEventHandler
 }
 
-function Input (props: Props, refInput: React.Ref<HTMLInputElement> | null) {
+function Input (props: Props, ref: React.Ref<HTMLInputElement>) {
   const {
     className,
     solid,
@@ -33,7 +33,7 @@ function Input (props: Props, refInput: React.Ref<HTMLInputElement> | null) {
   return (
     <Wrapper className={className} size={size} solid={solid}>
       {prefix && <Prefix>{prefix}</Prefix>}
-      <OriginalInput ref={refInput} {...inputProps} />
+      <OriginalInput ref={ref} {...inputProps} />
       {suffix && <Suffix>{suffix}</Suffix>}
     </Wrapper>
   )

@@ -13,38 +13,43 @@ import {
   CHANGE_GROUP,
   CHANGE_GROUPS,
   MODIFY_ENTRY,
+  MODIFY_FIELD,
   MODIFY_GROUP
 } from './constants'
 import { Entry } from '../models/entry'
-import { Field } from '../models/field'
+import { Field, FieldType } from '../models/field'
 import { RootState } from '.'
 
-export function changeGroups (groups: Group[]) {
+function changeGroups (groups: Group[]) {
   return createAction(CHANGE_GROUPS, groups)
 }
 
-export function changeGroup (group: Group | null) {
+function changeGroup (group: Group | null) {
   return createAction(CHANGE_GROUP, group)
 }
 
-export function modifyGroup (groupId: string, groupAttrs: Partial<Group>) {
+function modifyGroup (groupId: string, groupAttrs: Partial<Group>) {
   return createAction(MODIFY_GROUP, { ...groupAttrs, id: groupId })
 }
 
-export function changeEntries (entries: Entry[]) {
+function changeEntries (entries: Entry[]) {
   return createAction(CHANGE_ENTRIES, entries)
 }
 
-export function changeEntry (entry: Entry | null) {
+function changeEntry (entry: Entry | null) {
   return createAction(CHANGE_ENTRY, entry)
 }
 
-export function modifyEntry (entryId: string, entryAttrs: Partial<Entry>) {
+function modifyEntry (entryId: string, entryAttrs: Partial<Entry>) {
   return createAction(MODIFY_ENTRY, { ...entryAttrs, id: entryId })
 }
 
-export function changeFields (fields: Field[]) {
+function changeFields (fields: Field[]) {
   return createAction(CHANGE_FIELDS, fields)
+}
+
+function modifyField (index: number, field: Field) {
+  return createAction(MODIFY_FIELD, { index, field })
 }
 
 export function listGroups () {
@@ -162,6 +167,35 @@ export function listFields () {
   }
 }
 
+export function addField (type: FieldType) {
+  return async (dispatch: ThunkDispatch, getState: () => RootState) => {
+    const { entry, fields } = getState()
+    if (!entry) return
+
+    const field: Field = {
+      type,
+      id: uuid.v4(),
+      entryId: entry.id,
+      title: 'Untitled',
+      value: '',
+      createdAt: Date.now(),
+      modifiedAt: Date.now()
+    }
+
+    await Database.instance.entries.updateOne(
+      { id: entry.id },
+      { fields: [...fields, field] }
+    )
+    await dispatch(listFields())
+  }
+}
+
+export function updateFieldWithoutSave (index: number, field: Field) {
+  return async (dispatch: ThunkDispatch) => {
+    dispatch(modifyField(index, field))
+  }
+}
+
 export const useDispatch = originUseDispatch as (() => ThunkDispatch)
 
 export type Actions =
@@ -172,3 +206,4 @@ export type Actions =
   | ActionType<typeof changeEntry>
   | ActionType<typeof modifyEntry>
   | ActionType<typeof changeFields>
+  | ActionType<typeof modifyField>

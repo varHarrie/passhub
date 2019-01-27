@@ -12,18 +12,16 @@ import { Entry } from '../../models/entry'
 import { addEntry, useDispatch } from '../../store/actions'
 import { RootState } from '../../store'
 
+const mapState = (state: RootState) => ({
+  entries: state.entries,
+  entry: state.entry
+})
+
 export interface Props extends RouteComponentProps<{ groupId: string }> {}
 
 function EntryList (props: Props) {
-  const mapState = React.useCallback(
-    (state: RootState) => ({
-      entries: state.entries,
-      entry: state.entry
-    }),
-    []
-  )
-
   const groupId = props.match.params.groupId
+
   const { entries, entry } = useMappedState(mapState)
   const dispatch = useDispatch()
 
@@ -53,9 +51,9 @@ function EntryList (props: Props) {
     <Wrapper>
       <Header>
         <SearchInput solid prefix={<Icon type='Search' />} />
-        <SearchButton solid onClick={onEntryAdd}>
+        <AddButton solid onClick={onEntryAdd}>
           <Icon type='Plus' />
-        </SearchButton>
+        </AddButton>
       </Header>
       <Container>{items}</Container>
     </Wrapper>
@@ -84,7 +82,7 @@ const SearchInput = styled(Input)`
   -webkit-app-region: no-drag;
 `
 
-const SearchButton = styled(Button)`
+const AddButton = styled(Button)`
   margin-left: 10px;
   -webkit-app-region: no-drag;
 `
