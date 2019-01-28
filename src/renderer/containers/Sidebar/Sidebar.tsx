@@ -6,7 +6,7 @@ import GroupAddition from '../../components/GroupAddition'
 import GroupItem from '../../components/GroupItem'
 import Logo from '../../components/Logo'
 import ScrollArea from '../../components/ScrollArea'
-import { styled, ThemeConsumer } from '../../styles'
+import { styled } from '../../styles'
 import { IconType } from '../../models/base'
 import { RootState } from '../../store'
 import { addGroup, useDispatch } from '../../store/actions'
@@ -46,20 +46,16 @@ function Sidebar (props: Props) {
   ))
 
   return (
-    <ThemeConsumer>
-      {(theme) => (
-        <Wrapper>
-          <Header>
-            <StyledLogo size='small' />
-            <Title>Passhub</Title>
-          </Header>
-          <Container>
-            {items}
-            <GroupAddition onConfirm={onGroupAdd} />
-          </Container>
-        </Wrapper>
-      )}
-    </ThemeConsumer>
+    <Wrapper>
+      <Header>
+        <StyledLogo size='small' />
+        <Title>Passhub</Title>
+      </Header>
+      <Container>
+        {items}
+        <GroupAddition onConfirm={onGroupAdd} />
+      </Container>
+    </Wrapper>
   )
 }
 

@@ -5,7 +5,7 @@ import Icon from '../../components/Icon'
 import Input from '../../components/Input'
 import Logo from '../../components/Logo'
 import Database from '../../Database'
-import { styled, ThemeConsumer } from '../../styles'
+import { styled } from '../../styles'
 
 export interface Props extends RouteComponentProps {}
 
@@ -40,22 +40,18 @@ export default function LoginView (props: Props) {
   }, [])
 
   return (
-    <ThemeConsumer>
-      {(theme) => (
-        <Wrapper>
-          <StyledLogo />
-          <PasswordInput
-            ref={refInput}
-            size='large'
-            visible={inputVisible}
-            value={password}
-            suffix={<Icon type='Lock' />}
-            onChange={onPasswordChange}
-            onKeyDown={onConfirm}
-          />
-        </Wrapper>
-      )}
-    </ThemeConsumer>
+    <Wrapper>
+      <StyledLogo />
+      <PasswordInput
+        ref={refInput}
+        size='large'
+        visible={inputVisible}
+        value={password}
+        suffix={<Icon type='Lock' />}
+        onChange={onPasswordChange}
+        onKeyDown={onConfirm}
+      />
+    </Wrapper>
   )
 }
 
