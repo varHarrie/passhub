@@ -12,6 +12,7 @@ export interface Props extends RouteComponentProps {}
 export default function LoginView (props: Props) {
   const [password, setPassword] = React.useState<string>('')
   const [inputVisible, setInputVisible] = React.useState<boolean>(false)
+  const refInput = React.useRef<HTMLInputElement>(null)
 
   const onPasswordChange = React.useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -32,6 +33,10 @@ export default function LoginView (props: Props) {
 
   React.useEffect(() => {
     setInputVisible(true)
+
+    if (refInput.current) {
+      refInput.current.focus()
+    }
   }, [])
 
   return (
@@ -40,6 +45,7 @@ export default function LoginView (props: Props) {
         <Wrapper>
           <StyledLogo />
           <PasswordInput
+            ref={refInput}
             size='large'
             visible={inputVisible}
             value={password}
