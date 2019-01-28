@@ -1,7 +1,4 @@
-import {
-  ThunkAction as OriginalThunkAction,
-  ThunkDispatch as OriginalThunkDispatch
-} from 'redux-thunk'
+import { ThunkAction as OriginalThunkAction } from 'redux-thunk'
 
 export type Action<T extends string, P = undefined, M = undefined> = {
   type: T

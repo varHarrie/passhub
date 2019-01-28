@@ -2,12 +2,12 @@ import * as React from 'react'
 import { RouteComponentProps, withRouter } from 'react-router'
 import { useMappedState } from 'redux-react-hook'
 
+import FieldAddition from '../../components/FieldAddition'
 import FieldItem from '../../components/FieldItem'
 import Icon from '../../components/Icon'
 import ScrollArea from '../../components/ScrollArea'
 import { styled } from '../../styles'
 import { RootState } from '../../store'
-import { AddButton } from './AddButton'
 import {
   addField,
   updateFieldWithoutSave,
@@ -58,7 +58,7 @@ function Editor (props: Props) {
       <Container>
         <Inner>{items}</Inner>
       </Container>
-      {entry && <AddButton onClick={onEntryAdd} />}
+      {entry && <FieldAddition onAdd={onEntryAdd} />}
     </Wrapper>
   )
 }

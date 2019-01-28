@@ -1,18 +1,21 @@
 import * as React from 'react'
-// import { hot } from 'react-hot-loader/root'
 import { HashRouter, Route, Switch } from 'react-router-dom'
 import { StoreContext } from 'redux-react-hook'
 
 import WindowActions from './components/WindowActions'
-import store from './store'
+import configureStore from './store'
 import LoginView from './views/LoginView'
 import MainView from './views/MainView'
 import { GlobalStyle } from './styles/global'
 import { styled, theme, ThemeProvider } from './styles'
 
+// import { hot } from 'react-hot-loader/root'
+
 export interface Props {}
 
 export default function App (props: Props) {
+  const store = configureStore()
+
   return (
     <StoreContext.Provider value={store}>
       <ThemeProvider theme={theme}>

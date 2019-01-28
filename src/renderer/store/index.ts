@@ -16,12 +16,15 @@ export type RootState = {
   fields: Field[]
 }
 
-export const rootReducer = combineReducers<RootState>({
-  groups,
-  group,
-  entries,
-  entry,
-  fields
-} as any)
+export default function configureStore () {
+  const rootReducer = combineReducers<RootState>({
+    groups,
+    group,
+    entries,
+    entry,
+    fields
+  } as any)
 
-export default createStore(rootReducer, applyMiddleware(thunk))
+  const store = createStore(rootReducer, applyMiddleware(thunk))
+  return store
+}

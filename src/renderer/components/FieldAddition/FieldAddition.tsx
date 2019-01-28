@@ -1,18 +1,18 @@
 import * as React from 'react'
 
-import Button from '../../components/Button'
-import Icon from '../../components/Icon'
-import Menu from '../../components/Menu/Menu'
 import useClickOutside from '../../hooks/useClickOutside'
+import Button from '../Button'
+import Icon from '../Icon'
+import Menu from '../Menu/Menu'
 import { styled } from '../../styles'
 import { FieldType } from '../../models/field'
 
 export interface Props {
-  onClick: (type: FieldType) => void
+  onAdd: (type: FieldType) => void
 }
 
-export function AddButton (props: Props) {
-  const { onClick } = props
+export default function FieldAddition (props: Props) {
+  const { onAdd } = props
 
   const refButton = React.useRef<HTMLButtonElement>(null)
   const [visible, setVisible] = React.useState<boolean>(false)
@@ -34,12 +34,12 @@ export function AddButton (props: Props) {
         <Menu.Item
           icon='Type'
           title='Text'
-          onClick={() => onClick(FieldType.text)}
+          onClick={() => onAdd(FieldType.text)}
         />
         <Menu.Item
           icon='Lock'
           title='Password'
-          onClick={() => onClick(FieldType.password)}
+          onClick={() => onAdd(FieldType.password)}
         />
       </StyledMenu>
     </Wrapper>
