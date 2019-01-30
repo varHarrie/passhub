@@ -53,6 +53,7 @@ export default function ScrollArea (props: Props) {
 
 const Wrapper = styled.div`
   position: relative;
+  height: 100%;
 `
 
 const TopShadow = styled.div<{ visible: boolean }>`

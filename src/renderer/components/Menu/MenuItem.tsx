@@ -1,17 +1,19 @@
 import * as React from 'react'
+
+import Icon from '../Icon'
 import { styled } from '../../styles'
 import { IconType } from '../../models/base'
-import Icon from '../Icon'
+import { noop } from '../../libs/utils'
 
 export interface Props<T> {
   className?: string
   icon: IconType
   title: string
-  onClick: React.MouseEventHandler
+  onClick?: React.MouseEventHandler
 }
 
 export default function MenuItem<T> (props: Props<T>) {
-  const { className, icon, title, onClick } = props
+  const { className, icon, title, onClick = noop } = props
 
   return (
     <Wrapper className={className} onClick={onClick}>

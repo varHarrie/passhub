@@ -21,6 +21,9 @@ function Button (props: Props, ref: React.Ref<HTMLButtonElement>) {
 export default React.forwardRef(Button)
 
 const Wrapper = styled.button<{ solid?: boolean; size: ButtonSize }>`
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   padding: 0 8px;
   min-width: ${(p) => p.theme.button.sizes[p.size]};
   height: ${(p) => p.theme.button.sizes[p.size]};

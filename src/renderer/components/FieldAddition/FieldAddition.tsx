@@ -3,7 +3,7 @@ import * as React from 'react'
 import useClickOutside from '../../hooks/useClickOutside'
 import Button from '../Button'
 import Icon from '../Icon'
-import Menu from '../Menu/Menu'
+import Menu from '../Menu'
 import { styled } from '../../styles'
 import { FieldType } from '../../models/field'
 

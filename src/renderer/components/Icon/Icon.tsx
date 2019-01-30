@@ -25,11 +25,12 @@ export default function Icon (props: Props) {
 }
 
 const Wrapper = styled.div<{ size: IconSize }>`
-  display: flex;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
   width: ${(p) => p.theme.icon.sizes[p.size]};
   height: ${(p) => p.theme.icon.sizes[p.size]};
+  vertical-align: bottom;
   color: inherit;
   user-select: none;
 `
