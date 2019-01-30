@@ -1,0 +1,100 @@
+import * as React from 'react'
+
+import useDragging from '../../hooks/useDragging'
+import { styled } from '../../styles'
+import { clamp } from '../../libs/utils'
+
+export type SizeType = number | string
+
+export interface Props {
+  className?: string
+  defaultSize?: SizeType
+  size?: SizeType[]
+  children: React.ReactNode
+}
+
+export default function SplitLayout (props: Props) {
+  const { className, size = [], children } = props
+
+  const defaultSize = props.defaultSize || size[0] || 0
+
+  const refWrapper = React.useRef<HTMLDivElement>(null)
+  const refDivider = React.useRef<HTMLDivElement>(null)
+  const [pos, setPos] = React.useState<number>(
+    typeof defaultSize === 'number' ? defaultSize : 0
+  )
+
+  React.useEffect(() => {
+    const $wrapper = refWrapper.current
+    if (!$wrapper) return
+
+    setPos(toPixel(defaultSize, $wrapper.clientWidth))
+  }, [])
+
+  useDragging(refDivider, (e) => {
+    const $wrapper = refWrapper.current
+    if (!$wrapper) return
+
+    const { left } = $wrapper.getBoundingClientRect()
+
+    const nextPos = clamp(
+      e.clientX - left,
+      toPixel(size[0] || 0, $wrapper.clientWidth),
+      toPixel(size[1] || '100%', $wrapper.clientWidth)
+    )
+
+    setPos(nextPos)
+  })
+
+  const [side, main] = React.Children.toArray(children)
+
+  return (
+    <Wrapper ref={refWrapper} className={className}>
+      <SidePane style={{ width: pos + 'px' }}>{side}</SidePane>
+      <Divider ref={refDivider} />
+      <MainPane>{main}</MainPane>
+    </Wrapper>
+  )
+}
+
+const Wrapper = styled.div`
+  display: flex;
+  height: 100%;
+`
+
+const SidePane = styled.div`
+  height: 100%;
+`
+
+const MainPane = styled.div`
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+`
+
+const Divider = styled.div`
+  position: relative;
+  z-index: 1;
+  margin: 0 -3px;
+  width: 7px;
+  height: 100%;
+  background-color: ${(p) => p.theme.divider.background};
+  background-clip: padding-box;
+  border-left: 3px solid transparent;
+  border-right: 3px solid transparent;
+  cursor: col-resize;
+  user-select: none;
+  transition: background-color 0.3s;
+
+  &:hover {
+    background-color: ${(p) => p.theme.divider.hoverBackground};
+  }
+`
+
+function toPixel (size: SizeType, totalSize: number) {
+  return typeof size === 'number'
+    ? size
+    : size.endsWith('%')
+    ? (totalSize * parseInt(size, 10)) / 100
+    : parseInt(size, 10)
+}

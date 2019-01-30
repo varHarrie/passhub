@@ -1,15 +1,17 @@
 import * as React from 'react'
 import { Route, RouteComponentProps } from 'react-router'
 
+import SplitLayout from '../../components/SplitLayout'
 import Sidebar from '../../containers/Sidebar'
 import Database from '../../Database'
 import GroupView from '../GroupView'
-import { styled } from '../../styles'
 import { listGroups, useDispatch } from '../../store/actions'
+import { ThemeContext } from '../../styles'
 
 export interface Props extends RouteComponentProps {}
 
 export default function MainView (props: Props) {
+  const theme = React.useContext(ThemeContext)
   const dispatch = useDispatch()
 
   React.useEffect(() => {
@@ -27,20 +29,9 @@ export default function MainView (props: Props) {
   if (!Database.instance) return null
 
   return (
-    <Wrapper>
+    <SplitLayout defaultSize={theme.sidebar.width} size={[160, '50%']}>
       <Sidebar />
-      <Divider />
       <Route path='/:groupId' component={GroupView} />
-    </Wrapper>
+    </SplitLayout>
   )
 }
-
-const Wrapper = styled.div`
-  display: flex;
-  height: 100%;
-`
-
-const Divider = styled.div`
-  width: ${(p) => p.theme.divider.size};
-  background: ${(p) => p.theme.divider.background};
-`

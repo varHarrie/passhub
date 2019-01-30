@@ -18,8 +18,8 @@ export interface Theme {
     logoBackground: string
   }
   divider: {
-    size: string
     background: string
+    hoverBackground: string
   }
   sidebar: {
     width: string
@@ -117,8 +117,8 @@ export const theme: Theme = {
     logoBackground: '#999'
   },
   divider: {
-    size: '1px',
-    background: '#E0E0E0'
+    background: '#E0E0E0',
+    hoverBackground: '#999'
   },
   sidebar: {
     width: '200px',

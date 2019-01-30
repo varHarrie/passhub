@@ -10,7 +10,7 @@
     "prefix": "comp",
     "body": [
       "import * as React from 'react'",
-      "import styled from 'styled-components/macro'",
+      "import { styled } from '../../styles'",
       "",
       "export interface Props {$3}",
       "",
@@ -46,17 +46,18 @@
     "prefix": "func",
     "body": [
       "import * as React from 'react'",
-      "import styled from 'styled-components/macro'",
+      "import { styled } from '../../styles'",
       "",
-      "interface ${1:${TM_FILENAME_BASE}}Props {$3}",
+      "export interface Props {$3}",
       "",
-      "function ${1:${TM_FILENAME_BASE}} (props: ${1:${TM_FILENAME_BASE}}Props) {",
+      "export default function ${1:${TM_FILENAME_BASE}} (props: Props) {",
       "  return (",
       "    <Wrapper>$2</Wrapper>",
       "  )",
       "}",
       "",
-      "const Wrapper = styled.div``"
+      "const Wrapper = styled.div``",
+      ""
     ],
     "description": "Typescript React Stateless Component"
   },

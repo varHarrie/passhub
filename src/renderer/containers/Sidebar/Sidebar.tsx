@@ -64,7 +64,7 @@ export default withRouter(Sidebar)
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
-  width: ${(p) => p.theme.sidebar.width};
+  height: 100%;
   background: ${(p) => p.theme.sidebar.background};
 `
 

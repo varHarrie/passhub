@@ -28,4 +28,5 @@ export default function EntryView (props: Props) {
 
 const Wrapper = styled.div`
   flex: 1;
+  height: 100%;
 `

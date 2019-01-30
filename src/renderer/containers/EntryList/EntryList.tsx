@@ -65,7 +65,7 @@ export default withRouter(EntryList)
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
-  width: ${(p) => p.theme.list.width};
+  height: 100%;
   background: ${(p) => p.theme.list.background};
 `
 

@@ -10,7 +10,8 @@ const {
   createGlobalStyle,
   keyframes,
   ThemeProvider,
-  ThemeConsumer
+  ThemeConsumer,
+  ThemeContext
 } = styledComponents as StyledComponents
 
 export {
@@ -19,5 +20,6 @@ export {
   createGlobalStyle,
   keyframes,
   ThemeProvider,
-  ThemeConsumer
+  ThemeConsumer,
+  ThemeContext
 }

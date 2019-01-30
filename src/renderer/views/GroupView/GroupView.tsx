@@ -1,15 +1,17 @@
 import * as React from 'react'
 import { Route, RouteComponentProps } from 'react-router'
 
+import SplitLayout from '../../components/SplitLayout'
 import EntryList from '../../containers/EntryList'
 import EntryView from '../EntryView'
-import { styled } from '../../styles'
+import { styled, ThemeContext } from '../../styles'
 import { selectGroup, useDispatch } from '../../store/actions'
 
 export interface Props extends RouteComponentProps<{ groupId: string }> {}
 
 export default function GroupView (props: Props) {
   const groupId = props.match.params.groupId
+  const theme = React.useContext(ThemeContext)
   const dispatch = useDispatch()
 
   React.useEffect(() => {
@@ -20,21 +22,9 @@ export default function GroupView (props: Props) {
   }, [groupId])
 
   return (
-    <Wrapper>
+    <SplitLayout defaultSize={theme.list.width} size={[200, '50%']}>
       <EntryList />
-      <Divider />
       <Route path='/:groupId/:entryId' component={EntryView} />
-    </Wrapper>
+    </SplitLayout>
   )
 }
-
-const Wrapper = styled.div`
-  display: flex;
-  height: 100%;
-  flex: 1;
-`
-
-const Divider = styled.div`
-  width: ${(p) => p.theme.divider.size};
-  background: ${(p) => p.theme.divider.background};
-`
