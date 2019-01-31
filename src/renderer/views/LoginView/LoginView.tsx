@@ -10,9 +10,9 @@ import { styled } from '../../styles'
 export interface Props extends RouteComponentProps {}
 
 export default function LoginView (props: Props) {
-  const [password, setPassword] = React.useState<string>('')
-  const [inputVisible, setInputVisible] = React.useState<boolean>(false)
   const refInput = React.useRef<HTMLInputElement>(null)
+  const [password, setPassword] = React.useState('')
+  const [inputVisible, setInputVisible] = React.useState(false)
 
   const onPasswordChange = React.useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {

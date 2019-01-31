@@ -14,11 +14,11 @@ export interface Props {
 
 export default function GroupAddition (props: Props) {
   const { className, onConfirm = noop } = props
-  const refInput = React.useRef<HTMLInputElement>(null)
 
-  const [editable, setEditable] = React.useState<boolean>(false)
+  const refInput = React.useRef<HTMLInputElement>(null)
+  const [editable, setEditable] = React.useState(false)
   const [icon, setIcon] = React.useState<IconType>('Archive')
-  const [title, setTitle] = React.useState<string>('')
+  const [title, setTitle] = React.useState('')
 
   const onEditStart = React.useCallback(() => {
     setEditable(true)

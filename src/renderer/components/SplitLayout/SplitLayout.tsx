@@ -15,12 +15,12 @@ export interface Props {
 
 export default function SplitLayout (props: Props) {
   const { className, size = [], children } = props
-
   const defaultSize = props.defaultSize || size[0] || 0
 
   const refWrapper = React.useRef<HTMLDivElement>(null)
   const refDivider = React.useRef<HTMLDivElement>(null)
-  const [pos, setPos] = React.useState<number>(
+
+  const [pos, setPos] = React.useState(
     typeof defaultSize === 'number' ? defaultSize : 0
   )
 
@@ -31,14 +31,17 @@ export default function SplitLayout (props: Props) {
     setPos(toPixel(defaultSize, $wrapper.clientWidth))
   }, [])
 
-  useDragging(refDivider, (e) => {
+  const dragging = useDragging(refDivider, (e) => {
     const $wrapper = refWrapper.current
     if (!$wrapper) return
 
     const { left } = $wrapper.getBoundingClientRect()
+    const { clientX } = (e as TouchEvent).touches
+      ? (e as TouchEvent).touches[0]
+      : (e as MouseEvent)
 
     const nextPos = clamp(
-      e.clientX - left,
+      clientX - left,
       toPixel(size[0] || 0, $wrapper.clientWidth),
       toPixel(size[1] || '100%', $wrapper.clientWidth)
     )
@@ -51,7 +54,7 @@ export default function SplitLayout (props: Props) {
   return (
     <Wrapper ref={refWrapper} className={className}>
       <SidePane style={{ width: pos + 'px' }}>{side}</SidePane>
-      <Divider ref={refDivider} />
+      <Divider ref={refDivider} dragging={dragging} />
       <MainPane>{main}</MainPane>
     </Wrapper>
   )
@@ -72,13 +75,14 @@ const MainPane = styled.div`
   height: 100%;
 `
 
-const Divider = styled.div`
+const Divider = styled.div<{ dragging: boolean }>`
   position: relative;
   z-index: 1;
   margin: 0 -3px;
   width: 7px;
   height: 100%;
-  background-color: ${(p) => p.theme.divider.background};
+  background-color: ${(p) =>
+    p.dragging ? p.theme.divider.hoverBackground : p.theme.divider.background};
   background-clip: padding-box;
   border-left: 3px solid transparent;
   border-right: 3px solid transparent;

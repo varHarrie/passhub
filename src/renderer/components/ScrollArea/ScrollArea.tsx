@@ -12,8 +12,8 @@ export interface Props {
 export default function ScrollArea (props: Props) {
   const { className, children } = props
 
-  const [state, setState] = React.useState<ScrollState>('normal')
   const refContainer = React.useRef<HTMLDivElement>(null)
+  const [state, setState] = React.useState<ScrollState>('normal')
 
   const onUpdate = React.useCallback(() => {
     const $container = refContainer.current

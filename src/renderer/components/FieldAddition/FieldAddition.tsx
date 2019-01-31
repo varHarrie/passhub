@@ -15,7 +15,7 @@ export default function FieldAddition (props: Props) {
   const { onAdd } = props
 
   const refButton = React.useRef<HTMLButtonElement>(null)
-  const [visible, setVisible] = React.useState<boolean>(false)
+  const [visible, setVisible] = React.useState(false)
 
   useClickOutside(refButton, () => {
     setVisible(false)
