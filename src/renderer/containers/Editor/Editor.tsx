@@ -30,11 +30,12 @@ function Editor (props: Props) {
   const { entry, fields } = useMappedState(mapState)
   const dispatch = useDispatch()
 
-  const onEntryAdd = React.useCallback((type: FieldType) => {
+  const onEntryAdd = React.useCallback((e, type: FieldType) => {
     dispatch(addField(type))
   }, [])
 
-  const onFieldChange = React.useCallback((field, index) => {
+  const onFieldChange = React.useCallback((field) => {
+    const index = fields.findIndex((f) => f.id === field.id)
     dispatch(updateFieldWithoutSave(index, field))
   }, [])
 
@@ -46,7 +47,6 @@ function Editor (props: Props) {
     <FieldItem
       key={f.id}
       data={f}
-      index={i}
       onChange={onFieldChange}
       onCopy={onFieldCopy}
     />

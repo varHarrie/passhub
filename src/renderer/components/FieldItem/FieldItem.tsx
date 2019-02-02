@@ -7,28 +7,27 @@ import { styled } from '../../styles'
 
 interface Props {
   data: Field
-  index: number
-  onChange: (data: Field, index: number) => void
+  onChange: (data: Field) => void
   onCopy: (data: Field) => void
 }
 
 export default function FieldItem (props: Props) {
-  const { data, index, onChange, onCopy } = props
+  const { data, onChange, onCopy } = props
 
   const onTitleChange = React.useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       const title = e.target.value
-      onChange({ ...data, title }, index)
+      onChange({ ...data, title })
     },
-    [data, index]
+    [data]
   )
 
   const onValueChange = React.useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       const value = e.target.value
-      onChange({ ...data, value }, index)
+      onChange({ ...data, value })
     },
-    [data, index]
+    [data]
   )
 
   const onValueCopy = React.useCallback(() => {

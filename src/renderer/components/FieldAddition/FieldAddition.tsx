@@ -8,7 +8,7 @@ import { styled } from '../../styles'
 import { FieldType } from '../../models/field'
 
 export interface Props {
-  onAdd: (type: FieldType) => void
+  onAdd: (e: React.MouseEvent, type: FieldType) => void
 }
 
 export default function FieldAddition (props: Props) {
@@ -17,7 +17,7 @@ export default function FieldAddition (props: Props) {
   const refButton = React.useRef<HTMLButtonElement>(null)
   const [visible, setVisible] = React.useState(false)
 
-  useClickOutside(refButton, () => {
+  useClickOutside(refButton.current, () => {
     setVisible(false)
   })
 
@@ -34,12 +34,14 @@ export default function FieldAddition (props: Props) {
         <Menu.Item
           icon='Type'
           title='Text'
-          onClick={() => onAdd(FieldType.text)}
+          data={FieldType.text}
+          onClick={onAdd}
         />
         <Menu.Item
           icon='Lock'
           title='Password'
-          onClick={() => onAdd(FieldType.password)}
+          data={FieldType.password}
+          onClick={onAdd}
         />
       </StyledMenu>
     </Wrapper>

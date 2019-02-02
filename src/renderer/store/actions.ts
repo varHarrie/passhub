@@ -83,9 +83,15 @@ export function updateGroup (groupId: string, icon: IconType, title: string) {
 }
 
 export function removeGroup (groupId: string) {
-  return async (dispatch: ThunkDispatch) => {
+  return async (dispatch: ThunkDispatch, getState: () => RootState) => {
+    await Database.instance.entries.remove({ groupId })
     await Database.instance.groups.removeOne({ id: groupId })
     await dispatch(listGroups())
+
+    const group = getState().group
+    if (group && group.id === groupId) {
+      dispatch(selectGroup())
+    }
   }
 }
 
@@ -140,9 +146,14 @@ export function updateEntry (entryId: string, entryAttrs: Partial<Entry>) {
 }
 
 export function removeEntry (entryId: string) {
-  return async (dispatch: ThunkDispatch) => {
+  return async (dispatch: ThunkDispatch, getState: () => RootState) => {
     await Database.instance.entries.removeOne({ id: entryId })
     await dispatch(listEntries())
+
+    const entry = getState().entry
+    if (entry && entry.id === entryId) {
+      dispatch(selectEntry())
+    }
   }
 }
 

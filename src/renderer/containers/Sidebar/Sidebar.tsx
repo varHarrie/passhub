@@ -5,22 +5,43 @@ import { useMappedState } from 'redux-react-hook'
 import GroupAddition from '../../components/GroupAddition'
 import GroupItem from '../../components/GroupItem'
 import Logo from '../../components/Logo'
+import Menu from '../../components/Menu'
 import ScrollArea from '../../components/ScrollArea'
+import useContextMenu from '../../hooks/useContextMenu'
 import { styled } from '../../styles'
 import { IconType } from '../../models/base'
 import { RootState } from '../../store'
-import { addGroup, useDispatch } from '../../store/actions'
+import { addGroup, removeGroup, useDispatch } from '../../store/actions'
+import { Group } from '../../models/group'
+
+enum MenuType {
+  edit = 'edit',
+  remove = 'remove'
+}
 
 const mapState = (state: RootState) => ({
   groups: state.groups,
   group: state.group
 })
 
+const contextMenu: any[] = [
+  { icon: 'Edit2', title: 'Edit', data: 'edit' },
+  { icon: 'Trash', title: 'Delete', data: 'remove' }
+]
+
 export interface Props extends RouteComponentProps {}
 
 function Sidebar (props: Props) {
   const { groups, group } = useMappedState(mapState)
   const dispatch = useDispatch()
+
+  const onMenuItemClick = React.useCallback((type: MenuType, g: Group) => {
+    if (type === MenuType.remove) {
+      dispatch(removeGroup(g.id))
+    }
+  }, [])
+
+  const { menu, open } = useContextMenu(contextMenu, onMenuItemClick)
 
   const onGroupAdd = React.useCallback(
     async (icon: IconType, title: string) => {
@@ -31,17 +52,17 @@ function Sidebar (props: Props) {
     []
   )
 
-  const onGroupSelect = React.useCallback((id: string) => {
-    props.history.push(`/${id}`)
+  const onGroupSelect = React.useCallback((e, g: { id: string }) => {
+    props.history.push(`/${g.id}`)
   }, [])
 
   const items = groups.map((g) => (
     <GroupItem
       key={g.id}
-      icon={g.icon}
-      title={g.title}
+      data={g}
       active={!!group && group.id === g.id}
-      onClick={() => onGroupSelect(g.id)}
+      onClick={onGroupSelect}
+      onContextMenu={open}
     />
   ))
 
@@ -52,6 +73,7 @@ function Sidebar (props: Props) {
         <Title>Passhub</Title>
       </Header>
       <Container>
+        {menu}
         {items}
         <GroupAddition onConfirm={onGroupAdd} />
       </Container>

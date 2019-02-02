@@ -1,14 +1,14 @@
 import * as React from 'react'
 
 export default function useClickOutside (
-  ref: React.RefObject<HTMLElement>,
+  el: HTMLElement | null,
   handler: (e: Event) => void
 ) {
   React.useEffect(() => {
-    if (!ref.current) return
+    if (!el) return
 
     const onClick = (e: Event) => {
-      if (ref.current && ref.current.contains(e.target as HTMLElement)) {
+      if (el && !el.contains(e.target as HTMLElement)) {
         handler(e)
       }
     }
@@ -20,5 +20,5 @@ export default function useClickOutside (
       document.removeEventListener('click', onClick)
       document.removeEventListener('touchstart', onClick)
     }
-  }, [])
+  }, [el, handler])
 }

@@ -5,13 +5,18 @@ import { styled } from '../../styles'
 
 export interface Props {
   className?: string
+  style?: React.CSSProperties
   children: React.ReactNode
 }
 
 export default function Menu (props: Props) {
-  const { className, children } = props
+  const { className, style, children } = props
 
-  return <Wrapper className={className}>{children}</Wrapper>
+  return (
+    <Wrapper className={className} style={style}>
+      {children}
+    </Wrapper>
+  )
 }
 
 Menu.Item = MenuItem

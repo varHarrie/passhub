@@ -2,24 +2,55 @@ import * as React from 'react'
 
 import Icon from '../Icon'
 import { noop } from '../../libs/utils'
-import { IconType } from '../../models/base'
 import { styled } from '../../styles'
+import { IconType } from '../../models/base'
 
-export interface Props {
-  className?: string
+export interface GroupLike {
+  id: string
   icon: IconType
   title: string
-  active?: boolean
-  onClick?: React.MouseEventHandler<HTMLDivElement>
 }
 
-export default function GroupItem (props: Props) {
-  const { className, icon, title, active, onClick = noop } = props
+export interface Props<T> {
+  className?: string
+  data: T
+  active?: boolean
+  onClick?: (e: React.MouseEvent, group: T) => void
+  onContextMenu?: (e: React.MouseEvent, group: T) => void
+}
+
+export default function GroupItem<T extends GroupLike> (props: Props<T>) {
+  const {
+    className,
+    data,
+    active,
+    onClick = noop,
+    onContextMenu = noop
+  } = props
+
+  const onGroupClick = React.useCallback(
+    (e: React.MouseEvent) => {
+      onClick(e, data)
+    },
+    [data]
+  )
+
+  const onGroupContextMenu = React.useCallback(
+    (e: React.MouseEvent) => {
+      onContextMenu(e, data)
+    },
+    [data]
+  )
 
   return (
-    <Wrapper className={className} active={active} onClick={onClick}>
-      <Icon type={icon} />
-      <Title>{title}</Title>
+    <Wrapper
+      className={className}
+      active={active}
+      onClick={onGroupClick}
+      onContextMenu={onGroupContextMenu}
+    >
+      <Icon type={data.icon} />
+      <Title>{data.title}</Title>
     </Wrapper>
   )
 }

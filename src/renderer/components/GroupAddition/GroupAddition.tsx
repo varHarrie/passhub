@@ -6,6 +6,7 @@ import Input from '../Input'
 import { noop } from '../../libs/utils'
 import { IconType } from '../../models/base'
 import { styled } from '../../styles'
+import { Group } from '../../models/group'
 
 export interface Props {
   className?: string
@@ -69,7 +70,10 @@ export default function GroupAddition (props: Props) {
           onKeyDown={onInputKeydown}
         />
       ) : (
-        <GroupItem icon='Plus' title='New' onClick={onEditStart} />
+        <GroupItem
+          data={{ id: '', icon: 'Plus', title: 'New' }}
+          onClick={onEditStart}
+        />
       )}
     </Wrapper>
   )

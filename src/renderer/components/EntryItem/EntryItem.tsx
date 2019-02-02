@@ -17,12 +17,12 @@ export interface State {}
 export default function EntryItem (props: Props) {
   const { className, data, active, onClick = noop } = props
 
+  const onEntryClick = React.useCallback(() => {
+    onClick(data)
+  }, [data])
+
   return (
-    <Wrapper
-      className={className}
-      active={active}
-      onClick={() => onClick(data)}
-    >
+    <Wrapper className={className} active={active} onClick={onEntryClick}>
       <StyledIcon type={data.icon} size='medium' />
       <Container>
         <Title>{data.title}</Title>
