@@ -25,7 +25,7 @@ export default function MenuItem<T> (props: Props<T>) {
 
   return (
     <Wrapper className={className} onClick={onMenuClick}>
-      <StyledIcon type={icon} size='small' />
+      <Icon type={icon} size='small' />
       <Title>{title}</Title>
     </Wrapper>
   )
@@ -37,6 +37,7 @@ const Wrapper = styled.div`
   align-items: center;
   height: 32px;
   cursor: pointer;
+  color: #999;
   transition: background 0.3s;
 
   &:hover {
@@ -46,10 +47,6 @@ const Wrapper = styled.div`
   &:active {
     background: #e0e0e0;
   }
-`
-
-const StyledIcon = styled(Icon)`
-  color: #999;
 `
 
 const Title = styled.div`

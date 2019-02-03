@@ -95,6 +95,7 @@ const Header = styled.div`
   align-items: center;
   padding: 0 14px;
   height: 56px;
+  font-size: 20px;
   -webkit-app-region: drag;
 `
 

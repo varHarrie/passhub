@@ -29,4 +29,5 @@ const Wrapper = styled.div`
   box-shadow: 0px 2px 12px rgba(0, 0, 0, 0.1);
   opacity: 1;
   border-radius: 3px;
+  user-select: none;
 `
