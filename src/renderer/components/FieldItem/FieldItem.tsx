@@ -1,5 +1,6 @@
 import * as React from 'react'
 
+import Icon from '../Icon'
 import PasswordInput from './PasswordInput'
 import TextInput from './TextInput'
 import { Field, FieldType } from '../../models/field'
@@ -9,10 +10,11 @@ interface Props {
   data: Field
   onChange: (data: Field) => void
   onCopy: (data: Field) => void
+  onRemove: (data: Field) => void
 }
 
 export default function FieldItem (props: Props) {
-  const { data, onChange, onCopy } = props
+  const { data, onChange, onCopy, onRemove } = props
 
   const onTitleChange = React.useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -34,11 +36,20 @@ export default function FieldItem (props: Props) {
     onCopy(data)
   }, [data])
 
+  const onFieldRemove = React.useCallback(() => {
+    onRemove(data)
+  }, [data])
+
   const Control = data.type === FieldType.password ? PasswordInput : TextInput
 
   return (
     <Wrapper>
-      <Header value={data.title} onChange={onTitleChange} />
+      <Header>
+        <Title value={data.title} onChange={onTitleChange} />
+        <Actions>
+          <Icon type='X' onClick={onFieldRemove} />
+        </Actions>
+      </Header>
       <Container>
         <Control
           value={data.value}
@@ -56,10 +67,24 @@ const Wrapper = styled.div`
   }
 `
 
-const Header = styled.input`
+const Title = styled.input`
+  flex: 1;
   border: none;
   outline: none;
+`
+
+const Actions = styled.div`
+  opacity: 0;
+  transition: opacity 0.3s;
+`
+
+const Header = styled.div`
+  display: flex;
   color: #999;
+
+  &:hover ${Actions} {
+    opacity: 1;
+  }
 `
 
 const Container = styled.div`

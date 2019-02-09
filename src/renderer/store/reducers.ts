@@ -5,6 +5,7 @@ import {
   CHANGE_FIELDS,
   CHANGE_GROUP,
   CHANGE_GROUPS,
+  CHANGE_SAVING,
   MODIFY_ENTRY,
   MODIFY_FIELD,
   MODIFY_GROUP
@@ -12,6 +13,24 @@ import {
 import { Actions } from './actions'
 import { Entry } from '../models/entry'
 import { Field } from '../models/field'
+
+export type AppState = {
+  saving: boolean
+}
+
+const initialAppState: AppState = {
+  saving: false
+}
+
+export const app = (state: AppState = initialAppState, action: Actions) => {
+  switch (action.type) {
+    case CHANGE_SAVING:
+      return { ...state, saving: action.payload }
+
+    default:
+      return state
+  }
+}
 
 export const groups = (state: Group[] = [], action: Actions) => {
   switch (action.type) {

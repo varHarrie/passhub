@@ -10,6 +10,7 @@ import { styled } from '../../styles'
 import { RootState } from '../../store'
 import {
   addField,
+  removeFieldWithoutSave,
   updateFieldWithoutSave,
   useDispatch
 } from '../../store/actions'
@@ -34,13 +35,20 @@ function Editor (props: Props) {
     dispatch(addField(type))
   }, [])
 
-  const onFieldChange = React.useCallback((field) => {
-    const index = fields.findIndex((f) => f.id === field.id)
-    dispatch(updateFieldWithoutSave(index, field))
-  }, [])
+  const onFieldChange = React.useCallback(
+    (field) => {
+      const index = fields.findIndex((f) => f.id === field.id)
+      dispatch(updateFieldWithoutSave(index, field))
+    },
+    [fields]
+  )
 
   const onFieldCopy = React.useCallback((field) => {
     console.log('copy', field)
+  }, [])
+
+  const onFieldRemove = React.useCallback((field) => {
+    dispatch(removeFieldWithoutSave(field.id))
   }, [])
 
   const items = fields.map((f, i) => (
@@ -49,6 +57,7 @@ function Editor (props: Props) {
       data={f}
       onChange={onFieldChange}
       onCopy={onFieldCopy}
+      onRemove={onFieldRemove}
     />
   ))
 
@@ -66,6 +75,7 @@ function Editor (props: Props) {
 export default withRouter(Editor)
 
 const Wrapper = styled.div`
+  position: relative;
   display: flex;
   flex-direction: column;
   flex: 1;

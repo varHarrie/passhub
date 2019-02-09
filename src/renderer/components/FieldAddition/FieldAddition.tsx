@@ -50,15 +50,15 @@ export default function FieldAddition (props: Props) {
 
 const Wrapper = styled.div`
   position: absolute;
+  left: 14px;
   bottom: 14px;
-  right: 14px;
   box-shadow: 0px 2px 12px rgba(0, 0, 0, 0.1);
 `
 
 const StyledMenu = styled(Menu)<{ visible: boolean }>`
-  position: fixed;
-  right: 14px;
-  bottom: 52px;
+  position: absolute;
+  left: 0;
+  bottom: 40px;
   opacity: ${(p) => (p.visible ? 1 : 0)};
   transform: scaleY(${(p) => (p.visible ? 1 : 0)});
   transform-origin: bottom;

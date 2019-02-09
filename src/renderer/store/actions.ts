@@ -12,6 +12,7 @@ import {
   CHANGE_FIELDS,
   CHANGE_GROUP,
   CHANGE_GROUPS,
+  CHANGE_SAVING,
   MODIFY_ENTRY,
   MODIFY_FIELD,
   MODIFY_GROUP
@@ -19,6 +20,10 @@ import {
 import { Entry } from '../models/entry'
 import { Field, FieldType } from '../models/field'
 import { RootState } from '.'
+
+function changeSaving (saving: boolean) {
+  return createAction(CHANGE_SAVING, saving)
+}
 
 function changeGroups (groups: Group[]) {
   return createAction(CHANGE_GROUPS, groups)
@@ -52,6 +57,24 @@ function modifyField (index: number, field: Field) {
   return createAction(MODIFY_FIELD, { index, field })
 }
 
+const save = {
+  stacks: [] as any[],
+  start () {
+    this.stacks.push(true)
+    return changeSaving(true)
+  },
+  end () {
+    return (dispatch: ThunkDispatch) => {
+      setTimeout(() => {
+        this.stacks.pop()
+        if (this.stacks.length === 0) {
+          dispatch(changeSaving(false))
+        }
+      }, 1000)
+    }
+  }
+}
+
 export function listGroups () {
   return async (dispatch: ThunkDispatch) => {
     const groups = await Database.instance.groups.find()
@@ -61,6 +84,7 @@ export function listGroups () {
 
 export function addGroup (icon: IconType, title: string) {
   return async (dispatch: ThunkDispatch) => {
+    dispatch(save.start())
     const group = await Database.instance.groups.insert({
       icon,
       title,
@@ -68,6 +92,7 @@ export function addGroup (icon: IconType, title: string) {
       createdAt: Date.now(),
       modifiedAt: Date.now()
     })
+    dispatch(save.end())
 
     await dispatch(listGroups())
     return group
@@ -76,7 +101,10 @@ export function addGroup (icon: IconType, title: string) {
 
 export function updateGroup (groupId: string, icon: IconType, title: string) {
   return async (dispatch: ThunkDispatch) => {
-    await Database.instance.groups.updateOne({ id: groupId }, { icon, title })
+    dispatch(save.start())
+    Database.instance.groups.updateOne({ id: groupId }, { icon, title })
+    dispatch(save.end())
+
     await dispatch(listGroups())
     dispatch(modifyGroup(groupId, { icon, title }))
   }
@@ -84,8 +112,11 @@ export function updateGroup (groupId: string, icon: IconType, title: string) {
 
 export function removeGroup (groupId: string) {
   return async (dispatch: ThunkDispatch, getState: () => RootState) => {
+    dispatch(save.start())
     await Database.instance.entries.remove({ groupId })
     await Database.instance.groups.removeOne({ id: groupId })
+    dispatch(save.end())
+
     await dispatch(listGroups())
 
     const group = getState().group
@@ -121,6 +152,7 @@ export function addEntry (): ThunkAction<any, any, any, any> {
     const group = getState().group
     if (!group) return
 
+    dispatch(save.start())
     const entry = await Database.instance.entries.insert({
       icon: 'File',
       title: 'Untitled',
@@ -131,6 +163,7 @@ export function addEntry (): ThunkAction<any, any, any, any> {
       createdAt: Date.now(),
       modifiedAt: Date.now()
     })
+    dispatch(save.end())
 
     await dispatch(listEntries())
     return entry
@@ -139,7 +172,10 @@ export function addEntry (): ThunkAction<any, any, any, any> {
 
 export function updateEntry (entryId: string, entryAttrs: Partial<Entry>) {
   return async (dispatch: ThunkDispatch) => {
+    dispatch(save.start())
     await Database.instance.entries.updateOne({ id: entryId }, entryAttrs)
+    dispatch(save.end())
+
     await dispatch(listEntries())
     dispatch(modifyEntry(entryId, entryAttrs))
   }
@@ -147,7 +183,10 @@ export function updateEntry (entryId: string, entryAttrs: Partial<Entry>) {
 
 export function removeEntry (entryId: string) {
   return async (dispatch: ThunkDispatch, getState: () => RootState) => {
+    dispatch(save.start())
     await Database.instance.entries.removeOne({ id: entryId })
+    dispatch(save.end())
+
     await dispatch(listEntries())
 
     const entry = getState().entry
@@ -187,29 +226,50 @@ export function addField (type: FieldType) {
       type,
       id: uuid.v4(),
       entryId: entry.id,
-      title: 'Untitled',
+      title: '',
       value: '',
       createdAt: Date.now(),
       modifiedAt: Date.now()
     }
 
+    dispatch(save.start())
     await Database.instance.entries.updateOne(
       { id: entry.id },
       { fields: [...fields, field] }
     )
+    dispatch(save.end())
+
     await dispatch(listFields())
   }
 }
 
 export function updateFieldWithoutSave (index: number, field: Field) {
-  return async (dispatch: ThunkDispatch) => {
+  return (dispatch: ThunkDispatch) => {
     dispatch(modifyField(index, field))
+  }
+}
+
+export function removeFieldWithoutSave (fieldId: string) {
+  return (dispatch: ThunkDispatch, getState: () => RootState) => {
+    const fields = getState().fields.filter((f) => f.id !== fieldId)
+    dispatch(changeFields(fields))
+  }
+}
+
+export function saveFields (entryId: string) {
+  return async (dispatch: ThunkDispatch, getState: () => RootState) => {
+    const fields = getState().fields
+
+    dispatch(save.start())
+    await Database.instance.entries.updateOne({ id: entryId }, { fields })
+    dispatch(save.end())
   }
 }
 
 export const useDispatch = originUseDispatch as (() => ThunkDispatch)
 
 export type Actions =
+  | ActionType<typeof changeSaving>
   | ActionType<typeof changeGroups>
   | ActionType<typeof changeGroup>
   | ActionType<typeof modifyGroup>

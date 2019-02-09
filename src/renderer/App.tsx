@@ -2,6 +2,7 @@ import * as React from 'react'
 import { HashRouter, Route, Switch } from 'react-router-dom'
 import { StoreContext } from 'redux-react-hook'
 
+import SaveTip from './components/SaveTip'
 import WindowActions from './components/WindowActions'
 import configureStore from './store'
 import LoginView from './views/LoginView'
@@ -26,6 +27,7 @@ export default function App (props: Props) {
               <Route path='/' component={MainView} />
             </Switch>
             <WindowActions />
+            <SaveTip />
             <GlobalStyle />
           </Wrapper>
         </HashRouter>

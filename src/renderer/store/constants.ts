@@ -1,3 +1,5 @@
+export const CHANGE_SAVING = 'CHANGE_SAVING'
+
 export const CHANGE_GROUPS = 'CHANGE_GROUPS'
 export const CHANGE_GROUP = 'SELECT_GROUP'
 export const MODIFY_GROUP = 'MODIFY_GROUP'
