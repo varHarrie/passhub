@@ -7,10 +7,19 @@ import EntryItem from '../../components/EntryItem'
 import Icon from '../../components/Icon'
 import Input from '../../components/Input'
 import ScrollArea from '../../components/ScrollArea'
+import useContextMenu from '../../hooks/useContextMenu'
 import { styled } from '../../styles'
 import { Entry } from '../../models/entry'
-import { addEntry, useDispatch } from '../../store/actions'
+import { addEntry, removeEntry, useDispatch } from '../../store/actions'
 import { RootState } from '../../store'
+
+enum MenuType {
+  remove = 'remove'
+}
+
+const contextMenu: any[] = [
+  { icon: 'Trash', title: 'Delete', data: MenuType.remove }
+]
 
 const mapState = (state: RootState) => ({
   entries: state.entries,
@@ -24,6 +33,14 @@ function EntryList (props: Props) {
 
   const { entries, entry } = useMappedState(mapState)
   const dispatch = useDispatch()
+
+  const onMenuItemClick = React.useCallback((type: MenuType, g: Entry) => {
+    if (type === MenuType.remove) {
+      dispatch(removeEntry(g.id))
+    }
+  }, [])
+
+  const { menu, open } = useContextMenu(contextMenu, onMenuItemClick)
 
   const onEntryAdd = React.useCallback(async () => {
     // todo: scroll to end
@@ -44,6 +61,7 @@ function EntryList (props: Props) {
       data={e}
       active={!!entry && entry.id === e.id}
       onClick={onEntrySelect}
+      onContextMenu={open}
     />
   ))
 
@@ -55,7 +73,10 @@ function EntryList (props: Props) {
           <Icon type='Plus' />
         </AddButton>
       </Header>
-      <Container>{items}</Container>
+      <Container>
+        {menu}
+        {items}
+      </Container>
     </Wrapper>
   )
 }

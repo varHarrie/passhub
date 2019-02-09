@@ -23,15 +23,15 @@ enum MenuType {
   remove = 'remove'
 }
 
+const contextMenu: any[] = [
+  { icon: 'Edit2', title: 'Edit', data: MenuType.edit },
+  { icon: 'Trash', title: 'Delete', data: MenuType.remove }
+]
+
 const mapState = (state: RootState) => ({
   groups: state.groups,
   group: state.group
 })
-
-const contextMenu: any[] = [
-  { icon: 'Edit2', title: 'Edit', data: 'edit' },
-  { icon: 'Trash', title: 'Delete', data: 'remove' }
-]
 
 export interface Props extends RouteComponentProps {}
 

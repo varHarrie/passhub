@@ -10,19 +10,38 @@ export interface Props {
   data: Entry
   active?: boolean
   onClick?: (entry: Entry) => void
+  onContextMenu?: (e: React.MouseEvent, entry: Entry) => void
 }
 
 export interface State {}
 
 export default function EntryItem (props: Props) {
-  const { className, data, active, onClick = noop } = props
+  const {
+    className,
+    data,
+    active,
+    onClick = noop,
+    onContextMenu = noop
+  } = props
 
   const onEntryClick = React.useCallback(() => {
     onClick(data)
   }, [data])
 
+  const onGroupContextMenu = React.useCallback(
+    (e: React.MouseEvent) => {
+      onContextMenu(e, data)
+    },
+    [data]
+  )
+
   return (
-    <Wrapper className={className} active={active} onClick={onEntryClick}>
+    <Wrapper
+      className={className}
+      active={active}
+      onClick={onEntryClick}
+      onContextMenu={onGroupContextMenu}
+    >
       <StyledIcon type={data.icon} size='medium' />
       <Container>
         <Title>{data.title}</Title>
