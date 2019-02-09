@@ -5,13 +5,17 @@ import { useMappedState } from 'redux-react-hook'
 import GroupAddition from '../../components/GroupAddition'
 import GroupItem from '../../components/GroupItem'
 import Logo from '../../components/Logo'
-import Menu from '../../components/Menu'
 import ScrollArea from '../../components/ScrollArea'
 import useContextMenu from '../../hooks/useContextMenu'
 import { styled } from '../../styles'
 import { IconType } from '../../models/base'
 import { RootState } from '../../store'
-import { addGroup, removeGroup, useDispatch } from '../../store/actions'
+import {
+  addGroup,
+  removeGroup,
+  updateGroup,
+  useDispatch
+} from '../../store/actions'
 import { Group } from '../../models/group'
 
 enum MenuType {
@@ -32,11 +36,14 @@ const contextMenu: any[] = [
 export interface Props extends RouteComponentProps {}
 
 function Sidebar (props: Props) {
+  const [editingGroup, setEditingGroup] = React.useState<Group | null>(null)
   const { groups, group } = useMappedState(mapState)
   const dispatch = useDispatch()
 
   const onMenuItemClick = React.useCallback((type: MenuType, g: Group) => {
-    if (type === MenuType.remove) {
+    if (type === MenuType.edit) {
+      setEditingGroup(g)
+    } else if (type === MenuType.remove) {
       dispatch(removeGroup(g.id))
     }
   }, [])
@@ -56,15 +63,35 @@ function Sidebar (props: Props) {
     props.history.push(`/${g.id}`)
   }, [])
 
-  const items = groups.map((g) => (
-    <GroupItem
-      key={g.id}
-      data={g}
-      active={!!group && group.id === g.id}
-      onClick={onGroupSelect}
-      onContextMenu={open}
-    />
-  ))
+  const onGroupUpdate = React.useCallback(
+    async (icon: IconType, title: string) => {
+      const id = editingGroup && editingGroup.id
+      if (!id || !title) return
+
+      await dispatch(updateGroup(id, icon, title))
+      setEditingGroup(null)
+    },
+    [editingGroup]
+  )
+
+  const items = groups.map((g) =>
+    editingGroup && editingGroup.id === g.id ? (
+      <GroupAddition
+        editable
+        icon={g.icon}
+        title={g.title}
+        onConfirm={onGroupUpdate}
+      />
+    ) : (
+      <GroupItem
+        key={g.id}
+        data={g}
+        active={!!group && group.id === g.id}
+        onClick={onGroupSelect}
+        onContextMenu={open}
+      />
+    )
+  )
 
   return (
     <Wrapper>

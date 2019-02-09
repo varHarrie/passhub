@@ -10,6 +10,9 @@ import { Group } from '../../models/group'
 
 export interface Props {
   className?: string
+  editable?: boolean
+  icon?: IconType
+  title?: string
   onConfirm?: (icon: IconType, title: string) => void
 }
 
@@ -17,9 +20,9 @@ export default function GroupAddition (props: Props) {
   const { className, onConfirm = noop } = props
 
   const refInput = React.useRef<HTMLInputElement>(null)
-  const [editable, setEditable] = React.useState(false)
-  const [icon, setIcon] = React.useState<IconType>('Archive')
-  const [title, setTitle] = React.useState('')
+  const [editable, setEditable] = React.useState(props.editable || false)
+  const [icon, setIcon] = React.useState<IconType>(props.icon || 'Archive')
+  const [title, setTitle] = React.useState(props.title || '')
 
   const onEditStart = React.useCallback(() => {
     setEditable(true)
@@ -34,7 +37,12 @@ export default function GroupAddition (props: Props) {
     []
   )
 
-  const onInputBlur = React.useCallback(() => setEditable(false), [])
+  const onInputBlur = React.useCallback(() => {
+    if (!title) return
+
+    onConfirm(icon, title)
+    setEditable(false)
+  }, [icon, title])
 
   const onInputKeydown = React.useCallback(
     (e: React.KeyboardEvent<HTMLInputElement>) => {
