@@ -31,6 +31,7 @@ export interface Props extends RouteComponentProps<{ groupId: string }> {}
 function EntryList (props: Props) {
   const groupId = props.match.params.groupId
 
+  const [keyword, setKeyword] = React.useState('')
   const { entries, entry } = useMappedState(mapState)
   const dispatch = useDispatch()
 
@@ -55,20 +56,37 @@ function EntryList (props: Props) {
     [groupId]
   )
 
-  const items = entries.map((e) => (
-    <EntryItem
-      key={e.id}
-      data={e}
-      active={!!entry && entry.id === e.id}
-      onClick={onEntrySelect}
-      onContextMenu={open}
-    />
-  ))
+  const onKeywordChange = React.useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      setKeyword(e.target.value)
+    },
+    []
+  )
+
+  const items = entries
+    .filter(
+      (e) =>
+        e.title.indexOf(keyword) > -1 || e.description.indexOf(keyword) > -1
+    )
+    .map((e) => (
+      <EntryItem
+        key={e.id}
+        data={e}
+        active={!!entry && entry.id === e.id}
+        onClick={onEntrySelect}
+        onContextMenu={open}
+      />
+    ))
 
   return (
     <Wrapper>
       <Header>
-        <SearchInput solid prefix={<Icon type='Search' />} />
+        <SearchInput
+          solid
+          prefix={<Icon type='Search' />}
+          value={keyword}
+          onChange={onKeywordChange}
+        />
         <AddButton solid onClick={onEntryAdd}>
           <Icon type='Plus' />
         </AddButton>
