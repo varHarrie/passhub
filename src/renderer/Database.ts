@@ -1,11 +1,11 @@
-import { FileAdapter } from 'persiston/adapters/file-adapter'
+import { FileAdapter } from 'persiston/adapters/file-adapter-sync'
 import { Persiston } from 'persiston'
 
 import { Entry } from './models/entry'
 import { Group } from './models/group'
 
 export default class Database extends Persiston {
-  public static instance: Database = null!
+  public static instance: Database = null
 
   public static async connect (filename: string) {
     if (!Database.instance) {
@@ -19,7 +19,7 @@ export default class Database extends Persiston {
   }
 
   public static disconnect () {
-    Database.instance = null!
+    Database.instance = null
   }
 
   public groups = this.collection<Group>('groups')

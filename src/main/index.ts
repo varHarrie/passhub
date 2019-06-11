@@ -6,7 +6,7 @@ const isProduction = process.env.NODE_ENV === 'production'
 
 let win: BrowserWindow | null
 
-function createWindow () {
+function createWindow() {
   const options = {
     title: 'Passhub',
     icon: '',
@@ -15,17 +15,20 @@ function createWindow () {
     minWidth: 600,
     minHeight: 400,
     autoHideMenuBar: true,
-    frame: false
+    frame: false,
+    webPreferences: {
+      nodeIntegration: true
+    }
   }
 
   win = new BrowserWindow(options)
 
   const rendererURL = isProduction
     ? url.format({
-      pathname: path.join(__dirname, 'index.html'),
-      protocol: 'file',
-      slashes: true
-    })
+        pathname: path.join(__dirname, 'index.html'),
+        protocol: 'file',
+        slashes: true
+      })
     : 'http://localhost:2333'
 
   win.loadURL(rendererURL)
