@@ -1,4 +1,3 @@
-import * as React from 'react'
 import { ipcRenderer } from 'electron'
 
 import Icon from '../Icon'

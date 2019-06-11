@@ -1,4 +1,4 @@
-import * as React from 'react'
+import { forwardRef } from 'react'
 
 import { styled } from '../../styles'
 
@@ -18,7 +18,7 @@ function Button (props: Props, ref: React.Ref<HTMLButtonElement>) {
   return <Wrapper ref={ref} size={size} {...rest} />
 }
 
-export default React.forwardRef(Button)
+export default forwardRef(Button)
 
 const Wrapper = styled.button<{ solid?: boolean; size: ButtonSize }>`
   display: inline-flex;

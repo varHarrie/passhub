@@ -1,5 +1,3 @@
-import * as React from 'react'
-
 import MenuItem from './MenuItem'
 import { styled } from '../../styles'
 

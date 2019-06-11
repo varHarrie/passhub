@@ -1,20 +1,20 @@
-import * as React from 'react'
 import { Route, RouteComponentProps } from 'react-router'
+import { useContext, useEffect } from 'react'
 
 import SplitLayout from '../../components/SplitLayout'
 import EntryList from '../../containers/EntryList'
 import EntryView from '../EntryView'
-import { styled, ThemeContext } from '../../styles'
+import { ThemeContext } from '../../styles'
 import { selectGroup, useDispatch } from '../../store/actions'
 
 export interface Props extends RouteComponentProps<{ groupId: string }> {}
 
 export default function GroupView (props: Props) {
   const groupId = props.match.params.groupId
-  const theme = React.useContext(ThemeContext)
+  const theme = useContext(ThemeContext)
   const dispatch = useDispatch()
 
-  React.useEffect(() => {
+  useEffect(() => {
     dispatch(selectGroup(groupId))
     return () => {
       dispatch(selectGroup())

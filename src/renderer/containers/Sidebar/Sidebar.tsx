@@ -1,6 +1,6 @@
-import * as React from 'react'
 import { RouteComponentProps, withRouter } from 'react-router'
 import { useMappedState } from 'redux-react-hook'
+import { useCallback, useState } from 'react'
 
 import GroupAddition from '../../components/GroupAddition'
 import GroupItem from '../../components/GroupItem'
@@ -10,12 +10,7 @@ import useContextMenu from '../../hooks/useContextMenu'
 import { styled } from '../../styles'
 import { IconType } from '../../models/base'
 import { RootState } from '../../store'
-import {
-  addGroup,
-  removeGroup,
-  updateGroup,
-  useDispatch
-} from '../../store/actions'
+import { addGroup, removeGroup, updateGroup, useDispatch } from '../../store/actions'
 import { Group } from '../../models/group'
 
 enum MenuType {
@@ -36,11 +31,11 @@ const mapState = (state: RootState) => ({
 export interface Props extends RouteComponentProps {}
 
 function Sidebar (props: Props) {
-  const [editingGroup, setEditingGroup] = React.useState<Group | null>(null)
+  const [editingGroup, setEditingGroup] = useState<Group | null>(null)
   const { groups, group } = useMappedState(mapState)
   const dispatch = useDispatch()
 
-  const onMenuItemClick = React.useCallback((type: MenuType, g: Group) => {
+  const onMenuItemClick = useCallback((type: MenuType, g: Group) => {
     if (type === MenuType.edit) {
       setEditingGroup(g)
     } else if (type === MenuType.remove) {
@@ -50,20 +45,17 @@ function Sidebar (props: Props) {
 
   const { menu, open } = useContextMenu(contextMenu, onMenuItemClick)
 
-  const onGroupAdd = React.useCallback(
-    async (icon: IconType, title: string) => {
-      if (!title) return
-      const g = await dispatch(addGroup(icon, title))
-      props.history.push(`/${g.id}`)
-    },
-    []
-  )
-
-  const onGroupSelect = React.useCallback((e, g: { id: string }) => {
+  const onGroupAdd = useCallback(async (icon: IconType, title: string) => {
+    if (!title) return
+    const g = await dispatch(addGroup(icon, title))
     props.history.push(`/${g.id}`)
   }, [])
 
-  const onGroupUpdate = React.useCallback(
+  const onGroupSelect = useCallback((e, g: { id: string }) => {
+    props.history.push(`/${g.id}`)
+  }, [])
+
+  const onGroupUpdate = useCallback(
     async (icon: IconType, title: string) => {
       const id = editingGroup && editingGroup.id
       if (!id || !title) return
@@ -76,12 +68,7 @@ function Sidebar (props: Props) {
 
   const items = groups.map((g) =>
     editingGroup && editingGroup.id === g.id ? (
-      <GroupAddition
-        editable
-        icon={g.icon}
-        title={g.title}
-        onConfirm={onGroupUpdate}
-      />
+      <GroupAddition editable icon={g.icon} title={g.title} onConfirm={onGroupUpdate} />
     ) : (
       <GroupItem
         key={g.id}

@@ -24,6 +24,4 @@ export function createAction<T extends string, P = undefined, M = undefined> (
 
 export type ThunkAction<R> = OriginalThunkAction<R, any, any, any>
 
-export type ThunkDispatch = <A>(
-  action: A
-) => A extends ThunkAction<infer R> ? R : A
+export type ThunkDispatch = <A>(action: A) => A extends ThunkAction<infer R> ? R : A

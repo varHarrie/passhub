@@ -1,5 +1,5 @@
-import * as React from 'react'
 import { Route, RouteComponentProps } from 'react-router'
+import { useContext, useEffect } from 'react'
 
 import SplitLayout from '../../components/SplitLayout'
 import Sidebar from '../../containers/Sidebar'
@@ -11,10 +11,10 @@ import { ThemeContext } from '../../styles'
 export interface Props extends RouteComponentProps {}
 
 export default function MainView (props: Props) {
-  const theme = React.useContext(ThemeContext)
+  const theme = useContext(ThemeContext)
   const dispatch = useDispatch()
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (Database.instance) {
       dispatch(listGroups())
     } else {

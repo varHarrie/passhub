@@ -1,4 +1,4 @@
-import * as React from 'react'
+import { useCallback, useState } from 'react'
 
 import Icon from '../Icon'
 import Input from '../Input'
@@ -13,9 +13,9 @@ interface Props {
 export default function PasswordInput (props: Props) {
   const { value, onChange, onCopy } = props
 
-  const [visible, setVisible] = React.useState(false)
+  const [visible, setVisible] = useState(false)
 
-  const onToggleVisible = React.useCallback(() => {
+  const onToggleVisible = useCallback(() => {
     setVisible(!visible)
   }, [visible])
 

@@ -1,4 +1,4 @@
-import * as React from 'react'
+import { useCallback } from 'react'
 
 import Icon from '../Icon'
 import { Entry } from '../../models/entry'
@@ -16,19 +16,13 @@ export interface Props {
 export interface State {}
 
 export default function EntryItem (props: Props) {
-  const {
-    className,
-    data,
-    active,
-    onClick = noop,
-    onContextMenu = noop
-  } = props
+  const { className, data, active, onClick = noop, onContextMenu = noop } = props
 
-  const onEntryClick = React.useCallback(() => {
+  const onEntryClick = useCallback(() => {
     onClick(data)
   }, [data])
 
-  const onGroupContextMenu = React.useCallback(
+  const onGroupContextMenu = useCallback(
     (e: React.MouseEvent) => {
       onContextMenu(e, data)
     },

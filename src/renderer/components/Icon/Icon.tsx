@@ -1,4 +1,3 @@
-import * as React from 'react'
 import * as Feather from 'react-feather'
 
 import { css, keyframes, styled } from '../../styles'
@@ -14,17 +13,12 @@ export interface Props {
   onClick?: React.MouseEventHandler
 }
 
-export default function Icon (props: Props) {
+export default function Icon(props: Props) {
   const { className, type, rotating, size = 'small', onClick } = props
   const Image = Feather[type]
 
   return (
-    <Wrapper
-      className={className}
-      size={size}
-      rotating={rotating}
-      onClick={onClick}
-    >
+    <Wrapper className={className} size={size} rotating={rotating} onClick={onClick}>
       <Image />
     </Wrapper>
   )

@@ -1,4 +1,4 @@
-import * as React from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 
 import { styled } from '../../styles'
 
@@ -12,10 +12,10 @@ export interface Props {
 export default function ScrollArea (props: Props) {
   const { className, children } = props
 
-  const refContainer = React.useRef<HTMLDivElement>(null)
-  const [state, setState] = React.useState<ScrollState>('normal')
+  const refContainer = useRef<HTMLDivElement>(null)
+  const [state, setState] = useState<ScrollState>('normal')
 
-  const onUpdate = React.useCallback(() => {
+  const onUpdate = useCallback(() => {
     const $container = refContainer.current
     if (!$container) return
 
@@ -32,12 +32,12 @@ export default function ScrollArea (props: Props) {
     )
   }, [])
 
-  React.useEffect(() => {
-    refContainer.current!.addEventListener('scroll', onUpdate)
+  useEffect(() => {
+    refContainer.current.addEventListener('scroll', onUpdate)
     window.addEventListener('reset', onUpdate)
 
     return () => {
-      refContainer.current!.removeEventListener('scroll', onUpdate)
+      refContainer.current.removeEventListener('scroll', onUpdate)
       window.removeEventListener('resize', onUpdate)
     }
   }, [])
@@ -62,11 +62,7 @@ const TopShadow = styled.div<{ visible: boolean }>`
   left: 0;
   width: 100%;
   height: ${(p) => (p.visible ? '6px' : 0)};
-  background: linear-gradient(
-    180deg,
-    rgba(0, 0, 0, 0.05) 0%,
-    rgba(0, 0, 0, 0) 100%
-  );
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.05) 0%, rgba(0, 0, 0, 0) 100%);
   transition: height 0.3s;
 `
 
@@ -76,11 +72,7 @@ const BottomShadow = styled.div<{ visible: boolean }>`
   left: 0;
   width: 100%;
   height: ${(p) => (p.visible ? '6px' : 0)};
-  background: linear-gradient(
-    0deg,
-    rgba(0, 0, 0, 0.05) 0%,
-    rgba(0, 0, 0, 0) 100%
-  );
+  background: linear-gradient(0deg, rgba(0, 0, 0, 0.05) 0%, rgba(0, 0, 0, 0) 100%);
   transition: height 0.3s;
 `
 

@@ -1,10 +1,7 @@
-import * as React from 'react'
+import { useEffect } from 'react'
 
-export default function useClickOutside (
-  el: HTMLElement | null,
-  handler: (e: Event) => void
-) {
-  React.useEffect(() => {
+export default function useClickOutside (el: HTMLElement | null, handler: (e: Event) => void) {
+  useEffect(() => {
     if (!el) return
 
     const onClick = (e: Event) => {

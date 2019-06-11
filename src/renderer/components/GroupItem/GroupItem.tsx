@@ -1,4 +1,4 @@
-import * as React from 'react'
+import { useCallback } from 'react'
 
 import Icon from '../Icon'
 import { noop } from '../../libs/utils'
@@ -20,22 +20,16 @@ export interface Props<T> {
 }
 
 export default function GroupItem<T extends GroupLike> (props: Props<T>) {
-  const {
-    className,
-    data,
-    active,
-    onClick = noop,
-    onContextMenu = noop
-  } = props
+  const { className, data, active, onClick = noop, onContextMenu = noop } = props
 
-  const onGroupClick = React.useCallback(
+  const onGroupClick = useCallback(
     (e: React.MouseEvent) => {
       onClick(e, data)
     },
     [data]
   )
 
-  const onGroupContextMenu = React.useCallback(
+  const onGroupContextMenu = useCallback(
     (e: React.MouseEvent) => {
       onContextMenu(e, data)
     },
@@ -64,9 +58,7 @@ const Wrapper = styled.div<{ active?: boolean }>`
   height: ${(p) => p.theme.sidebar.itemHeight};
   background: ${(p) => p.theme.sidebar.itemBackground};
   color: ${(p) =>
-    p.active
-      ? p.theme.sidebar.itemTitleActiveColor
-      : p.theme.sidebar.itemTitleColor};
+    p.active ? p.theme.sidebar.itemTitleActiveColor : p.theme.sidebar.itemTitleColor};
   cursor: pointer;
   user-select: none;
   transition: all 0.3s;

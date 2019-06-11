@@ -1,6 +1,6 @@
-import * as React from 'react'
 import { RouteComponentProps, withRouter } from 'react-router'
 import { useMappedState } from 'redux-react-hook'
+import { useCallback } from 'react'
 
 import FieldAddition from '../../components/FieldAddition'
 import FieldItem from '../../components/FieldItem'
@@ -16,11 +16,10 @@ import {
 } from '../../store/actions'
 import { FieldType } from '../../models/field'
 
-export interface Props
-  extends RouteComponentProps<{ groupId: string; entryId: string }> {}
+export interface Props extends RouteComponentProps<{ groupId: string; entryId: string }> {}
 
 function Editor (props: Props) {
-  const mapState = React.useCallback(
+  const mapState = useCallback(
     (state: RootState) => ({
       entry: state.entry,
       fields: state.fields
@@ -31,11 +30,11 @@ function Editor (props: Props) {
   const { entry, fields } = useMappedState(mapState)
   const dispatch = useDispatch()
 
-  const onEntryAdd = React.useCallback((e, type: FieldType) => {
+  const onEntryAdd = useCallback((e, type: FieldType) => {
     dispatch(addField(type))
   }, [])
 
-  const onFieldChange = React.useCallback(
+  const onFieldChange = useCallback(
     (field) => {
       const index = fields.findIndex((f) => f.id === field.id)
       dispatch(updateFieldWithoutSave(index, field))
@@ -43,11 +42,11 @@ function Editor (props: Props) {
     [fields]
   )
 
-  const onFieldCopy = React.useCallback((field) => {
+  const onFieldCopy = useCallback((field) => {
     console.log('copy', field)
   }, [])
 
-  const onFieldRemove = React.useCallback((field) => {
+  const onFieldRemove = useCallback((field) => {
     dispatch(removeFieldWithoutSave(field.id))
   }, [])
 

@@ -14,12 +14,4 @@ const {
   ThemeContext
 } = styledComponents as StyledComponents
 
-export {
-  styled,
-  css,
-  createGlobalStyle,
-  keyframes,
-  ThemeProvider,
-  ThemeConsumer,
-  ThemeContext
-}
+export { styled, css, createGlobalStyle, keyframes, ThemeProvider, ThemeConsumer, ThemeContext }

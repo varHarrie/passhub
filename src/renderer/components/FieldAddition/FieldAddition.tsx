@@ -1,4 +1,4 @@
-import * as React from 'react'
+import { useCallback, useRef, useState } from 'react'
 
 import useClickOutside from '../../hooks/useClickOutside'
 import Button from '../Button'
@@ -14,14 +14,14 @@ export interface Props {
 export default function FieldAddition (props: Props) {
   const { onAdd } = props
 
-  const refButton = React.useRef<HTMLButtonElement>(null)
-  const [visible, setVisible] = React.useState(false)
+  const refButton = useRef<HTMLButtonElement>(null)
+  const [visible, setVisible] = useState(false)
 
   useClickOutside(refButton.current, () => {
     setVisible(false)
   })
 
-  const onButtonClick = React.useCallback(() => {
+  const onButtonClick = useCallback(() => {
     setVisible(!visible)
   }, [visible])
 
@@ -31,18 +31,8 @@ export default function FieldAddition (props: Props) {
         <Icon type='Plus' />
       </Button>
       <StyledMenu visible={visible}>
-        <Menu.Item
-          icon='Type'
-          title='Text'
-          data={FieldType.text}
-          onClick={onAdd}
-        />
-        <Menu.Item
-          icon='Lock'
-          title='Password'
-          data={FieldType.password}
-          onClick={onAdd}
-        />
+        <Menu.Item icon='Type' title='Text' data={FieldType.text} onClick={onAdd} />
+        <Menu.Item icon='Lock' title='Password' data={FieldType.password} onClick={onAdd} />
       </StyledMenu>
     </Wrapper>
   )

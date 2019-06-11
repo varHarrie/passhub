@@ -1,4 +1,4 @@
-import * as React from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 
 import GroupItem from '../GroupItem'
 import Icon from '../Icon'
@@ -6,7 +6,6 @@ import Input from '../Input'
 import { noop } from '../../libs/utils'
 import { IconType } from '../../models/base'
 import { styled } from '../../styles'
-import { Group } from '../../models/group'
 
 export interface Props {
   className?: string
@@ -19,32 +18,29 @@ export interface Props {
 export default function GroupAddition (props: Props) {
   const { className, onConfirm = noop } = props
 
-  const refInput = React.useRef<HTMLInputElement>(null)
-  const [editable, setEditable] = React.useState(props.editable || false)
-  const [icon, setIcon] = React.useState<IconType>(props.icon || 'Archive')
-  const [title, setTitle] = React.useState(props.title || '')
+  const refInput = useRef<HTMLInputElement>(null)
+  const [editable, setEditable] = useState(props.editable || false)
+  const [icon, setIcon] = useState<IconType>(props.icon || 'Archive')
+  const [title, setTitle] = useState(props.title || '')
 
-  const onEditStart = React.useCallback(() => {
+  const onEditStart = useCallback(() => {
     setEditable(true)
     setIcon('Archive')
     setTitle('')
   }, [])
 
-  const onTitleChange = React.useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      setTitle(e.target.value.trim())
-    },
-    []
-  )
+  const onTitleChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    setTitle(e.target.value.trim())
+  }, [])
 
-  const onInputBlur = React.useCallback(() => {
+  const onInputBlur = useCallback(() => {
     if (!title) return
 
     onConfirm(icon, title)
     setEditable(false)
   }, [icon, title])
 
-  const onInputKeydown = React.useCallback(
+  const onInputKeydown = useCallback(
     (e: React.KeyboardEvent<HTMLInputElement>) => {
       const keyCode = e.keyCode
 
@@ -57,7 +53,7 @@ export default function GroupAddition (props: Props) {
     [icon, title]
   )
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (editable) {
       const $input = refInput.current
       if ($input) $input.focus()
@@ -78,10 +74,7 @@ export default function GroupAddition (props: Props) {
           onKeyDown={onInputKeydown}
         />
       ) : (
-        <GroupItem
-          data={{ id: '', icon: 'Plus', title: 'New' }}
-          onClick={onEditStart}
-        />
+        <GroupItem data={{ id: '', icon: 'Plus', title: 'New' }} onClick={onEditStart} />
       )}
     </Wrapper>
   )

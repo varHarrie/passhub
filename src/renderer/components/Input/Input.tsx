@@ -1,6 +1,5 @@
-import * as React from 'react'
-
 import { styled } from '../../styles'
+import { forwardRef } from 'react'
 
 export type InputType = 'text' | 'password' | 'textarea'
 
@@ -21,14 +20,7 @@ export interface Props {
 }
 
 function Input (props: Props, ref: React.Ref<HTMLInputElement>) {
-  const {
-    className,
-    solid,
-    size = 'medium',
-    prefix,
-    suffix,
-    ...inputProps
-  } = props
+  const { className, solid, size = 'medium', prefix, suffix, ...inputProps } = props
 
   return (
     <Wrapper className={className} size={size} solid={solid}>
@@ -39,7 +31,7 @@ function Input (props: Props, ref: React.Ref<HTMLInputElement>) {
   )
 }
 
-export default React.forwardRef(Input)
+export default forwardRef(Input)
 
 const Wrapper = styled.label<{ size: InputSize; solid?: boolean }>`
   padding: 0 8px;

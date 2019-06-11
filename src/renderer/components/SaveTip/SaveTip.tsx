@@ -1,5 +1,5 @@
-import * as React from 'react'
 import { useMappedState } from 'redux-react-hook'
+import { useCallback } from 'react'
 
 import Icon from '../Icon'
 import { styled } from '../../styles'
@@ -8,7 +8,7 @@ import { RootState } from '../../store'
 export interface Props {}
 
 export default function SaveTip (props: Props) {
-  const mapState = React.useCallback(
+  const mapState = useCallback(
     (state: RootState) => ({
       app: state.app
     }),

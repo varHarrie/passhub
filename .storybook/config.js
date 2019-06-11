@@ -1,4 +1,3 @@
-import * as React from 'react'
 import { withKnobs } from '@storybook/addon-knobs'
 import { configure, addDecorator } from '@storybook/react'
 import { theme, ThemeProvider } from '../src/renderer/styles'

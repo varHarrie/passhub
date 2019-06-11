@@ -1,4 +1,4 @@
-import * as React from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 
 import Menu from '../components/Menu'
 import { IconType } from '../models/base'
@@ -12,23 +12,20 @@ export type MenuOption<T = any> = {
 
 export type ItemClickHandler = (data: any, payload: any) => void
 
-export default function useContextMenu (
-  items: MenuOption[],
-  onItemClick: ItemClickHandler
-) {
-  const [visible, setVisible] = React.useState(false)
-  const [payload, setPayload] = React.useState<any>(null)
-  const [top, setTop] = React.useState(0)
-  const [left, setLeft] = React.useState(0)
+export default function useContextMenu (items: MenuOption[], onItemClick: ItemClickHandler) {
+  const [visible, setVisible] = useState(false)
+  const [payload, setPayload] = useState<any>(null)
+  const [top, setTop] = useState(0)
+  const [left, setLeft] = useState(0)
 
-  const onClick = React.useCallback(
+  const onClick = useCallback(
     (e, data) => {
       onItemClick(data, payload)
     },
     [payload, onItemClick]
   )
 
-  const menu = React.useMemo(
+  const menu = useMemo(
     () => (
       <ContextMenu visible={visible} style={{ top, left }}>
         {items.map((item) => (
@@ -39,18 +36,18 @@ export default function useContextMenu (
     [visible, items, onClick]
   )
 
-  const open = React.useCallback((e: React.MouseEvent, extra: any) => {
+  const open = useCallback((e: React.MouseEvent, extra: any) => {
     setVisible(true)
     setPayload(extra)
     setTop(e.clientY)
     setLeft(e.clientX)
   }, [])
 
-  const onMenuHide = React.useCallback(() => {
+  const onMenuHide = useCallback(() => {
     if (visible) setVisible(false)
   }, [visible])
 
-  React.useEffect(() => {
+  useEffect(() => {
     document.addEventListener('click', onMenuHide)
 
     return () => {

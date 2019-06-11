@@ -128,8 +128,7 @@ export function removeGroup (groupId: string) {
 
 export function selectGroup (groupId?: string) {
   return async (dispatch: ThunkDispatch, getState: () => RootState) => {
-    const group =
-      (groupId && getState().groups.find((g) => g.id === groupId)) || null
+    const group = (groupId && getState().groups.find((g) => g.id === groupId)) || null
 
     dispatch(changeGroup(group))
     await dispatch(listEntries())
@@ -198,8 +197,7 @@ export function removeEntry (entryId: string) {
 
 export function selectEntry (entryId?: string) {
   return async (dispatch: ThunkDispatch, getState: () => RootState) => {
-    const entry =
-      (entryId && getState().entries.find((e) => e.id === entryId)) || null
+    const entry = (entryId && getState().entries.find((e) => e.id === entryId)) || null
 
     dispatch(changeEntry(entry))
     await dispatch(listFields())
@@ -209,9 +207,7 @@ export function selectEntry (entryId?: string) {
 export function listFields () {
   return async (dispatch: ThunkDispatch, getState: () => RootState) => {
     const entry = getState().entry
-    const e = entry
-      ? await Database.instance.entries.findOne({ id: entry.id }, 'fields')
-      : null
+    const e = entry ? await Database.instance.entries.findOne({ id: entry.id }, 'fields') : null
 
     dispatch(changeFields(e ? e.fields : []))
   }
@@ -233,10 +229,7 @@ export function addField (type: FieldType) {
     }
 
     dispatch(save.start())
-    await Database.instance.entries.updateOne(
-      { id: entry.id },
-      { fields: [...fields, field] }
-    )
+    await Database.instance.entries.updateOne({ id: entry.id }, { fields: [...fields, field] })
     dispatch(save.end())
 
     await dispatch(listFields())

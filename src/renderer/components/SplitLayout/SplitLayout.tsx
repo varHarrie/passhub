@@ -1,4 +1,4 @@
-import * as React from 'react'
+import { Children, useEffect, useRef, useState } from 'react'
 
 import useDragging from '../../hooks/useDragging'
 import { styled } from '../../styles'
@@ -17,14 +17,12 @@ export default function SplitLayout (props: Props) {
   const { className, size = [], children } = props
   const defaultSize = props.defaultSize || size[0] || 0
 
-  const refWrapper = React.useRef<HTMLDivElement>(null)
-  const refDivider = React.useRef<HTMLDivElement>(null)
+  const refWrapper = useRef<HTMLDivElement>(null)
+  const refDivider = useRef<HTMLDivElement>(null)
 
-  const [pos, setPos] = React.useState(
-    typeof defaultSize === 'number' ? defaultSize : 0
-  )
+  const [pos, setPos] = useState(typeof defaultSize === 'number' ? defaultSize : 0)
 
-  React.useEffect(() => {
+  useEffect(() => {
     const $wrapper = refWrapper.current
     if (!$wrapper) return
 
@@ -36,9 +34,7 @@ export default function SplitLayout (props: Props) {
     if (!$wrapper) return
 
     const { left } = $wrapper.getBoundingClientRect()
-    const { clientX } = (e as TouchEvent).touches
-      ? (e as TouchEvent).touches[0]
-      : (e as MouseEvent)
+    const { clientX } = (e as TouchEvent).touches ? (e as TouchEvent).touches[0] : (e as MouseEvent)
 
     const nextPos = clamp(
       clientX - left,
@@ -49,7 +45,7 @@ export default function SplitLayout (props: Props) {
     setPos(nextPos)
   })
 
-  const [side, main] = React.Children.toArray(children)
+  const [side, main] = Children.toArray(children)
 
   return (
     <Wrapper ref={refWrapper} className={className}>

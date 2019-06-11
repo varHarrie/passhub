@@ -1,5 +1,5 @@
-import * as React from 'react'
 import { RouteComponentProps } from 'react-router'
+import { useCallback, useEffect, useRef, useState } from 'react'
 
 import Icon from '../../components/Icon'
 import Input from '../../components/Input'
@@ -10,18 +10,16 @@ import { styled } from '../../styles'
 export interface Props extends RouteComponentProps {}
 
 export default function LoginView (props: Props) {
-  const refInput = React.useRef<HTMLInputElement>(null)
-  const [password, setPassword] = React.useState('')
-  const [inputVisible, setInputVisible] = React.useState(false)
+  const refInput = useRef<HTMLInputElement>(null)
 
-  const onPasswordChange = React.useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      setPassword(e.target.value.trim())
-    },
-    []
-  )
+  const [password, setPassword] = useState('')
+  const [inputVisible, setInputVisible] = useState(false)
 
-  const onConfirm = React.useCallback(
+  const onPasswordChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    setPassword(e.target.value.trim())
+  }, [])
+
+  const onConfirm = useCallback(
     async (e: React.KeyboardEvent) => {
       if (e.keyCode !== 13) return
 
@@ -31,7 +29,7 @@ export default function LoginView (props: Props) {
     [password]
   )
 
-  React.useEffect(() => {
+  useEffect(() => {
     setInputVisible(true)
 
     if (refInput.current) {

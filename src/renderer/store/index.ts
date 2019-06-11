@@ -1,15 +1,7 @@
 import thunk from 'redux-thunk'
 import { applyMiddleware, combineReducers, createStore } from 'redux'
 
-import {
-  app,
-  AppState,
-  entries,
-  entry,
-  fields,
-  group,
-  groups
-} from './reducers'
+import { app, AppState, entries, entry, fields, group, groups } from './reducers'
 import { Group } from '../models/group'
 import { Entry } from '../models/entry'
 import { Field } from '../models/field'

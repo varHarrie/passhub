@@ -1,19 +1,19 @@
-import * as React from 'react'
+import { useCallback, useEffect, useState } from 'react'
 
 export default function useDragging (
   ref: React.RefObject<HTMLElement>,
   handler: (e: MouseEvent | TouchEvent) => void
 ) {
-  const [dragging, setDragging] = React.useState(false)
+  const [dragging, setDragging] = useState(false)
 
-  const onMove = React.useCallback(
+  const onMove = useCallback(
     (e: MouseEvent | TouchEvent) => {
       handler(e)
     },
     [ref.current]
   )
 
-  const onStart = React.useCallback(() => {
+  const onStart = useCallback(() => {
     setDragging(true)
     window.getSelection().removeAllRanges()
 
@@ -23,7 +23,7 @@ export default function useDragging (
     document.addEventListener('touchend', onEnd)
   }, [ref.current])
 
-  const onEnd = React.useCallback(() => {
+  const onEnd = useCallback(() => {
     setDragging(false)
 
     document.removeEventListener('mousemove', onMove)
@@ -32,7 +32,7 @@ export default function useDragging (
     document.removeEventListener('touchend', onEnd)
   }, [ref.current])
 
-  React.useEffect(() => {
+  useEffect(() => {
     const current = ref.current
     if (!current) return
 

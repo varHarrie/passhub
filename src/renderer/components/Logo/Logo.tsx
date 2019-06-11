@@ -1,5 +1,3 @@
-import * as React from 'react'
-
 import { styled } from '../../styles'
 
 export type LogoSize = 'small' | 'large'
@@ -29,12 +27,7 @@ export default function Logo (props: Props) {
 
   return (
     <Wrapper className={className} size={size}>
-      <svg
-        xmlns='http://www.w3.org/2000/svg'
-        width='42'
-        height='52'
-        viewBox='0 0 42 52'
-      >
+      <svg xmlns='http://www.w3.org/2000/svg' width='42' height='52' viewBox='0 0 42 52'>
         <g>
           <path d={mainPath} fill='#fff' />
           <path d={shadowPath} fill='#e0e0e0' />

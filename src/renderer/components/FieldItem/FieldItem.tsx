@@ -1,4 +1,4 @@
-import * as React from 'react'
+import { useCallback } from 'react'
 
 import Icon from '../Icon'
 import PasswordInput from './PasswordInput'
@@ -16,7 +16,7 @@ interface Props {
 export default function FieldItem (props: Props) {
   const { data, onChange, onCopy, onRemove } = props
 
-  const onTitleChange = React.useCallback(
+  const onTitleChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       const title = e.target.value
       onChange({ ...data, title })
@@ -24,7 +24,7 @@ export default function FieldItem (props: Props) {
     [data]
   )
 
-  const onValueChange = React.useCallback(
+  const onValueChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       const value = e.target.value
       onChange({ ...data, value })
@@ -32,11 +32,11 @@ export default function FieldItem (props: Props) {
     [data]
   )
 
-  const onValueCopy = React.useCallback(() => {
+  const onValueCopy = useCallback(() => {
     onCopy(data)
   }, [data])
 
-  const onFieldRemove = React.useCallback(() => {
+  const onFieldRemove = useCallback(() => {
     onRemove(data)
   }, [data])
 
@@ -51,11 +51,7 @@ export default function FieldItem (props: Props) {
         </Actions>
       </Header>
       <Container>
-        <Control
-          value={data.value}
-          onChange={onValueChange}
-          onCopy={onValueCopy}
-        />
+        <Control value={data.value} onChange={onValueChange} onCopy={onValueCopy} />
       </Container>
     </Wrapper>
   )

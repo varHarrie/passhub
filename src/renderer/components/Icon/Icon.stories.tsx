@@ -1,4 +1,3 @@
-import * as React from 'react'
 import * as Feather from 'react-feather'
 import { storiesOf } from '@storybook/react'
 import { text } from '@storybook/addon-knobs'

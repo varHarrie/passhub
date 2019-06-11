@@ -1,6 +1,6 @@
-import * as React from 'react'
 import { RouteComponentProps, withRouter } from 'react-router'
 import { useMappedState } from 'redux-react-hook'
+import { useCallback, useState } from 'react'
 
 import Button from '../../components/Button'
 import EntryItem from '../../components/EntryItem'
@@ -17,9 +17,7 @@ enum MenuType {
   remove = 'remove'
 }
 
-const contextMenu: any[] = [
-  { icon: 'Trash', title: 'Delete', data: MenuType.remove }
-]
+const contextMenu: any[] = [{ icon: 'Trash', title: 'Delete', data: MenuType.remove }]
 
 const mapState = (state: RootState) => ({
   entries: state.entries,
@@ -31,11 +29,11 @@ export interface Props extends RouteComponentProps<{ groupId: string }> {}
 function EntryList (props: Props) {
   const groupId = props.match.params.groupId
 
-  const [keyword, setKeyword] = React.useState('')
+  const [keyword, setKeyword] = useState('')
   const { entries, entry } = useMappedState(mapState)
   const dispatch = useDispatch()
 
-  const onMenuItemClick = React.useCallback((type: MenuType, g: Entry) => {
+  const onMenuItemClick = useCallback((type: MenuType, g: Entry) => {
     if (type === MenuType.remove) {
       dispatch(removeEntry(g.id))
     }
@@ -43,31 +41,25 @@ function EntryList (props: Props) {
 
   const { menu, open } = useContextMenu(contextMenu, onMenuItemClick)
 
-  const onEntryAdd = React.useCallback(async () => {
+  const onEntryAdd = useCallback(async () => {
     // todo: scroll to end
     const e = await dispatch(addEntry())
     props.history.push(`/${groupId}/${e.id}`)
   }, [groupId])
 
-  const onEntrySelect = React.useCallback(
+  const onEntrySelect = useCallback(
     (e: Entry) => {
       props.history.push(`/${groupId}/${e.id}`)
     },
     [groupId]
   )
 
-  const onKeywordChange = React.useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      setKeyword(e.target.value)
-    },
-    []
-  )
+  const onKeywordChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    setKeyword(e.target.value)
+  }, [])
 
   const items = entries
-    .filter(
-      (e) =>
-        e.title.indexOf(keyword) > -1 || e.description.indexOf(keyword) > -1
-    )
+    .filter((e) => e.title.indexOf(keyword) > -1 || e.description.indexOf(keyword) > -1)
     .map((e) => (
       <EntryItem
         key={e.id}
