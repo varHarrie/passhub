@@ -42,13 +42,13 @@ export default function SplitLayout (props: Props) {
       toPixel(size[1] || '100%', $wrapper.clientWidth)
     )
 
-    setPos(nextPos)
+    setPos(Math.floor(nextPos))
   })
 
   const [side, main] = Children.toArray(children)
 
   return (
-    <Wrapper ref={refWrapper} className={className}>
+    <Wrapper ref={refWrapper} className={className} dragging={dragging}>
       <SidePane style={{ width: pos + 'px' }}>{side}</SidePane>
       <Divider ref={refDivider} dragging={dragging} />
       <MainPane>{main}</MainPane>
@@ -56,9 +56,10 @@ export default function SplitLayout (props: Props) {
   )
 }
 
-const Wrapper = styled.div`
+const Wrapper = styled.div<{ dragging: boolean }>`
   display: flex;
   height: 100%;
+  cursor: ${(p) => (p.dragging ? 'col-resize' : 'inherit')};
 `
 
 const SidePane = styled.div`
