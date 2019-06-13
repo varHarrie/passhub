@@ -1,5 +1,5 @@
 import { HashRouter, Route, Switch } from 'react-router-dom'
-import { StoreContext } from 'redux-react-hook'
+import { Provider } from 'react-redux'
 
 import SaveTip from './components/SaveTip'
 import WindowActions from './components/WindowActions'
@@ -17,7 +17,7 @@ export default function App (props: Props) {
   const store = configureStore()
 
   return (
-    <StoreContext.Provider value={store}>
+    <Provider store={store}>
       <ThemeProvider theme={theme}>
         <HashRouter>
           <Wrapper>
@@ -31,7 +31,7 @@ export default function App (props: Props) {
           </Wrapper>
         </HashRouter>
       </ThemeProvider>
-    </StoreContext.Provider>
+    </Provider>
   )
 }
 

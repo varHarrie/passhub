@@ -1,6 +1,6 @@
 import { RouteComponentProps } from 'react-router'
 import { Fragment, useCallback, useRef, useState } from 'react'
-import { useMappedState } from 'redux-react-hook'
+import { useSelector } from 'react-redux'
 
 import GroupItem from '../../components/GroupItem'
 import GroupItemEditor from '../../components/GroupItemEditor'
@@ -13,12 +13,18 @@ import { RootState } from '../../store'
 import { addGroup, removeGroup, updateGroup, useDispatch } from '../../store/actions'
 import { IconType } from '../../models/base'
 
-const ContextMenu = createContextMenu()
-
 enum MenuType {
   edit = 'edit',
   remove = 'remove'
 }
+
+interface GroupLike {
+  id: string
+  icon: IconType
+  title: string
+}
+
+const ContextMenu = createContextMenu()
 
 const contextMenu: MenuOption<MenuType>[] = [
   { icon: 'Edit2', title: 'Edit', data: MenuType.edit },
@@ -29,12 +35,6 @@ const mapState = (state: RootState) => ({
   groups: state.groups
 })
 
-interface GroupLike {
-  id: string
-  icon: IconType
-  title: string
-}
-
 export interface Props extends RouteComponentProps<{ groupId?: string }> {}
 
 export default function SideView (props: Props) {
@@ -44,7 +44,7 @@ export default function SideView (props: Props) {
   const [editingGroup, setEditingGroup] = useState<Group>()
   const [addingGroup, setAddingGroup] = useState<GroupLike>(null)
 
-  const { groups } = useMappedState(mapState)
+  const { groups } = useSelector(mapState)
   const dispatch = useDispatch()
 
   const onMenuClick = useCallback((e: React.MouseEvent, t: MenuType, g: Group) => {

@@ -1,21 +1,18 @@
-import { useMappedState } from 'redux-react-hook'
 import { useCallback } from 'react'
+import { useSelector } from 'react-redux'
 
 import Icon from '../Icon'
 import { styled } from '../../styles'
 import { RootState } from '../../store'
 
+const mapState = (state: RootState) => ({
+  app: state.app
+})
+
 export interface Props {}
 
 export default function SaveTip (props: Props) {
-  const mapState = useCallback(
-    (state: RootState) => ({
-      app: state.app
-    }),
-    []
-  )
-
-  const { app } = useMappedState(mapState)
+  const { app } = useSelector(mapState)
 
   return (
     <Wrapper visible={app.saving}>

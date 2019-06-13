@@ -6,8 +6,6 @@ import { Group } from '../models/group'
 import { Entry } from '../models/entry'
 import { Field } from '../models/field'
 
-export type PasshubState = any
-
 export type RootState = {
   app: AppState
   groups: Group[]
@@ -25,8 +23,7 @@ export default function configureStore () {
     entries,
     entry,
     fields
-  } as any)
+  })
 
-  const store = createStore(rootReducer, applyMiddleware(thunk))
-  return store
+  return createStore(rootReducer, applyMiddleware(thunk))
 }

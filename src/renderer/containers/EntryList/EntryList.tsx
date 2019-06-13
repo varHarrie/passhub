@@ -1,6 +1,6 @@
 import { RouteComponentProps, withRouter } from 'react-router'
-import { useMappedState } from 'redux-react-hook'
 import { useCallback, useState } from 'react'
+import { useSelector } from 'react-redux'
 
 import Button from '../../components/Button'
 import EntryItem from '../../components/EntryItem'
@@ -30,7 +30,7 @@ function EntryList (props: Props) {
   const groupId = props.match.params.groupId
 
   const [keyword, setKeyword] = useState('')
-  const { entries, entry } = useMappedState(mapState)
+  const { entries, entry } = useSelector(mapState)
   const dispatch = useDispatch()
 
   const onMenuItemClick = useCallback((type: MenuType, g: Entry) => {

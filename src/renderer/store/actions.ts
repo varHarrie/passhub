@@ -1,6 +1,5 @@
 import * as uuid from 'uuid'
-import { useDispatch as originUseDispatch } from 'redux-react-hook'
-import { ThunkAction } from 'redux-thunk'
+import { useDispatch as originUseDispatch } from 'react-redux'
 
 import Database from '../Database'
 import { Group } from '../models/group'
@@ -102,7 +101,7 @@ export function addGroup (icon: IconType, title: string) {
 export function updateGroup (groupId: string, icon: IconType, title: string) {
   return async (dispatch: ThunkDispatch) => {
     dispatch(save.start())
-    Database.instance.groups.updateOne({ id: groupId }, { icon, title })
+    await Database.instance.groups.updateOne({ id: groupId }, { icon, title })
     dispatch(save.end())
 
     await dispatch(listGroups())
@@ -146,7 +145,7 @@ export function listEntries () {
   }
 }
 
-export function addEntry (): ThunkAction<any, any, any, any> {
+export function addEntry () {
   return async (dispatch: ThunkDispatch, getState: () => RootState) => {
     const group = getState().group
     if (!group) return

@@ -1,6 +1,6 @@
 import { RouteComponentProps, withRouter } from 'react-router'
-import { useMappedState } from 'redux-react-hook'
 import { useCallback } from 'react'
+import { useSelector } from 'react-redux'
 
 import FieldAddition from '../../components/FieldAddition'
 import FieldItem from '../../components/FieldItem'
@@ -16,18 +16,15 @@ import {
 } from '../../store/actions'
 import { FieldType } from '../../models/field'
 
+const mapState = (state: RootState) => ({
+  entry: state.entry,
+  fields: state.fields
+})
+
 export interface Props extends RouteComponentProps<{ groupId: string; entryId: string }> {}
 
 function Editor (props: Props) {
-  const mapState = useCallback(
-    (state: RootState) => ({
-      entry: state.entry,
-      fields: state.fields
-    }),
-    []
-  )
-
-  const { entry, fields } = useMappedState(mapState)
+  const { entry, fields } = useSelector(mapState)
   const dispatch = useDispatch()
 
   const onEntryAdd = useCallback((e, type: FieldType) => {
