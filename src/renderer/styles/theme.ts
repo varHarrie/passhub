@@ -29,6 +29,7 @@ export interface Theme {
     itemHeight: string
     itemBackground: string
     itemHoverBackground: string
+    itemActiveBackground: string
     itemMarkHeight: string
     itemMarkActiveWidth: string
     itemMarkBackground: string
@@ -53,6 +54,7 @@ export interface Theme {
     focusBackground: string
     border: string
     focusBorder: string
+    focusShadow: string
     placeholderColor: string
     solidColor: string
     solidFocusColor: string
@@ -128,6 +130,7 @@ export const theme: Theme = {
     itemHeight: '42px',
     itemBackground: 'transparent',
     itemHoverBackground: '#E0E0E0',
+    itemActiveBackground: '#E0E0E0',
     itemMarkHeight: '100%',
     itemMarkActiveWidth: '4px',
     itemMarkBackground: '#999',
@@ -152,6 +155,7 @@ export const theme: Theme = {
     focusBackground: '#FFF',
     border: '1px solid #E0E0E0',
     focusBorder: '1px solid #999',
+    focusShadow: '0 0 0 3px #eee',
     placeholderColor: '#E0E0E0',
     solidColor: '#999',
     solidFocusColor: '#525A5B',

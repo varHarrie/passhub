@@ -56,7 +56,8 @@ const Wrapper = styled.div<{ active?: boolean }>`
   align-items: center;
   width: 100%;
   height: ${(p) => p.theme.sidebar.itemHeight};
-  background: ${(p) => p.theme.sidebar.itemBackground};
+  background: ${(p) =>
+    p.active ? p.theme.sidebar.itemActiveBackground : p.theme.sidebar.itemBackground};
   color: ${(p) =>
     p.active ? p.theme.sidebar.itemTitleActiveColor : p.theme.sidebar.itemTitleColor};
   cursor: pointer;

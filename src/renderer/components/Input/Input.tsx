@@ -1,5 +1,6 @@
-import { styled } from '../../styles'
 import { forwardRef } from 'react'
+
+import { styled } from '../../styles'
 
 export type InputType = 'text' | 'password' | 'textarea'
 
@@ -51,6 +52,7 @@ const Wrapper = styled.label<{ size: InputSize; solid?: boolean }>`
   &:focus-within {
     color: ${(p) => p.theme.input.focusColor};
     border: ${(p) => p.theme.input.focusBorder};
+    box-shadow: ${(p) => p.theme.input.focusShadow};
   }
 
   ${(p) =>
@@ -62,6 +64,7 @@ const Wrapper = styled.label<{ size: InputSize; solid?: boolean }>`
       &:focus-within {
         background: ${p.theme.input.solidFocusBackground};
         border: ${p.theme.input.solidFocusBackground};
+        box-shadow: none;
       }
     `}
 `

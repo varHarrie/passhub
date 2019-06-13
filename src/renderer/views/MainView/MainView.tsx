@@ -2,9 +2,9 @@ import { Route, RouteComponentProps } from 'react-router'
 import { useContext, useEffect } from 'react'
 
 import SplitLayout from '../../components/SplitLayout'
-import Sidebar from '../../containers/Sidebar'
 import Database from '../../Database'
 import GroupView from '../GroupView'
+import SideView from '../SideView'
 import { listGroups, useDispatch } from '../../store/actions'
 import { ThemeContext } from '../../styles'
 
@@ -30,7 +30,7 @@ export default function MainView (props: Props) {
 
   return (
     <SplitLayout defaultSize={theme.sidebar.width} size={[160, '50%']}>
-      <Sidebar />
+      <Route path='/:groupId?' component={SideView} />
       <Route path='/:groupId' component={GroupView} />
     </SplitLayout>
   )

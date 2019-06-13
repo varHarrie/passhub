@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { forwardRef, useCallback, useEffect, useImperativeHandle, useRef, useState } from 'react'
 
 import { styled } from '../../styles'
 
@@ -9,7 +9,11 @@ export interface Props {
   children?: React.ReactNode
 }
 
-export default function ScrollArea (props: Props) {
+export interface Handles {
+  scrollToEnd: () => void
+}
+
+function ScrollArea (props: Props, ref: React.Ref<Handles>) {
   const { className, children } = props
 
   const refContainer = useRef<HTMLDivElement>(null)
@@ -42,6 +46,13 @@ export default function ScrollArea (props: Props) {
     }
   }, [])
 
+  useImperativeHandle(ref, () => ({
+    scrollToEnd: () => {
+      const container = refContainer.current
+      container.scrollTop = container.scrollHeight
+    }
+  }))
+
   return (
     <Wrapper className={className}>
       <TopShadow visible={state === 'center' || state === 'bottom'} />
@@ -50,6 +61,8 @@ export default function ScrollArea (props: Props) {
     </Wrapper>
   )
 }
+
+export default forwardRef(ScrollArea)
 
 const Wrapper = styled.div`
   position: relative;
