@@ -1,11 +1,11 @@
 import { RouteComponentProps } from 'react-router'
-import { Fragment, useCallback, useRef, useState } from 'react'
+import { useCallback, useRef, useState } from 'react'
 import { useSelector } from 'react-redux'
 
 import GroupItem from '../../components/GroupItem'
 import GroupItemEditor from '../../components/GroupItemEditor'
 import Logo from '../../components/Logo'
-import SideBar, { Handles as SideBarHandles } from '../../components/SideBar'
+import ScrollArea, { Handles as ScrollAreaHandles } from '../../components/ScrollArea'
 import createContextMenu, { MenuOption } from '../../libs/create-context-menu'
 import { styled } from '../../styles'
 import { Group } from '../../models/group'
@@ -39,7 +39,7 @@ export interface Props extends RouteComponentProps<{ groupId?: string }> {}
 
 export default function SideView (props: Props) {
   const groupId = props.match.params.groupId
-  const refSideBar = useRef<SideBarHandles>()
+  const refContainer = useRef<ScrollAreaHandles>()
 
   const [editingGroup, setEditingGroup] = useState<Group>()
   const [addingGroup, setAddingGroup] = useState<GroupLike>(null)
@@ -72,7 +72,7 @@ export default function SideView (props: Props) {
 
   const onGroupStartAdd = useCallback(() => {
     setAddingGroup({ id: '', icon: 'Archive', title: '' })
-    refSideBar.current.scrollToEnd()
+    refContainer.current.scrollToEnd()
   }, [])
 
   const onGroupAdd = useCallback(async (icon: IconType, title: string) => {
@@ -80,39 +80,57 @@ export default function SideView (props: Props) {
     if (!title) return
 
     const g = await dispatch(addGroup(icon, title))
-    refSideBar.current.scrollToEnd()
+    refContainer.current.scrollToEnd()
     props.history.push(`/${g.id}`)
   }, [])
 
   return (
-    <SideBar
-      ref={refSideBar}
-      header={
-        <Fragment>
-          <StyledLogo size='small' />
-          <Title>Passhub</Title>
-        </Fragment>
-      }
-    >
-      <ContextMenu.Wrapper options={contextMenu} onClick={onMenuClick}>
-        {groups.map((g) =>
-          editingGroup && editingGroup.id === g.id ? (
-            <GroupItemEditor key={g.id} icon={g.icon} title={g.title} onConfirm={onGroupUpdate} />
-          ) : (
-            <ContextMenu.Trigger key={g.id} payload={g}>
-              <GroupItem data={g} active={g.id === groupId} onClick={onGroupSelect} />
-            </ContextMenu.Trigger>
-          )
+    <Wrapper>
+      <Header>
+        <StyledLogo size='small' />
+        <Title>Passhub</Title>
+      </Header>
+      <Container>
+        <ContextMenu.Wrapper options={contextMenu} onClick={onMenuClick}>
+          {groups.map((g) =>
+            editingGroup && editingGroup.id === g.id ? (
+              <GroupItemEditor key={g.id} icon={g.icon} title={g.title} onConfirm={onGroupUpdate} />
+            ) : (
+              <ContextMenu.Trigger key={g.id} payload={g}>
+                <GroupItem data={g} active={g.id === groupId} onClick={onGroupSelect} />
+              </ContextMenu.Trigger>
+            )
+          )}
+        </ContextMenu.Wrapper>
+        {addingGroup ? (
+          <GroupItemEditor
+            icon={addingGroup.icon}
+            title={addingGroup.title}
+            onConfirm={onGroupAdd}
+          />
+        ) : (
+          <GroupItem data={{ id: '', icon: 'Plus', title: 'New' }} onClick={onGroupStartAdd} />
         )}
-      </ContextMenu.Wrapper>
-      {addingGroup ? (
-        <GroupItemEditor icon={addingGroup.icon} title={addingGroup.title} onConfirm={onGroupAdd} />
-      ) : (
-        <GroupItem data={{ id: '', icon: 'Plus', title: 'New' }} onClick={onGroupStartAdd} />
-      )}
-    </SideBar>
+      </Container>
+    </Wrapper>
   )
 }
+
+const Wrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: ${(p) => p.theme.sidebar.background};
+`
+
+const Header = styled.div`
+  display: flex;
+  align-items: center;
+  padding: 12px 14px;
+  height: 56px;
+  font-size: 20px;
+  -webkit-app-region: drag;
+`
 
 const StyledLogo = styled(Logo)`
   background: ${(p) => p.theme.sidebar.logoBackground};
@@ -121,4 +139,9 @@ const StyledLogo = styled(Logo)`
 const Title = styled.div`
   margin-left: 8px;
   color: ${(p) => p.theme.sidebar.titleColor};
+`
+
+const Container = styled(ScrollArea)`
+  flex: 1;
+  min-height: 0;
 `
