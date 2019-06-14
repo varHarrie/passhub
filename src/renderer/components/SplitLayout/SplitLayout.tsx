@@ -34,7 +34,7 @@ export default function SplitLayout (props: Props) {
     if (!$wrapper) return
 
     const { left } = $wrapper.getBoundingClientRect()
-    const { clientX } = (e as TouchEvent).touches ? (e as TouchEvent).touches[0] : (e as MouseEvent)
+    const { clientX } = isTouchEvent(e) ? e.touches[0] : e
 
     const nextPos = clamp(
       clientX - left,
@@ -75,14 +75,14 @@ const MainPane = styled.div`
 const Divider = styled.div<{ dragging: boolean }>`
   position: relative;
   z-index: 1;
-  margin: 0 -3px;
-  width: 7px;
+  margin: 0 -2px;
+  width: 5px;
   height: 100%;
   background-color: ${(p) =>
     p.dragging ? p.theme.divider.hoverBackground : p.theme.divider.background};
   background-clip: padding-box;
-  border-left: 3px solid transparent;
-  border-right: 3px solid transparent;
+  border-left: 2px solid transparent;
+  border-right: 2px solid transparent;
   cursor: col-resize;
   user-select: none;
   transition: background-color 0.3s;
@@ -91,6 +91,10 @@ const Divider = styled.div<{ dragging: boolean }>`
     background-color: ${(p) => p.theme.divider.hoverBackground};
   }
 `
+
+function isTouchEvent (e: any): e is TouchEvent {
+  return !!e.touches
+}
 
 function toPixel (size: SizeType, totalSize: number) {
   return typeof size === 'number'
