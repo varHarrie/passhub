@@ -1,28 +1,23 @@
-import {
-  createContext,
-  cloneElement,
-  ReactNode,
-  isValidElement,
-  useCallback,
-  useState,
-  useContext,
-  useRef,
-  useEffect
-} from 'react'
-import { IconType } from '../models/base'
 import styled from 'styled-components'
+import {
+  cloneElement,
+  createContext,
+  isValidElement,
+  ReactNode,
+  useCallback,
+  useContext,
+  useEffect,
+  useRef,
+  useState
+} from 'react'
+
 import Menu from '../components/Menu'
 import { css } from '../styles'
 import { noop } from './utils'
+import { MenuOption } from '../components/Menu/MenuItem'
 
 export type MenuContextValue<P> = {
   (e: React.MouseEvent, payload: P): void
-}
-
-export type MenuOption<O> = {
-  icon: IconType
-  title: string
-  data: O
 }
 
 export interface WrapperProps<P, O> {

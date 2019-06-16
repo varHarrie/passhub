@@ -5,11 +5,14 @@ import { styled } from '../../styles'
 import { IconType } from '../../models/base'
 import { noop } from '../../libs/utils'
 
-export interface Props<T = any> {
-  className?: string
+export interface MenuOption<T> {
   icon: IconType
   title: string
-  data?: T
+  data: T
+}
+
+export interface Props<T = any> extends MenuOption<T> {
+  className?: string
   onClick?: (e: React.MouseEvent, data: T) => void
 }
 

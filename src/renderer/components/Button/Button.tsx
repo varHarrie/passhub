@@ -34,6 +34,7 @@ const Wrapper = styled.button<{ solid?: boolean; size: ButtonSize }>`
   border: ${(p) => p.theme.button.border};
   border-radius: ${(p) => p.theme.button.borderRadius};
   text-align: center;
+  cursor: pointer;
   transition: all 0.3s;
 
   &:hover {

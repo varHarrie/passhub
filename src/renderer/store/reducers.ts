@@ -77,17 +77,17 @@ export const entry = (state: Entry | null = null, action: Actions) => {
   }
 }
 
-export const fields = (state: Field[] = [], action: Actions) => {
-  switch (action.type) {
-    case CHANGE_FIELDS:
-      return action.payload
+// export const fields = (state: Field[] = [], action: Actions) => {
+//   switch (action.type) {
+//     case CHANGE_FIELDS:
+//       return action.payload
 
-    case MODIFY_FIELD:
-      const newFields = [...state]
-      newFields.splice(action.payload.index, 1, action.payload.field)
-      return newFields
+//     case MODIFY_FIELD:
+//       const newFields = [...state]
+//       newFields.splice(action.payload.index, 1, action.payload.field)
+//       return newFields
 
-    default:
-      return state
-  }
-}
+//     default:
+//       return state
+//   }
+// }

@@ -11,6 +11,7 @@ export interface Props {
   value?: string
   placeholder?: string
   solid?: boolean
+  disabled?: boolean
   type?: InputType
   size?: InputSize
   prefix?: React.ReactNode

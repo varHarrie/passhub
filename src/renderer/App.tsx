@@ -26,7 +26,7 @@ export default function App (props: Props) {
               <Route path='/' component={MainView} />
             </Switch>
             <WindowActions />
-            <SaveTip />
+            {/* <SaveTip /> */}
             <GlobalStyle />
           </Wrapper>
         </HashRouter>

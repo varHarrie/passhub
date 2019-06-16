@@ -13,7 +13,7 @@ export interface Props {
   onClick?: React.MouseEventHandler
 }
 
-export default function Icon(props: Props) {
+export default function Icon (props: Props) {
   const { className, type, rotating, size = 'small', onClick } = props
   const Image = Feather[type]
 
@@ -37,6 +37,7 @@ const Wrapper = styled.div<{ size: IconSize; rotating?: boolean }>`
   height: ${(p) => p.theme.icon.sizes[p.size]};
   vertical-align: bottom;
   color: inherit;
+  cursor: ${(p) => (p.onClick ? 'pointer' : 'inherit')};
   user-select: none;
 
   ${(p) =>

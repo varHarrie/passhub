@@ -1,10 +1,9 @@
 import thunk from 'redux-thunk'
 import { applyMiddleware, combineReducers, createStore } from 'redux'
 
-import { app, AppState, entries, entry, fields, group, groups } from './reducers'
+import { app, AppState, entries, entry, group, groups } from './reducers'
 import { Group } from '../models/group'
 import { Entry } from '../models/entry'
-import { Field } from '../models/field'
 
 export type RootState = {
   app: AppState
@@ -12,7 +11,6 @@ export type RootState = {
   group: Group | null
   entries: Entry[]
   entry: Entry | null
-  fields: Field[]
 }
 
 export default function configureStore () {
@@ -21,8 +19,7 @@ export default function configureStore () {
     groups,
     group,
     entries,
-    entry,
-    fields
+    entry
   })
 
   return createStore(rootReducer, applyMiddleware(thunk))

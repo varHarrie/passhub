@@ -40,7 +40,7 @@ export interface Theme {
     width: string
     background: string
   }
-  editor: {
+  entry: {
     background: string
   }
   input: {
@@ -141,7 +141,7 @@ export const theme: Theme = {
     width: '250px',
     background: '#FFF'
   },
-  editor: {
+  entry: {
     background: '#FFF'
   },
   input: {

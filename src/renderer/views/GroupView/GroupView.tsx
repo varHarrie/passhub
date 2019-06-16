@@ -2,8 +2,8 @@ import { Route, RouteComponentProps } from 'react-router'
 import { useContext, useEffect } from 'react'
 
 import SplitLayout from '../../components/SplitLayout'
-import EntryList from '../../containers/EntryList'
 import EntryView from '../EntryView'
+import ListView from '../ListView'
 import { ThemeContext } from '../../styles'
 import { selectGroup, useDispatch } from '../../store/actions'
 
@@ -23,8 +23,8 @@ export default function GroupView (props: Props) {
 
   return (
     <SplitLayout defaultSize={theme.list.width} size={[200, '50%']}>
-      <EntryList />
-      <Route path='/:groupId/:entryId' component={EntryView} />
+      <Route path='/:groupId/:entryId?' component={ListView} />
+      <Route path='/:groupId/:entryId/:editable?' component={EntryView} />
     </SplitLayout>
   )
 }

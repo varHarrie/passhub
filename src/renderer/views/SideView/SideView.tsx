@@ -5,13 +5,14 @@ import { useSelector } from 'react-redux'
 import GroupItem from '../../components/GroupItem'
 import GroupItemEditor from '../../components/GroupItemEditor'
 import Logo from '../../components/Logo'
+import createContextMenu from '../../libs/create-context-menu'
 import ScrollArea, { Handles as ScrollAreaHandles } from '../../components/ScrollArea'
-import createContextMenu, { MenuOption } from '../../libs/create-context-menu'
 import { styled } from '../../styles'
 import { Group } from '../../models/group'
 import { RootState } from '../../store'
 import { addGroup, removeGroup, updateGroup, useDispatch } from '../../store/actions'
 import { IconType } from '../../models/base'
+import { MenuOption } from '../../components/Menu/MenuItem'
 
 enum MenuType {
   edit = 'edit',
@@ -80,8 +81,9 @@ export default function SideView (props: Props) {
     if (!title) return
 
     const g = await dispatch(addGroup(icon, title))
-    refContainer.current.scrollToEnd()
     props.history.push(`/${g.id}`)
+
+    refContainer.current.scrollToEnd()
   }, [])
 
   return (
@@ -90,7 +92,7 @@ export default function SideView (props: Props) {
         <StyledLogo size='small' />
         <Title>Passhub</Title>
       </Header>
-      <Container>
+      <Container ref={refContainer}>
         <ContextMenu.Wrapper options={contextMenu} onClick={onMenuClick}>
           {groups.map((g) =>
             editingGroup && editingGroup.id === g.id ? (
