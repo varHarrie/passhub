@@ -1,21 +1,18 @@
 import * as uuid from 'uuid'
-import { RouteComponentProps } from 'react-router'
-import { useCallback, useEffect, useState } from 'react'
-import { useSelector } from 'react-redux'
+import { useCallback, useState } from 'react'
 
 import Button from '../../components/Button'
 import DropdownMenu from '../../components/DropdownMenu'
 import FieldItem from '../../components/FieldItem'
 import Icon from '../../components/Icon'
+import Input from '../../components/Input'
 import ScrollArea from '../../components/ScrollArea'
 import useRouter from '../../hooks/useRouter'
-import { styled, css } from '../../styles'
-import { selectEntry, useDispatch, updateEntry } from '../../store/actions'
-import { RootState } from '../../store'
+import { css, styled } from '../../styles'
+import { updateEntry, useDispatch } from '../../store/actions'
 import { FieldType } from '../../models/field'
 import { MenuOption } from '../../components/Menu/MenuItem'
 import { Entry } from '../../models/entry'
-import Input from '../../components/Input'
 
 const menus: MenuOption<FieldType>[] = [
   { icon: 'Type', title: 'Text', data: FieldType.text },
@@ -31,11 +28,6 @@ export interface Params {
 export interface Props {
   entry: Entry
 }
-
-// function useCacheState (newState, inputs) {
-//   const [state, setState] = useState(newState)
-
-// }
 
 export default function EntryDetailView (props: Props) {
   const { match, history } = useRouter<Params>()
@@ -91,10 +83,6 @@ export default function EntryDetailView (props: Props) {
   const onFieldCopy = useCallback((field) => {
     console.log('copy', field)
   }, [])
-
-  // useEffect(() => {
-  //   setEntry(props.entry)
-  // }, [editable])
 
   return (
     <Wrapper>
