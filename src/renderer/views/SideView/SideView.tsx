@@ -10,8 +10,8 @@ import ScrollArea, { Handles as ScrollAreaHandles } from '../../components/Scrol
 import { styled } from '../../styles'
 import { Group } from '../../models/group'
 import { IconType } from '../../models/base'
-import { MenuOption } from '../../components/Menu/MenuItem'
 import { useAppStore } from '../../store'
+import { MenuOption } from '../../components/Menu'
 
 enum MenuType {
   edit = 'edit',

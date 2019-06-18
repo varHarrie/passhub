@@ -1,10 +1,9 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 
-import Menu from '../Menu'
 import ContextMenuTrigger from './ContextMenuTrigger'
 import MenuContext from './MenuContext'
+import Menu, { MenuOption } from '../Menu'
 import { css, styled } from '../../styles'
-import { MenuOption } from '../Menu/MenuItem'
 import { noop } from '../../libs/utils'
 
 export interface Props<P, O> {

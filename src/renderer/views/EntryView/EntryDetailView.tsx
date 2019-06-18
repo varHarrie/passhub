@@ -12,9 +12,9 @@ import ScrollArea from '../../components/ScrollArea'
 import useRouter from '../../hooks/useRouter'
 import { css, styled } from '../../styles'
 import { FieldType } from '../../models/field'
-import { MenuOption } from '../../components/Menu/MenuItem'
 import { Entry } from '../../models/entry'
 import { useAppStore } from '../../store'
+import { MenuOption } from '../../components/Menu'
 
 const menus: MenuOption<FieldType>[] = [
   { icon: 'Type', title: 'Text', data: FieldType.text },

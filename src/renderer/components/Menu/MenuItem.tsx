@@ -1,15 +1,9 @@
 import { useCallback } from 'react'
 
 import Icon from '../Icon'
+import MenuOption from './MenuOption'
 import { styled } from '../../styles'
-import { IconType } from '../../models/base'
 import { noop } from '../../libs/utils'
-
-export interface MenuOption<T> {
-  icon: IconType
-  title: string
-  data: T
-}
 
 export interface Props<T = any> extends MenuOption<T> {
   className?: string

@@ -2,9 +2,8 @@ import { useRef } from 'react'
 
 import useClickOutside from '../../hooks/useClickOutside'
 import useToggle from '../../hooks/useToggle'
-import Menu from '../Menu'
+import Menu, { MenuOption } from '../Menu'
 import { styled } from '../../styles'
-import { MenuOption } from '../Menu/MenuItem'
 
 export type Position = 'top-start' | 'top-end' | 'bottom-start' | 'bottom-end'
 
