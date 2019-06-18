@@ -1,5 +1,7 @@
 import * as uuid from 'uuid'
 import { useCallback, useState } from 'react'
+import { observer } from 'mobx-react-lite'
+import { toJS } from 'mobx'
 
 import Button from '../../components/Button'
 import DropdownMenu from '../../components/DropdownMenu'
@@ -9,10 +11,10 @@ import Input from '../../components/Input'
 import ScrollArea from '../../components/ScrollArea'
 import useRouter from '../../hooks/useRouter'
 import { css, styled } from '../../styles'
-import { updateEntry, useDispatch } from '../../store/actions'
 import { FieldType } from '../../models/field'
 import { MenuOption } from '../../components/Menu/MenuItem'
 import { Entry } from '../../models/entry'
+import { useAppStore } from '../../store'
 
 const menus: MenuOption<FieldType>[] = [
   { icon: 'Type', title: 'Text', data: FieldType.text },
@@ -25,33 +27,31 @@ export interface Params {
   editable?: string
 }
 
-export interface Props {
-  entry: Entry
-}
+export interface Props {}
 
-export default function EntryDetailView (props: Props) {
+export default observer(function EntryDetailView (props: Props) {
   const { match, history } = useRouter<Params>()
   const { groupId, entryId } = match.params
 
+  const store = useAppStore()
   const editable = !!match.params.editable
-  const dispatch = useDispatch()
 
-  const [entry, setEntry] = useState(props.entry)
+  const [entry, setEntry] = useState<Entry>(() => toJS(store.entry))
 
   const onEdit = useCallback(() => {
     history.push(`/${groupId}/${entryId}/editable`)
-  }, [])
+  }, [groupId, entryId])
 
   const onSave = useCallback(() => {
     const { id, ...attrs } = entry
-    dispatch(updateEntry(id, attrs))
+    store.updateEntry(id, attrs)
     history.push(`/${groupId}/${entryId}`)
   }, [entry])
 
   const onCancel = useCallback(() => {
-    setEntry(props.entry)
+    setEntry(toJS(store.entry))
     history.push(`/${groupId}/${entryId}`)
-  }, [props.entry])
+  }, [store.entry])
 
   const onMenuClick = useCallback(
     (e: React.MouseEvent, type: FieldType) => {
@@ -132,7 +132,7 @@ export default function EntryDetailView (props: Props) {
       </Footer>
     </Wrapper>
   )
-}
+})
 
 const Wrapper = styled.div`
   position: relative;

@@ -1,5 +1,6 @@
 import { RouteComponentProps } from 'react-router'
 import { useCallback, useEffect, useRef, useState } from 'react'
+import { observer } from 'mobx-react-lite'
 
 import Icon from '../../components/Icon'
 import Input from '../../components/Input'
@@ -9,7 +10,8 @@ import { styled } from '../../styles'
 
 export interface Props extends RouteComponentProps {}
 
-export default function LoginView (props: Props) {
+export default observer(function LoginView (props: Props) {
+  const { history } = props
   const refInput = useRef<HTMLInputElement>(null)
 
   const [password, setPassword] = useState('')
@@ -24,9 +26,9 @@ export default function LoginView (props: Props) {
       if (e.keyCode !== 13) return
 
       await Database.connect('./data.json')
-      props.history.push('/')
+      history.push('/')
     },
-    [password]
+    [password, history]
   )
 
   useEffect(() => {
@@ -51,7 +53,7 @@ export default function LoginView (props: Props) {
       />
     </Wrapper>
   )
-}
+})
 
 const Wrapper = styled.div`
   display: flex;

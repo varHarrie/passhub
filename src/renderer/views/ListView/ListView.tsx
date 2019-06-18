@@ -1,6 +1,6 @@
 import { useCallback, useMemo, useRef, useState } from 'react'
-import { useSelector } from 'react-redux'
 import { RouteComponentProps } from 'react-router'
+import { observer } from 'mobx-react-lite'
 
 import Button from '../../components/Button'
 import EntryItem from '../../components/EntryItem'
@@ -9,10 +9,9 @@ import Input from '../../components/Input'
 import createContextMenu from '../../libs/create-context-menu'
 import ScrollArea, { Handles as ScrollAreaHandles } from '../../components/ScrollArea'
 import { styled } from '../../styles'
-import { addEntry, removeEntry, useDispatch } from '../../store/actions'
-import { RootState } from '../../store'
 import { Entry } from '../../models/entry'
 import { MenuOption } from '../../components/Menu/MenuItem'
+import { useAppStore } from '../../store'
 
 enum MenuType {
   edit = 'edit',
@@ -26,51 +25,48 @@ const contextMenu: MenuOption<MenuType>[] = [
   { icon: 'Trash', title: 'Delete', data: MenuType.remove }
 ]
 
-const mapState = (state: RootState) => ({
-  entries: state.entries
-})
-
 export interface Props extends RouteComponentProps<{ groupId: string; entryId?: string }> {}
 
-export default function ListView (props: Props) {
-  const { groupId, entryId } = props.match.params
+export default observer(function ListView (props: Props) {
+  const { match, history } = props
+  const { groupId, entryId } = match.params
+
+  const store = useAppStore()
   const refContainer = useRef<ScrollAreaHandles>()
 
   const [keyword, setKeyword] = useState('')
-  const { entries } = useSelector(mapState)
 
-  const filteredEntries = useMemo(
-    () =>
-      entries.filter((e) => e.title.indexOf(keyword) > -1 || e.description.indexOf(keyword) > -1),
-    [entries, keyword]
+  const filteredEntries = useMemo(() => {
+    return store.entries.filter(entryFilter(keyword))
+  }, [store.entries, keyword])
+
+  const onMenuClick = useCallback(
+    (_: React.MouseEvent, t: MenuType, e: Entry) => {
+      if (t === MenuType.edit) {
+        history.push(`/${groupId}/${e.id}/editable`)
+      } else if (t === MenuType.remove) {
+        store.removeEntry(e.id)
+      }
+    },
+    [groupId, history]
   )
-
-  const dispatch = useDispatch()
-
-  const onMenuClick = useCallback((_: React.MouseEvent, t: MenuType, e: Entry) => {
-    if (t === MenuType.edit) {
-      props.history.push(`/${groupId}/${e.id}/editable`)
-    } else if (t === MenuType.remove) {
-      dispatch(removeEntry(e.id))
-    }
-  }, [])
 
   const onKeywordChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     setKeyword(e.target.value)
   }, [])
 
   const onEntryAdd = useCallback(async () => {
-    const e = await dispatch(addEntry())
-    props.history.push(`/${groupId}/${e.id}/editable`)
+    const e = await store.addEntry()
+    history.push(`/${groupId}/${e.id}/editable`)
 
     refContainer.current.scrollToEnd()
-  }, [groupId])
+  }, [groupId, history])
 
   const onEntrySelect = useCallback(
     (e: Entry) => {
-      props.history.push(`/${groupId}/${e.id}`)
+      history.push(`/${groupId}/${e.id}`)
     },
-    [groupId]
+    [groupId, history]
   )
 
   return (
@@ -97,7 +93,7 @@ export default function ListView (props: Props) {
       </Container>
     </Wrapper>
   )
-}
+})
 
 const Wrapper = styled.div`
   display: flex;
@@ -128,3 +124,8 @@ const Container = styled(ScrollArea)`
   flex: 1;
   min-height: 0;
 `
+
+function entryFilter (keyword: string) {
+  return (entry: Entry) =>
+    entry.title.indexOf(keyword) > -1 || entry.description.indexOf(keyword) > -1
+}

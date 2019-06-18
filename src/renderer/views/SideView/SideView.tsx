@@ -1,6 +1,6 @@
 import { RouteComponentProps } from 'react-router'
 import { useCallback, useRef, useState } from 'react'
-import { useSelector } from 'react-redux'
+import { observer } from 'mobx-react-lite'
 
 import GroupItem from '../../components/GroupItem'
 import GroupItemEditor from '../../components/GroupItemEditor'
@@ -9,10 +9,9 @@ import createContextMenu from '../../libs/create-context-menu'
 import ScrollArea, { Handles as ScrollAreaHandles } from '../../components/ScrollArea'
 import { styled } from '../../styles'
 import { Group } from '../../models/group'
-import { RootState } from '../../store'
-import { addGroup, removeGroup, updateGroup, useDispatch } from '../../store/actions'
 import { IconType } from '../../models/base'
 import { MenuOption } from '../../components/Menu/MenuItem'
+import { useAppStore } from '../../store'
 
 enum MenuType {
   edit = 'edit',
@@ -32,40 +31,39 @@ const contextMenu: MenuOption<MenuType>[] = [
   { icon: 'Trash', title: 'Delete', data: MenuType.remove }
 ]
 
-const mapState = (state: RootState) => ({
-  groups: state.groups
-})
-
 export interface Props extends RouteComponentProps<{ groupId?: string }> {}
 
-export default function SideView (props: Props) {
-  const groupId = props.match.params.groupId
+export default observer(function SideView (props: Props) {
+  const { match, history } = props
+  const { groupId } = match.params
+
+  const store = useAppStore()
   const refContainer = useRef<ScrollAreaHandles>()
 
   const [editingGroup, setEditingGroup] = useState<Group>()
   const [addingGroup, setAddingGroup] = useState<GroupLike>(null)
 
-  const { groups } = useSelector(mapState)
-  const dispatch = useDispatch()
-
   const onMenuClick = useCallback((e: React.MouseEvent, t: MenuType, g: Group) => {
     if (t === MenuType.edit) {
       setEditingGroup(g)
     } else if (t === MenuType.remove) {
-      dispatch(removeGroup(g.id))
+      store.removeGroup(g.id)
     }
   }, [])
 
-  const onGroupSelect = useCallback((e: React.MouseEvent, g: GroupLike) => {
-    props.history.push(`/${g.id}`)
-  }, [])
+  const onGroupSelect = useCallback(
+    (e: React.MouseEvent, g: GroupLike) => {
+      history.push(`/${g.id}`)
+    },
+    [history]
+  )
 
   const onGroupUpdate = useCallback(
     async (icon: IconType, title: string) => {
       const id = editingGroup && editingGroup.id
       if (!id || !title) return
 
-      await dispatch(updateGroup(id, icon, title))
+      await store.updateGroup(id, icon, title)
       setEditingGroup(null)
     },
     [editingGroup]
@@ -76,15 +74,18 @@ export default function SideView (props: Props) {
     refContainer.current.scrollToEnd()
   }, [])
 
-  const onGroupAdd = useCallback(async (icon: IconType, title: string) => {
-    setAddingGroup(null)
-    if (!title) return
+  const onGroupAdd = useCallback(
+    async (icon: IconType, title: string) => {
+      setAddingGroup(null)
+      if (!title) return
 
-    const g = await dispatch(addGroup(icon, title))
-    props.history.push(`/${g.id}`)
+      const g = await store.addGroup(icon, title)
+      history.push(`/${g.id}`)
 
-    refContainer.current.scrollToEnd()
-  }, [])
+      refContainer.current.scrollToEnd()
+    },
+    [history]
+  )
 
   return (
     <Wrapper>
@@ -94,7 +95,7 @@ export default function SideView (props: Props) {
       </Header>
       <Container ref={refContainer}>
         <ContextMenu.Wrapper options={contextMenu} onClick={onMenuClick}>
-          {groups.map((g) =>
+          {store.groups.map((g) =>
             editingGroup && editingGroup.id === g.id ? (
               <GroupItemEditor key={g.id} icon={g.icon} title={g.title} onConfirm={onGroupUpdate} />
             ) : (
@@ -116,7 +117,7 @@ export default function SideView (props: Props) {
       </Container>
     </Wrapper>
   )
-}
+})
 
 const Wrapper = styled.div`
   display: flex;

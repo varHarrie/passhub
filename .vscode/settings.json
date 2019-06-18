@@ -2,5 +2,10 @@
   "editor.formatOnSave": true,
   "prettier.tslintIntegration": true,
   "typescript.tsdk": "node_modules\\typescript\\lib",
-  "cSpell.words": ["dropdown", "passhub", "persiston"]
+  "cSpell.words": [
+    "dropdown",
+    "mobx",
+    "passhub",
+    "persiston"
+  ]
 }

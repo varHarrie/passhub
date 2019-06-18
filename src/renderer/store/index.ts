@@ -1,26 +1,19 @@
-import thunk from 'redux-thunk'
-import { applyMiddleware, combineReducers, createStore } from 'redux'
+import { createContext, createElement, useContext } from 'react'
+import { useLocalStore } from 'mobx-react-lite'
 
-import { app, AppState, entries, entry, group, groups } from './reducers'
-import { Group } from '../models/group'
-import { Entry } from '../models/entry'
+import { AppStore, createAppStore } from './AppStore'
 
-export type RootState = {
-  app: AppState
-  groups: Group[]
-  group: Group | null
-  entries: Entry[]
-  entry: Entry | null
+const AppStoreContext = createContext<AppStore>(null)
+
+interface Props {
+  children: React.ReactNode
 }
 
-export default function configureStore () {
-  const rootReducer = combineReducers<RootState>({
-    app,
-    groups,
-    group,
-    entries,
-    entry
-  })
+export function AppStoreProvider (props: Props) {
+  const store = useLocalStore(createAppStore)
+  return createElement(AppStoreContext.Provider, { value: store }, props.children)
+}
 
-  return createStore(rootReducer, applyMiddleware(thunk))
+export function useAppStore () {
+  return useContext(AppStoreContext)
 }

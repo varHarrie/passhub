@@ -1,24 +1,23 @@
 import { Route, RouteComponentProps } from 'react-router'
 import { useContext, useEffect } from 'react'
+import { observer } from 'mobx-react-lite'
 
 import SplitLayout from '../../components/SplitLayout'
 import EntryView from '../EntryView'
 import ListView from '../ListView'
 import { ThemeContext } from '../../styles'
-import { selectGroup, useDispatch } from '../../store/actions'
+import { useAppStore } from '../../store'
 
 export interface Props extends RouteComponentProps<{ groupId: string }> {}
 
-export default function GroupView (props: Props) {
-  const groupId = props.match.params.groupId
+export default observer(function GroupView (props: Props) {
+  const { groupId } = props.match.params
+
   const theme = useContext(ThemeContext)
-  const dispatch = useDispatch()
+  const store = useAppStore()
 
   useEffect(() => {
-    dispatch(selectGroup(groupId))
-    return () => {
-      dispatch(selectGroup())
-    }
+    store.selectGroup(groupId)
   }, [groupId])
 
   return (
@@ -27,4 +26,4 @@ export default function GroupView (props: Props) {
       <Route path='/:groupId/:entryId/:editable?' component={EntryView} />
     </SplitLayout>
   )
-}
+})

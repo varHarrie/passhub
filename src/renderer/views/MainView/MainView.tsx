@@ -1,30 +1,31 @@
 import { Route, RouteComponentProps } from 'react-router'
 import { useContext, useEffect } from 'react'
+import { observer } from 'mobx-react-lite'
 
 import SplitLayout from '../../components/SplitLayout'
 import Database from '../../Database'
 import GroupView from '../GroupView'
 import SideView from '../SideView'
-import { listGroups, useDispatch } from '../../store/actions'
 import { ThemeContext } from '../../styles'
+import { useAppStore } from '../../store'
 
 export interface Props extends RouteComponentProps {}
 
-export default function MainView (props: Props) {
+export default observer(function MainView (props: Props) {
+  const { history } = props
+
   const theme = useContext(ThemeContext)
-  const dispatch = useDispatch()
+  const store = useAppStore()
 
   useEffect(() => {
     if (Database.instance) {
-      dispatch(listGroups())
+      store.listGroups()
     } else {
-      props.history.push('/login')
+      history.push('/login')
     }
 
-    return () => {
-      Database.disconnect()
-    }
-  }, [])
+    return () => Database.disconnect()
+  }, [history])
 
   if (!Database.instance) return null
 
@@ -34,4 +35,4 @@ export default function MainView (props: Props) {
       <Route path='/:groupId' component={GroupView} />
     </SplitLayout>
   )
-}
+})

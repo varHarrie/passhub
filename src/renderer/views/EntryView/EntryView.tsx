@@ -1,15 +1,10 @@
 import { RouteComponentProps } from 'react-router'
-import { useSelector } from 'react-redux'
 import { useEffect } from 'react'
+import { observer } from 'mobx-react-lite'
 
 import EntryDetailView from './EntryDetailView'
 import { styled } from '../../styles'
-import { RootState } from '../../store'
-import { selectEntry, useDispatch } from '../../store/actions'
-
-const mapState = (state: RootState) => ({
-  entry: state.entry
-})
+import { useAppStore } from '../../store'
 
 export interface Params {
   groupId: string
@@ -19,20 +14,17 @@ export interface Params {
 
 export interface Props extends RouteComponentProps<Params> {}
 
-export default function EntryView (props: Props) {
+export default observer(function EntryView (props: Props) {
   const { entryId } = props.match.params
 
-  const { entry } = useSelector(mapState)
-  const dispatch = useDispatch()
+  const store = useAppStore()
 
   useEffect(() => {
-    dispatch(selectEntry(entryId))
-    return () => {
-      dispatch(selectEntry())
-    }
+    store.selectEntry(entryId)
+    return () => store.selectEntry()
   }, [entryId])
 
-  return entry ? <EntryDetailView entry={entry} /> : <Empty />
-}
+  return store.entry ? <EntryDetailView /> : <Empty />
+})
 
 const Empty = styled.div``

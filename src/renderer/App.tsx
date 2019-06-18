@@ -1,23 +1,17 @@
 import { HashRouter, Route, Switch } from 'react-router-dom'
-import { Provider } from 'react-redux'
 
-import SaveTip from './components/SaveTip'
 import WindowActions from './components/WindowActions'
-import configureStore from './store'
 import LoginView from './views/LoginView'
 import MainView from './views/MainView'
 import { GlobalStyle } from './styles/global'
 import { styled, theme, ThemeProvider } from './styles'
+import { AppStoreProvider } from './store'
 
 // import { hot } from 'react-hot-loader/root'
 
-export interface Props {}
-
-export default function App (props: Props) {
-  const store = configureStore()
-
+export default function App () {
   return (
-    <Provider store={store}>
+    <AppStoreProvider>
       <ThemeProvider theme={theme}>
         <HashRouter>
           <Wrapper>
@@ -26,12 +20,11 @@ export default function App (props: Props) {
               <Route path='/' component={MainView} />
             </Switch>
             <WindowActions />
-            {/* <SaveTip /> */}
             <GlobalStyle />
           </Wrapper>
         </HashRouter>
       </ThemeProvider>
-    </Provider>
+    </AppStoreProvider>
   )
 }
 
