@@ -3,10 +3,10 @@ import { RouteComponentProps } from 'react-router'
 import { observer } from 'mobx-react-lite'
 
 import Button from '../../components/Button'
+import ContextMenu from '../../components/ContextMenu'
 import EntryItem from '../../components/EntryItem'
 import Icon from '../../components/Icon'
 import Input from '../../components/Input'
-import createContextMenu from '../../libs/create-context-menu'
 import ScrollArea, { Handles as ScrollAreaHandles } from '../../components/ScrollArea'
 import { styled } from '../../styles'
 import { Entry } from '../../models/entry'
@@ -17,8 +17,6 @@ enum MenuType {
   edit = 'edit',
   remove = 'remove'
 }
-
-const ContextMenu = createContextMenu()
 
 const contextMenu: MenuOption<MenuType>[] = [
   { icon: 'Edit2', title: 'Edit', data: MenuType.edit },
@@ -83,13 +81,13 @@ export default observer(function ListView (props: Props) {
         </AddButton>
       </Header>
       <Container ref={refContainer}>
-        <ContextMenu.Wrapper options={contextMenu} onClick={onMenuClick}>
+        <ContextMenu options={contextMenu} onClick={onMenuClick}>
           {filteredEntries.map((e) => (
             <ContextMenu.Trigger key={e.id} payload={e}>
               <EntryItem data={e} active={e.id === entryId} onClick={onEntrySelect} />
             </ContextMenu.Trigger>
           ))}
-        </ContextMenu.Wrapper>
+        </ContextMenu>
       </Container>
     </Wrapper>
   )

@@ -2,10 +2,10 @@ import { RouteComponentProps } from 'react-router'
 import { useCallback, useRef, useState } from 'react'
 import { observer } from 'mobx-react-lite'
 
+import ContextMenu from '../../components/ContextMenu'
 import GroupItem from '../../components/GroupItem'
 import GroupItemEditor from '../../components/GroupItemEditor'
 import Logo from '../../components/Logo'
-import createContextMenu from '../../libs/create-context-menu'
 import ScrollArea, { Handles as ScrollAreaHandles } from '../../components/ScrollArea'
 import { styled } from '../../styles'
 import { Group } from '../../models/group'
@@ -23,8 +23,6 @@ interface GroupLike {
   icon: IconType
   title: string
 }
-
-const ContextMenu = createContextMenu()
 
 const contextMenu: MenuOption<MenuType>[] = [
   { icon: 'Edit2', title: 'Edit', data: MenuType.edit },
@@ -94,7 +92,7 @@ export default observer(function SideView (props: Props) {
         <Title>Passhub</Title>
       </Header>
       <Container ref={refContainer}>
-        <ContextMenu.Wrapper options={contextMenu} onClick={onMenuClick}>
+        <ContextMenu options={contextMenu} onClick={onMenuClick}>
           {store.groups.map((g) =>
             editingGroup && editingGroup.id === g.id ? (
               <GroupItemEditor key={g.id} icon={g.icon} title={g.title} onConfirm={onGroupUpdate} />
@@ -104,7 +102,7 @@ export default observer(function SideView (props: Props) {
               </ContextMenu.Trigger>
             )
           )}
-        </ContextMenu.Wrapper>
+        </ContextMenu>
         {addingGroup ? (
           <GroupItemEditor
             icon={addingGroup.icon}
