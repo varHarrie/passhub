@@ -15,8 +15,8 @@ export default class Database extends Persiston {
       this.masterKey = md5(masterKey)
 
       const options = {
-        serialize: (data) => encrypt(JSON.stringify(data), this.masterKey),
-        deserialize: (data) => JSON.parse(decrypt(data, this.masterKey))
+        serialize: (data: string) => encrypt(JSON.stringify(data), this.masterKey),
+        deserialize: (data: string) => JSON.parse(decrypt(data, this.masterKey))
       }
 
       const adapter = new FileAdapter(filename, options)

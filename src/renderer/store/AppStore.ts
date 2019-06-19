@@ -16,7 +16,7 @@ export function createAppStore () {
 
     entry: null as Entry,
 
-    savingQueue: [],
+    savingQueue: [] as boolean[],
 
     get saving () {
       return !!this.savingQueue.length
@@ -53,7 +53,7 @@ export function createAppStore () {
       return group
     },
 
-    async updateGroup (groupId, icon: IconType, title: string) {
+    async updateGroup (groupId: string, icon: IconType, title: string) {
       await this.save(async () => {
         await Database.instance.groups.updateOne({ id: groupId }, { icon, title })
       })
