@@ -26,6 +26,7 @@ export interface Theme {
     background: string
     logoBackground: string
     titleColor: string
+    savingColor: string
     itemHeight: string
     itemBackground: string
     itemHoverBackground: string
@@ -127,6 +128,7 @@ export const theme: Theme = {
     background: '#F6F6F6',
     logoBackground: '#999',
     titleColor: '#999',
+    savingColor: '#999',
     itemHeight: '42px',
     itemBackground: 'transparent',
     itemHoverBackground: '#E0E0E0',

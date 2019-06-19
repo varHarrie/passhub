@@ -5,9 +5,10 @@ import { observer } from 'mobx-react-lite'
 import ContextMenu from '../../components/ContextMenu'
 import GroupItem from '../../components/GroupItem'
 import GroupItemEditor from '../../components/GroupItemEditor'
+import Icon from '../../components/Icon'
 import Logo from '../../components/Logo'
 import ScrollArea, { Handles as ScrollAreaHandles } from '../../components/ScrollArea'
-import { styled } from '../../styles'
+import { css, keyframes, styled } from '../../styles'
 import { Group } from '../../models/group'
 import { IconType } from '../../models/base'
 import { useAppStore } from '../../store'
@@ -90,6 +91,7 @@ export default observer(function SideView (props: Props) {
       <Header>
         <StyledLogo size='small' />
         <Title>Passhub</Title>
+        <SaveTip type='Save' visible={store.saving} />
       </Header>
       <Container ref={refContainer}>
         <ContextMenu options={contextMenu} onClick={onMenuClick}>
@@ -117,6 +119,12 @@ export default observer(function SideView (props: Props) {
   )
 })
 
+const blinking = keyframes`
+  0% { opacity: 0; }
+  50% { opacity: 1; }
+  100% { opacity: 0; }
+`
+
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
@@ -139,7 +147,20 @@ const StyledLogo = styled(Logo)`
 
 const Title = styled.div`
   margin-left: 8px;
+  flex: 1;
   color: ${(p) => p.theme.sidebar.titleColor};
+`
+
+const SaveTip = styled(Icon)<{ visible: boolean }>`
+  opacity: 0;
+  color: ${(p) => p.theme.sidebar.savingColor};
+  transition: opacity 0.3s;
+
+  ${(p) =>
+    p.visible &&
+    css`
+      animation: ${blinking} 1s infinite;
+    `}
 `
 
 const Container = styled(ScrollArea)`
