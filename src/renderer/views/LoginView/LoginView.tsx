@@ -25,7 +25,13 @@ export default observer(function LoginView (props: Props) {
     async (e: React.KeyboardEvent) => {
       if (e.keyCode !== 13) return
 
-      await Database.connect('./data.json')
+      try {
+        await Database.connect('./store.passhub', password)
+      } catch (error) {
+        console.log('error', error)
+        return
+      }
+
       history.push('/')
     },
     [password, history]

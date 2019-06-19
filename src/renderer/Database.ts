@@ -3,13 +3,23 @@ import { Persiston } from 'persiston'
 
 import { Entry } from './models/entry'
 import { Group } from './models/group'
+import { decrypt, encrypt, md5 } from './libs/crypto'
 
 export default class Database extends Persiston {
   public static instance: Database = null
 
-  public static async connect (filename: string) {
+  private static masterKey: string = ''
+
+  public static async connect (filename: string, masterKey: string) {
     if (!Database.instance) {
-      const adapter = new FileAdapter(filename)
+      this.masterKey = md5(masterKey)
+
+      const options = {
+        serialize: (data) => encrypt(JSON.stringify(data), this.masterKey),
+        deserialize: (data) => JSON.parse(decrypt(data, this.masterKey))
+      }
+
+      const adapter = new FileAdapter(filename, options)
       const store = new Database(adapter)
 
       Database.instance = await store.load()
