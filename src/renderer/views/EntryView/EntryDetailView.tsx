@@ -8,6 +8,7 @@ import DropdownMenu from '../../components/DropdownMenu'
 import FieldItem from '../../components/FieldItem'
 import Icon from '../../components/Icon'
 import Input from '../../components/Input'
+import Modal from '../../components/Modal'
 import ScrollArea from '../../components/ScrollArea'
 import useRouter from '../../hooks/useRouter'
 import { css, styled } from '../../styles'
@@ -77,7 +78,13 @@ export default observer(function EntryDetailView (props: Props) {
   }, [])
 
   const onFieldRemove = useCallback((field) => {
-    setEntry((e) => ({ ...e, fields: e.fields.filter((f) => f.id !== field.id) }))
+    Modal.confirm({
+      title: 'Confirm',
+      content: 'Are you sure you want to delete this field?',
+      onConfirm: () => {
+        setEntry((e) => ({ ...e, fields: e.fields.filter((f) => f.id !== field.id) }))
+      }
+    })
   }, [])
 
   const onFieldCopy = useCallback((field) => {

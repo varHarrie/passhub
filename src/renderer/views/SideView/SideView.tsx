@@ -7,6 +7,7 @@ import GroupItem from '../../components/GroupItem'
 import GroupItemEditor from '../../components/GroupItemEditor'
 import Icon from '../../components/Icon'
 import Logo from '../../components/Logo'
+import Modal from '../../components/Modal'
 import ScrollArea, { Handles as ScrollAreaHandles } from '../../components/ScrollArea'
 import { css, keyframes, styled } from '../../styles'
 import { Group } from '../../models/group'
@@ -46,7 +47,13 @@ export default observer(function SideView (props: Props) {
     if (t === MenuType.edit) {
       setEditingGroup(g)
     } else if (t === MenuType.remove) {
-      store.removeGroup(g.id)
+      Modal.confirm({
+        title: 'Confirm',
+        content: 'Are you sure you want to delete this group?',
+        onConfirm: () => {
+          store.removeGroup(g.id)
+        }
+      })
     }
   }, [])
 

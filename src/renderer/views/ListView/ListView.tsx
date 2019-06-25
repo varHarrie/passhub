@@ -7,6 +7,7 @@ import ContextMenu from '../../components/ContextMenu'
 import EntryItem from '../../components/EntryItem'
 import Icon from '../../components/Icon'
 import Input from '../../components/Input'
+import Modal from '../../components/Modal'
 import ScrollArea, { Handles as ScrollAreaHandles } from '../../components/ScrollArea'
 import { styled } from '../../styles'
 import { Entry } from '../../models/entry'
@@ -43,7 +44,13 @@ export default observer(function ListView (props: Props) {
       if (t === MenuType.edit) {
         history.push(`/${groupId}/${e.id}/editable`)
       } else if (t === MenuType.remove) {
-        store.removeEntry(e.id)
+        Modal.confirm({
+          title: 'Confirm',
+          content: 'Are you sure you want to delete this entry?',
+          onConfirm: () => {
+            store.removeEntry(e.id)
+          }
+        })
       }
     },
     [groupId, history]
