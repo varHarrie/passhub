@@ -44,8 +44,10 @@ export default function ContextMenu<P, O> (props: Props<P, O>) {
 
   useEffect(() => {
     document.addEventListener('click', onHide)
+    document.addEventListener('contextmenu', onHide)
     return () => {
       document.removeEventListener('click', onHide)
+      document.removeEventListener('contextmenu', onHide)
     }
   }, [])
 

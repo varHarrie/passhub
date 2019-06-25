@@ -62,15 +62,21 @@ const StyledIcon = styled(Icon)`
 
 const Container = styled.div`
   margin-left: 12px;
+  flex: 1;
+  min-width: 0;
 `
 
 const Title = styled.div`
   font-size: 14px;
   font-weight: bold;
   color: #999;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `
 
 const Description = styled.div`
   font-size: 14px;
   color: #999;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `

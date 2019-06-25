@@ -64,7 +64,7 @@ const Mask = styled.div<{ visible: boolean }>`
   display: block;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.1);
+  background: ${(p) => p.theme.modal.maskBackground};
   opacity: ${(p) => (p.visible ? 1 : 0)};
   transition: opacity 0.5s;
 `
@@ -72,13 +72,14 @@ const Mask = styled.div<{ visible: boolean }>`
 const Dialog = styled.div<{ visible: boolean }>`
   position: fixed;
   z-index: 11;
-  top: 50%;
+  top: 40%;
   left: 50%;
   margin-top: ${(p) => (p.visible ? 0 : '30px')};
   max-width: 80%;
-  width: 300px;
-  background: #fff;
-  box-shadow: 0px 2px 12px rgba(0, 0, 0, 0.1);
+  width: ${(p) => p.theme.modal.dialogWidth};
+  background: ${(p) => p.theme.modal.dialogBackground};
+  box-shadow: ${(p) => p.theme.modal.dialogShadow};
+  border-radius: ${(p) => p.theme.modal.dialogBorderRadius};
   opacity: ${(p) => (p.visible ? 1 : 0)};
   transform: translate(-50%, -50%) scale(${(p) => (p.visible ? 1 : 0.9)});
   transition: all 0.3s;

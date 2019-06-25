@@ -19,8 +19,8 @@ export default function ConfirmModal (props: Props) {
   const {
     title,
     children,
-    confirmText = 'Confirm',
-    cancelText = 'Cancel',
+    confirmText = 'Yes',
+    cancelText = 'No',
     onConfirm = noop,
     onCancel = noop,
     ...rest

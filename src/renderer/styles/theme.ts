@@ -98,6 +98,13 @@ export interface Theme {
       large: string
     }
   }
+  modal: {
+    maskBackground: string
+    dialogBackground: string
+    dialogShadow: string
+    dialogBorderRadius: string
+    dialogWidth: string
+  }
 }
 
 export const theme: Theme = {
@@ -199,5 +206,12 @@ export const theme: Theme = {
       medium: '28px',
       large: '32px'
     }
+  },
+  modal: {
+    maskBackground: 'rgba(0, 0, 0, 0.1)',
+    dialogBackground: '#fff',
+    dialogShadow: '0px 2px 12px rgba(0, 0, 0, 0.1)',
+    dialogBorderRadius: '3px',
+    dialogWidth: '320px'
   }
 }

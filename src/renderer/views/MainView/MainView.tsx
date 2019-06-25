@@ -30,7 +30,7 @@ export default observer(function MainView (props: Props) {
   if (!Database.instance) return null
 
   return (
-    <SplitLayout defaultSize={theme.sidebar.width} size={[160, '50%']}>
+    <SplitLayout defaultSize={theme.sidebar.width} size={[180, '50%']}>
       <Route path='/:groupId?' component={SideView} />
       <Route path='/:groupId' component={GroupView} />
     </SplitLayout>
