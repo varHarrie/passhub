@@ -61,6 +61,8 @@ export default observer(function ListView (props: Props) {
     setKeyword(e.target.value)
   }, [])
 
+  const onKeywordClear = useCallback(() => setKeyword(''), [])
+
   const onEntryAdd = useCallback(async () => {
     const e = await store.addEntry()
     history.push(`/${groupId}/${e.id}/editable`)
@@ -81,6 +83,7 @@ export default observer(function ListView (props: Props) {
         <SearchInput
           solid
           prefix={<Icon type='Search' />}
+          suffix={!!keyword.length && <Icon type='X' onClick={onKeywordClear} />}
           value={keyword}
           onChange={onKeywordChange}
         />
