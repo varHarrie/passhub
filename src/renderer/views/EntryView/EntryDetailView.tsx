@@ -1,4 +1,5 @@
 import * as uuid from 'uuid'
+import copy from 'copy-text-to-clipboard'
 import { useCallback, useState } from 'react'
 import { observer } from 'mobx-react-lite'
 import { toJS } from 'mobx'
@@ -11,11 +12,12 @@ import Input from '../../components/Input'
 import ScrollArea from '../../components/ScrollArea'
 import useRouter from '../../hooks/useRouter'
 import { css, styled } from '../../styles'
-import { FieldType } from '../../models/field'
+import { Field, FieldType } from '../../models/field'
 import { Entry } from '../../models/entry'
 import { useAppStore } from '../../store'
 import { MenuOption } from '../../components/Menu'
 import { useConfirm } from '../../components/ModalProvider'
+import { useMessage } from '../../components/MessageProvider'
 
 const menus: MenuOption<FieldType>[] = [
   { icon: 'Type', title: 'Text', data: FieldType.text },
@@ -35,6 +37,7 @@ export default observer(function EntryDetailView (props: Props) {
   const { groupId, entryId } = match.params
 
   const confirm = useConfirm()
+  const message = useMessage()
   const store = useAppStore()
   const editable = !!match.params.editable
 
@@ -69,7 +72,7 @@ export default observer(function EntryDetailView (props: Props) {
     setEntry((en) => ({ ...en, title }))
   }, [])
 
-  const onFieldChange = useCallback((field) => {
+  const onFieldChange = useCallback((field: Field) => {
     setEntry((en) => {
       const index = en.fields.findIndex((f) => f.id === field.id)
       const newFields = [...en.fields]
@@ -78,7 +81,7 @@ export default observer(function EntryDetailView (props: Props) {
     })
   }, [])
 
-  const onFieldRemove = useCallback((field) => {
+  const onFieldRemove = useCallback((field: Field) => {
     confirm({
       title: 'Confirm',
       content: 'Are you sure you want to delete this field?',
@@ -88,8 +91,11 @@ export default observer(function EntryDetailView (props: Props) {
     })
   }, [])
 
-  const onFieldCopy = useCallback((field) => {
-    console.log('copy', field)
+  const onFieldCopy = useCallback((field: Field) => {
+    if (field.value) {
+      copy(field.value)
+      message('Check', 'Copy!')
+    }
   }, [])
 
   return (
