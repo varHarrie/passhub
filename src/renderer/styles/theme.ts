@@ -105,6 +105,11 @@ export interface Theme {
     dialogBorderRadius: string
     dialogWidth: string
   }
+  message: {
+    background: string
+    borderRadius: string
+    shadow: string
+  }
 }
 
 export const theme: Theme = {
@@ -213,5 +218,10 @@ export const theme: Theme = {
     dialogShadow: '0px 2px 12px rgba(0, 0, 0, 0.1)',
     dialogBorderRadius: '3px',
     dialogWidth: '320px'
+  },
+  message: {
+    background: '#fff',
+    borderRadius: '3px',
+    shadow: '0px 2px 12px rgba(0, 0, 0, 0.1)'
   }
 }

@@ -5,6 +5,7 @@ import { observer } from 'mobx-react-lite'
 import Icon from '../../components/Icon'
 import Input from '../../components/Input'
 import Logo from '../../components/Logo'
+import useMessage from '../../components/Message/useMessage'
 import Database from '../../Database'
 import { styled } from '../../styles'
 
@@ -12,6 +13,7 @@ export interface Props extends RouteComponentProps {}
 
 export default observer(function LoginView (props: Props) {
   const { history } = props
+  const message = useMessage()
   const refInput = useRef<HTMLInputElement>(null)
 
   const [password, setPassword] = useState('')
@@ -28,7 +30,7 @@ export default observer(function LoginView (props: Props) {
       try {
         await Database.connect('./store.passhub', password)
       } catch (error) {
-        console.log('error', error)
+        message({ icon: 'XCircle', content: 'Incorrect password !' })
         return
       }
 
