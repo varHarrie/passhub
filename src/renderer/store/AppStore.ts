@@ -95,7 +95,7 @@ export function createAppStore () {
           id,
           icon: 'File',
           title: 'Untitled',
-          description: 'Description',
+          description: '',
           groupId,
           createdAt: Date.now(),
           modifiedAt: Date.now(),
@@ -147,6 +147,10 @@ export function createAppStore () {
 
     async updateEntry (entryId: string, entryAttrs: Partial<Entry>) {
       await this.save(async () => {
+        if (entryAttrs.fields) {
+          const field = entryAttrs.fields.find((f) => f.type === FieldType.text)
+          entryAttrs.description = field ? field.value : ''
+        }
         await Database.instance.entries.updateOne({ id: entryId }, entryAttrs)
       })
 
