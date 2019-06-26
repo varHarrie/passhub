@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 import Icon from '../Icon'
 import { styled } from '../../styles'
@@ -17,6 +17,8 @@ export interface Props {
 export default function Message (props: Props) {
   const { visible = true, duration, icon, children, onHide = noop, onHidden = noop } = props
 
+  const [domVisible, setDomVisible] = useState(false)
+
   const refStayTimer = useRef<number>()
   const refHideTimer = useRef<number>()
 
@@ -30,16 +32,18 @@ export default function Message (props: Props) {
 
   useEffect(() => {
     if (visible) {
-      clearTimeout(refHideTimer.current)
+      setTimeout(() => setDomVisible(true), 0)
     } else if (duration) {
+      setDomVisible(false)
+      clearTimeout(refHideTimer.current)
       refHideTimer.current = setTimeout(() => {
         onHidden()
       }, 300)
     }
-  }, [visible])
+  }, [visible, onHidden])
 
   return (
-    <Wrapper visible={visible}>
+    <Wrapper visible={domVisible}>
       <Icon type={icon} />
       <Content>{children}</Content>
     </Wrapper>

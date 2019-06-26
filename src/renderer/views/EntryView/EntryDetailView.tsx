@@ -8,7 +8,6 @@ import DropdownMenu from '../../components/DropdownMenu'
 import FieldItem from '../../components/FieldItem'
 import Icon from '../../components/Icon'
 import Input from '../../components/Input'
-import Modal from '../../components/Modal'
 import ScrollArea from '../../components/ScrollArea'
 import useRouter from '../../hooks/useRouter'
 import { css, styled } from '../../styles'
@@ -16,6 +15,7 @@ import { FieldType } from '../../models/field'
 import { Entry } from '../../models/entry'
 import { useAppStore } from '../../store'
 import { MenuOption } from '../../components/Menu'
+import { useConfirm } from '../../components/ModalProvider'
 
 const menus: MenuOption<FieldType>[] = [
   { icon: 'Type', title: 'Text', data: FieldType.text },
@@ -34,6 +34,7 @@ export default observer(function EntryDetailView (props: Props) {
   const { match, history } = useRouter<Params>()
   const { groupId, entryId } = match.params
 
+  const confirm = useConfirm()
   const store = useAppStore()
   const editable = !!match.params.editable
 
@@ -78,7 +79,7 @@ export default observer(function EntryDetailView (props: Props) {
   }, [])
 
   const onFieldRemove = useCallback((field) => {
-    Modal.confirm({
+    confirm({
       title: 'Confirm',
       content: 'Are you sure you want to delete this field?',
       onConfirm: () => {

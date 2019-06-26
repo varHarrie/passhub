@@ -1,12 +1,13 @@
 import { HashRouter, Route, Switch } from 'react-router-dom'
 
+import MessageProvider from './components/MessageProvider'
+import ModalProvider from './components/ModalProvider'
 import WindowActions from './components/WindowActions'
 import LoginView from './views/LoginView'
 import MainView from './views/MainView'
 import { GlobalStyle } from './styles/global'
 import { styled, theme, ThemeProvider } from './styles'
 import { AppStoreProvider } from './store'
-import { MessageProvider } from './components/Message'
 
 // import { hot } from 'react-hot-loader/root'
 
@@ -15,16 +16,18 @@ export default function App () {
     <AppStoreProvider>
       <ThemeProvider theme={theme}>
         <MessageProvider>
-          <HashRouter>
-            <Wrapper>
-              <Switch>
-                <Route path='/login' component={LoginView} />
-                <Route path='/' component={MainView} />
-              </Switch>
-              <WindowActions />
-              <GlobalStyle />
-            </Wrapper>
-          </HashRouter>
+          <ModalProvider>
+            <HashRouter>
+              <Wrapper>
+                <Switch>
+                  <Route path='/login' component={LoginView} />
+                  <Route path='/' component={MainView} />
+                </Switch>
+                <WindowActions />
+                <GlobalStyle />
+              </Wrapper>
+            </HashRouter>
+          </ModalProvider>
         </MessageProvider>
       </ThemeProvider>
     </AppStoreProvider>

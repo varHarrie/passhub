@@ -7,12 +7,12 @@ import ContextMenu from '../../components/ContextMenu'
 import EntryItem from '../../components/EntryItem'
 import Icon from '../../components/Icon'
 import Input from '../../components/Input'
-import Modal from '../../components/Modal'
 import ScrollArea, { Handles as ScrollAreaHandles } from '../../components/ScrollArea'
 import { styled } from '../../styles'
 import { Entry } from '../../models/entry'
 import { useAppStore } from '../../store'
 import { MenuOption } from '../../components/Menu'
+import { useConfirm } from '../../components/ModalProvider'
 
 enum MenuType {
   edit = 'edit',
@@ -30,6 +30,7 @@ export default observer(function ListView (props: Props) {
   const { match, history } = props
   const { groupId, entryId } = match.params
 
+  const confirm = useConfirm()
   const store = useAppStore()
   const refContainer = useRef<ScrollAreaHandles>()
 
@@ -44,7 +45,7 @@ export default observer(function ListView (props: Props) {
       if (t === MenuType.edit) {
         history.push(`/${groupId}/${e.id}/editable`)
       } else if (t === MenuType.remove) {
-        Modal.confirm({
+        confirm({
           title: 'Confirm',
           content: 'Are you sure you want to delete this entry?',
           onConfirm: () => {

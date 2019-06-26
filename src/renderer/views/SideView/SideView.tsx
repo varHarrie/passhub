@@ -7,13 +7,13 @@ import GroupItem from '../../components/GroupItem'
 import GroupItemEditor from '../../components/GroupItemEditor'
 import Icon from '../../components/Icon'
 import Logo from '../../components/Logo'
-import Modal from '../../components/Modal'
 import ScrollArea, { Handles as ScrollAreaHandles } from '../../components/ScrollArea'
 import { css, keyframes, styled } from '../../styles'
 import { Group } from '../../models/group'
 import { IconType } from '../../models/base'
 import { useAppStore } from '../../store'
 import { MenuOption } from '../../components/Menu'
+import { useConfirm } from '../../components/ModalProvider'
 
 enum MenuType {
   edit = 'edit',
@@ -37,6 +37,7 @@ export default observer(function SideView (props: Props) {
   const { match, history } = props
   const { groupId } = match.params
 
+  const confirm = useConfirm()
   const store = useAppStore()
   const refContainer = useRef<ScrollAreaHandles>()
 
@@ -47,7 +48,7 @@ export default observer(function SideView (props: Props) {
     if (t === MenuType.edit) {
       setEditingGroup(g)
     } else if (t === MenuType.remove) {
-      Modal.confirm({
+      confirm({
         title: 'Confirm',
         content: 'Are you sure you want to delete this group?',
         onConfirm: () => {

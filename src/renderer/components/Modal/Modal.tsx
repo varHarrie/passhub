@@ -2,7 +2,6 @@ import { Fragment, useEffect, useRef, useState } from 'react'
 
 import Portal from '../Portal'
 import { styled } from '../../styles'
-import { confirm } from './methods'
 
 export interface Props {
   visible?: boolean
@@ -49,8 +48,6 @@ export default function Modal (props: Props) {
     </Wrapper>
   )
 }
-
-Modal.confirm = confirm
 
 const Border = styled.div<{ visible: boolean }>`
   display: ${(p) => (p.visible ? 'block' : 'none')};
