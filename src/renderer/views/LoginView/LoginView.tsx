@@ -30,7 +30,7 @@ export default observer(function LoginView (props: Props) {
       try {
         await Database.connect('./store.passhub', password)
       } catch (error) {
-        message('XCircle', 'Incorrect password !')
+        message('XCircle', 'Incorrect password!')
         return
       }
 
