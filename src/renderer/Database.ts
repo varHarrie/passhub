@@ -30,6 +30,7 @@ export default class Database extends Persiston {
 
   public static disconnect () {
     Database.instance = null
+    Database.masterKey = ''
   }
 
   public groups = this.collection<Group>('groups')
