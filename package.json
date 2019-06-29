@@ -30,7 +30,7 @@
     ]
   },
   "build": {
-    "asar": false,
+    "asar": true,
     "productName": "Passhub",
     "appId": "com.varharrie.passhub",
     "directories": {
@@ -44,7 +44,7 @@
       "icon": "/build/icons/win/icon.ico",
       "target": [
         {
-          "target": "zip",
+          "target": "7z",
           "arch": [
             "x64"
           ]
