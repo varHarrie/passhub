@@ -38,6 +38,13 @@ export default function FieldItem (props: Props) {
     [data, onChange]
   )
 
+  const onValueGenerate = useCallback(
+    (value) => {
+      onChange({ ...data, value })
+    },
+    [data, onChange]
+  )
+
   const onValueCopy = useCallback(() => {
     onCopy(data)
   }, [data, onCopy])
@@ -46,7 +53,7 @@ export default function FieldItem (props: Props) {
     onRemove(data)
   }, [data, onRemove])
 
-  const Control = controls[data.type]
+  const Control = controls[data.type] as any
 
   return (
     <Wrapper>
@@ -63,6 +70,7 @@ export default function FieldItem (props: Props) {
           value={data.value}
           disabled={!editable}
           onChange={onValueChange}
+          onGenerate={onValueGenerate}
           onCopy={onValueCopy}
         />
       </Container>

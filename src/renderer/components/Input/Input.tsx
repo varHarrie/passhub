@@ -1,6 +1,7 @@
 import { forwardRef } from 'react'
 
 import { styled } from '../../styles'
+import { noop } from '../../libs/utils'
 
 export type InputType = 'text' | 'password' | 'textarea'
 
@@ -22,12 +23,20 @@ export interface Props {
 }
 
 function Input (props: Props, ref: React.Ref<HTMLInputElement>) {
-  const { className, solid, size = 'medium', prefix, suffix, ...inputProps } = props
+  const {
+    className,
+    solid,
+    size = 'medium',
+    prefix,
+    suffix,
+    onChange = noop,
+    ...inputProps
+  } = props
 
   return (
     <Wrapper className={className} size={size} solid={solid}>
       {prefix && <Prefix>{prefix}</Prefix>}
-      <OriginalInput ref={ref} {...inputProps} />
+      <OriginalInput ref={ref} onChange={onChange} {...inputProps} />
       {suffix && <Suffix>{suffix}</Suffix>}
     </Wrapper>
   )
