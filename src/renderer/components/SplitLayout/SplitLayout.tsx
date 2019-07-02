@@ -34,10 +34,9 @@ export default function SplitLayout (props: Props) {
     if (!$wrapper) return
 
     const { left } = $wrapper.getBoundingClientRect()
-    const { clientX } = isTouchEvent(e) ? e.touches[0] : e
 
     const nextPos = clamp(
-      clientX - left,
+      e.clientX - left,
       toPixel(size[0] || 0, $wrapper.clientWidth),
       toPixel(size[1] || '100%', $wrapper.clientWidth)
     )
@@ -91,10 +90,6 @@ const Divider = styled.div<{ dragging: boolean }>`
     background-color: ${(p) => p.theme.divider.hoverBackground};
   }
 `
-
-function isTouchEvent (e: any): e is TouchEvent {
-  return !!e.touches
-}
 
 function toPixel (size: SizeType, totalSize: number) {
   return typeof size === 'number'

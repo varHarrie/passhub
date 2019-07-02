@@ -2,12 +2,12 @@ import { useCallback, useEffect, useState } from 'react'
 
 export default function useDragging (
   ref: React.RefObject<HTMLElement>,
-  handler: (e: MouseEvent | TouchEvent) => void
+  handler: (e: MouseEvent) => void
 ) {
   const [dragging, setDragging] = useState(false)
 
   const onMove = useCallback(
-    (e: MouseEvent | TouchEvent) => {
+    (e: MouseEvent) => {
       handler(e)
     },
     [ref.current]
@@ -18,18 +18,14 @@ export default function useDragging (
     window.getSelection().removeAllRanges()
 
     document.addEventListener('mousemove', onMove)
-    document.addEventListener('touchmove', onMove)
     document.addEventListener('mouseup', onEnd)
-    document.addEventListener('touchend', onEnd)
   }, [ref.current])
 
   const onEnd = useCallback(() => {
     setDragging(false)
 
     document.removeEventListener('mousemove', onMove)
-    document.removeEventListener('touchmove', onMove)
     document.removeEventListener('mouseup', onEnd)
-    document.removeEventListener('touchend', onEnd)
   }, [ref.current])
 
   useEffect(() => {
@@ -37,11 +33,9 @@ export default function useDragging (
     if (!current) return
 
     current.addEventListener('mousedown', onStart)
-    current.addEventListener('touchstart', onStart)
 
     return () => {
       current.removeEventListener('mousedown', onStart)
-      current.removeEventListener('touchstart', onStart)
     }
   }, [ref.current])
 
