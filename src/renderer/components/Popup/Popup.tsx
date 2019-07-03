@@ -67,11 +67,11 @@ export default function Popup (props: Props) {
 
 const Wrapper = styled.span`
   position: relative;
-  z-index: 1;
 `
 
 const Content = styled.div<{ visible: boolean; narrow?: boolean }>`
   position: absolute;
+  z-index: 1;
   margin: 8px 0;
   padding: ${(p) => (p.narrow ? 0 : '12px')};
   background: #fff;

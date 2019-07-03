@@ -38,7 +38,7 @@ function Input (props: Props, ref: React.Ref<HTMLInputElement>) {
   }, [])
 
   return (
-    <Wrapper className={className} size={size} solid={solid} onMouseDown={onPreventDefault}>
+    <Wrapper className={className} size={size} solid={solid}>
       {prefix && <Prefix onMouseDown={onPreventDefault}>{prefix}</Prefix>}
       <OriginalInput ref={ref} onChange={onChange} {...inputProps} />
       {suffix && <Suffix onMouseDown={onPreventDefault}>{suffix}</Suffix>}
