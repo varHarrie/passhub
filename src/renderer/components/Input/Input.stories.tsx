@@ -19,7 +19,7 @@ storiesOf('Input', module)
       size={select('Size', ['medium', 'large'], 'medium')}
       value={text('Value', 'Hello World')}
       placeholder={text('Placeholder', 'placeholder')}
-      prefix={<Icon type={select('Prefix', ['Search', 'Lock', 'Mail'], 'Search')} />}
-      suffix={<Icon type={select('Suffix', ['CornerDownLeft', 'Check', 'Plus'], 'Plus')} />}
+      prefix={<Icon name={select('Prefix', ['search', 'lock', 'mail'], 'search')} />}
+      suffix={<Icon name={select('Suffix', ['arrow-left', 'check', 'add'], 'add')} />}
     />
   ))

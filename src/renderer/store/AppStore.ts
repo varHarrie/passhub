@@ -3,8 +3,8 @@ import * as uuid from 'uuid'
 import Database from '../Database'
 import { Group } from '../models/group'
 import { Entry } from '../models/entry'
-import { IconType } from '../models/base'
 import { FieldType } from '../models/field'
+import { IconName } from '../models/icon'
 
 export function createAppStore () {
   const store = {
@@ -37,7 +37,7 @@ export function createAppStore () {
       this.groups = await Database.instance.groups.find()
     },
 
-    async addGroup (icon: IconType, title: string) {
+    async addGroup (icon: IconName, title: string) {
       const group = await this.save(() => {
         return Database.instance.groups.insert({
           icon,
@@ -53,7 +53,7 @@ export function createAppStore () {
       return group
     },
 
-    async updateGroup (groupId: string, icon: IconType, title: string) {
+    async updateGroup (groupId: string, icon: IconName, title: string) {
       await this.save(async () => {
         await Database.instance.groups.updateOne({ id: groupId }, { icon, title })
       })
@@ -93,7 +93,7 @@ export function createAppStore () {
 
         return Database.instance.entries.insert({
           id,
-          icon: 'File',
+          icon: 'file-list-2',
           title: 'Untitled',
           description: '',
           groupId,

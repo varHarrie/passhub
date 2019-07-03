@@ -3,11 +3,11 @@ import { useCallback } from 'react'
 import Icon from '../Icon'
 import { noop } from '../../libs/utils'
 import { styled } from '../../styles'
-import { IconType } from '../../models/base'
+import { IconName } from '../../models/icon'
 
 export interface GroupLike {
   id: string
-  icon: IconType
+  icon: IconName
   title: string
 }
 
@@ -43,7 +43,7 @@ export default function GroupItem<T extends GroupLike> (props: Props<T>) {
       onClick={onGroupClick}
       onContextMenu={onGroupContextMenu}
     >
-      <Icon type={data.icon} />
+      <Icon name={data.icon} />
       <Title>{data.title}</Title>
     </Wrapper>
   )

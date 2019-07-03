@@ -3,21 +3,21 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import Icon from '../Icon'
 import Input from '../Input'
 import { noop } from '../../libs/utils'
-import { IconType } from '../../models/base'
 import { styled } from '../../styles'
+import { IconName } from '../../models/icon'
 
 export interface Props {
   className?: string
-  icon?: IconType
+  icon?: IconName
   title?: string
-  onConfirm?: (icon: IconType, title: string) => void
+  onConfirm?: (icon: IconName, title: string) => void
 }
 
 export default function GroupItemEditor (props: Props) {
   const { className, onConfirm = noop } = props
 
   const refInput = useRef<HTMLInputElement>(null)
-  const [icon, setIcon] = useState(props.icon || 'Archive')
+  const [icon, setIcon] = useState<IconName>(props.icon || 'folder')
   const [title, setTitle] = useState(props.title || '')
 
   const onTitleChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
@@ -47,8 +47,8 @@ export default function GroupItemEditor (props: Props) {
         ref={refInput}
         value={title}
         placeholder='Group Title'
-        prefix={<Icon type={icon} />}
-        suffix={<Icon type='CornerDownLeft' />}
+        prefix={<Icon name={icon} />}
+        suffix={<Icon name='arrow-left' />}
         onChange={onTitleChange}
         onBlur={onInputBlur}
         onKeyDown={onInputKeydown}

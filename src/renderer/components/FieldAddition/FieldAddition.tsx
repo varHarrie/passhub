@@ -28,7 +28,7 @@ export default function FieldAddition (props: Props) {
   return (
     <Wrapper>
       <Button ref={refButton} onClick={onButtonClick}>
-        <Icon type='Plus' />
+        <Icon name='add' />
       </Button>
       <StyledMenu visible={visible}>
         <Menu.Item icon='Type' title='Text' data={FieldType.text} onClick={onAdd} />

@@ -36,7 +36,9 @@ export default function EntryItem (props: Props) {
       onClick={onEntryClick}
       onContextMenu={onGroupContextMenu}
     >
-      <StyledIcon type={data.icon} size='medium' />
+      <Header>
+        <Icon name={data.icon} size='xl' />
+      </Header>
       <Container>
         <Title>{data.title}</Title>
         <Description>{data.description}</Description>
@@ -45,7 +47,6 @@ export default function EntryItem (props: Props) {
   )
 }
 
-/* todo: theme */
 const Wrapper = styled.div<{ active?: boolean }>`
   padding: 12px;
   display: flex;
@@ -56,7 +57,7 @@ const Wrapper = styled.div<{ active?: boolean }>`
   transition: background 0.3s;
 `
 
-const StyledIcon = styled(Icon)`
+const Header = styled.div`
   color: #999;
 `
 

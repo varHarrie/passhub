@@ -12,6 +12,6 @@ storiesOf('Button', module)
   ))
   .add('with Icon', () => (
     <Button solid={boolean('Solid', false)} size={select('Size', ['medium', 'large'], 'medium')}>
-      <Icon type={select('Icon', ['Plus', 'Archive', 'Mail'], 'Plus')} />
+      <Icon name={select('Icon', ['add', 'archive', 'mail'], 'add')} />
     </Button>
   ))

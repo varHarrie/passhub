@@ -30,7 +30,7 @@ export default observer(function LoginView (props: Props) {
       try {
         await Database.connect('./store.passhub', password)
       } catch (error) {
-        message('XCircle', 'Incorrect password!')
+        message('close', 'Incorrect password!')
         return
       }
 
@@ -55,7 +55,7 @@ export default observer(function LoginView (props: Props) {
         size='large'
         visible={inputVisible}
         value={password}
-        suffix={<Icon type='Lock' />}
+        prefix={<Icon name='key' />}
         onChange={onPasswordChange}
         onKeyDown={onConfirm}
       />

@@ -10,10 +10,10 @@ import Logo from '../../components/Logo'
 import ScrollArea, { Handles as ScrollAreaHandles } from '../../components/ScrollArea'
 import { css, keyframes, styled } from '../../styles'
 import { Group } from '../../models/group'
-import { IconType } from '../../models/base'
 import { useAppStore } from '../../store'
 import { MenuOption } from '../../components/Menu'
 import { useConfirm } from '../../components/ModalProvider'
+import { IconName } from '../../models/icon'
 
 enum MenuType {
   edit = 'edit',
@@ -22,13 +22,13 @@ enum MenuType {
 
 interface GroupLike {
   id: string
-  icon: IconType
+  icon: IconName
   title: string
 }
 
 const contextMenu: MenuOption<MenuType>[] = [
-  { icon: 'Edit2', title: 'Edit', data: MenuType.edit },
-  { icon: 'Trash', title: 'Delete', data: MenuType.remove }
+  { icon: 'pencil', title: 'Edit', data: MenuType.edit },
+  { icon: 'delete-bin', title: 'Delete', data: MenuType.remove }
 ]
 
 export interface Props extends RouteComponentProps<{ groupId?: string }> {}
@@ -66,7 +66,7 @@ export default observer(function SideView (props: Props) {
   )
 
   const onGroupUpdate = useCallback(
-    async (icon: IconType, title: string) => {
+    async (icon: IconName, title: string) => {
       const id = editingGroup && editingGroup.id
       if (!id || !title) return
 
@@ -77,12 +77,12 @@ export default observer(function SideView (props: Props) {
   )
 
   const onGroupStartAdd = useCallback(() => {
-    setAddingGroup({ id: '', icon: 'Archive', title: '' })
+    setAddingGroup({ id: '', icon: 'folder', title: '' })
     refContainer.current.scrollToEnd()
   }, [])
 
   const onGroupAdd = useCallback(
-    async (icon: IconType, title: string) => {
+    async (icon: IconName, title: string) => {
       setAddingGroup(null)
       if (!title) return
 
@@ -99,7 +99,7 @@ export default observer(function SideView (props: Props) {
       <Header>
         <StyledLogo size='small' />
         <Title>Passhub</Title>
-        <SaveTip type='Save' visible={store.saving} />
+        <SaveTip name='save' visible={store.saving} />
       </Header>
       <Container ref={refContainer}>
         <ContextMenu options={contextMenu} onClick={onMenuClick}>
@@ -120,7 +120,7 @@ export default observer(function SideView (props: Props) {
             onConfirm={onGroupAdd}
           />
         ) : (
-          <GroupItem data={{ id: '', icon: 'Plus', title: 'New' }} onClick={onGroupStartAdd} />
+          <GroupItem data={{ id: '', icon: 'add', title: 'New' }} onClick={onGroupStartAdd} />
         )}
       </Container>
     </Wrapper>

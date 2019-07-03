@@ -1,4 +1,3 @@
-import * as Feather from 'react-feather'
 import { storiesOf } from '@storybook/react'
 import { text } from '@storybook/addon-knobs'
 
@@ -11,13 +10,13 @@ const Item = styled.span<{ color: string }>`
   color: ${(p) => p.color};
 `
 
-const icons = Object.keys(Feather)
+const icons = ['admin']
 
 storiesOf('Icon', module).add('common', () => (
   <>
     {icons.map((icon: any) => (
       <Item key={icon} color={text('Color', '#999')}>
-        <Icon type={icon} />
+        <Icon name={icon} />
       </Item>
     ))}
   </>

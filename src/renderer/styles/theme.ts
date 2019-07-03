@@ -91,13 +91,6 @@ export interface Theme {
     solidActiveBorder: string
     borderRadius: string
   }
-  icon: {
-    sizes: {
-      small: string
-      medium: string
-      large: string
-    }
-  }
   modal: {
     maskBackground: string
     dialogBackground: string
@@ -204,13 +197,6 @@ export const theme: Theme = {
     solidHoverBorder: 'none',
     solidActiveBorder: 'none',
     borderRadius: '3px'
-  },
-  icon: {
-    sizes: {
-      small: '16px',
-      medium: '28px',
-      large: '32px'
-    }
   },
   modal: {
     maskBackground: 'rgba(0, 0, 0, 0.1)',

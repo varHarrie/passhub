@@ -12,15 +12,16 @@ interface Props {
 export default function TextInput (props: Props) {
   const { value, disabled, onChange, onCopy } = props
 
-  const icon = 'Type'
+  // todo:
+  const icon = 'text'
 
   return (
     <StyledInput
       value={value}
       disabled={disabled}
       onChange={onChange}
-      prefix={<Icon type={icon} />}
-      suffix={<Icon type='Copy' onClick={onCopy} />}
+      prefix={<Icon name={icon} />}
+      suffix={<Icon name='file-copy' onClick={onCopy} />}
     />
   )
 }

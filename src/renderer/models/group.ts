@@ -1,6 +1,7 @@
-import { Base, IconType } from './base'
+import { Base } from './base'
+import { IconName } from './icon'
 
 export interface Group extends Base {
   title: string
-  icon: IconType
+  icon: IconName
 }

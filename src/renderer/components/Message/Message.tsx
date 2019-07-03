@@ -2,13 +2,13 @@ import { useEffect, useRef, useState } from 'react'
 
 import Icon from '../Icon'
 import { styled } from '../../styles'
-import { IconType } from '../../models/base'
 import { noop } from '../../libs/utils'
+import { IconName } from '../../models/icon'
 
 export interface Props {
   visible?: boolean
   duration?: number
-  icon: IconType
+  icon: IconName
   children?: React.ReactNode
   onHide?: () => void
   onHidden?: () => void
@@ -44,7 +44,7 @@ export default function Message (props: Props) {
 
   return (
     <Wrapper visible={domVisible}>
-      <Icon type={icon} />
+      <Icon name={icon} />
       <Content>{children}</Content>
     </Wrapper>
   )

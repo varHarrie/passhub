@@ -22,7 +22,7 @@ export default function MenuItem<T> (props: Props<T>) {
 
   return (
     <Wrapper className={className} onClick={onMenuClick}>
-      <Icon type={icon} size='small' />
+      <Icon name={icon} />
       <Title>{title}</Title>
     </Wrapper>
   )

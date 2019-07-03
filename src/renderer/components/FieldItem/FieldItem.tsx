@@ -61,7 +61,7 @@ export default function FieldItem (props: Props) {
         <Title value={data.title} disabled={!editable} onChange={onTitleChange} />
         {editable && (
           <Actions>
-            <Icon type='X' onClick={onFieldRemove} />
+            <Icon name='close' onClick={onFieldRemove} />
           </Actions>
         )}
       </Header>

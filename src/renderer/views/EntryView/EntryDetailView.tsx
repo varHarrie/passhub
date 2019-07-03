@@ -20,8 +20,8 @@ import { useConfirm } from '../../components/ModalProvider'
 import { useMessage } from '../../components/MessageProvider'
 
 const menus: MenuOption<FieldType>[] = [
-  { icon: 'Type', title: 'Text', data: FieldType.text },
-  { icon: 'Lock', title: 'Password', data: FieldType.password }
+  { icon: 'text', title: 'Text', data: FieldType.text },
+  { icon: 'lock-2', title: 'Password', data: FieldType.password }
 ]
 
 export interface Params {
@@ -94,7 +94,7 @@ export default observer(function EntryDetailView (props: Props) {
   const onFieldCopy = useCallback((field: Field) => {
     if (field.value) {
       copy(field.value)
-      message('Check', 'Copy!')
+      message('check', 'Copy!')
     }
   }, [])
 
@@ -102,7 +102,7 @@ export default observer(function EntryDetailView (props: Props) {
     <Wrapper>
       {entry && (
         <Header>
-          <Icon type={entry.icon} size='large' />
+          <Icon name={entry.icon} size='xl' />
           <TitleInput value={entry.title} disabled={!editable} onChange={onTitleChange} />
         </Header>
       )}
@@ -123,23 +123,23 @@ export default observer(function EntryDetailView (props: Props) {
       <Footer>
         {!editable && (
           <Button onClick={onEdit}>
-            <Icon type='Edit' />
+            <Icon name='pencil' />
           </Button>
         )}
         {editable && (
           <Button onClick={onSave}>
-            <Icon type='Check' />
+            <Icon name='check' />
           </Button>
         )}
         {editable && (
           <Button onClick={onCancel}>
-            <Icon type='X' />
+            <Icon name='close' />
           </Button>
         )}
         {editable && (
           <DropdownMenu position='top-start' items={menus} onClick={onMenuClick}>
             <Button>
-              <Icon type='Plus' />
+              <Icon name='add' />
             </Button>
           </DropdownMenu>
         )}
