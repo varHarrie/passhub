@@ -1,4 +1,4 @@
-import { cloneElement, isValidElement, useCallback, useRef } from 'react'
+import { cloneElement, isValidElement, useCallback, useEffect, useRef } from 'react'
 
 import useClickOutside from '../../hooks/useClickOutside'
 import useToggle from '../../hooks/useToggle'
@@ -8,12 +8,14 @@ export type Position = 'top-start' | 'top-end' | 'bottom-start' | 'bottom-end'
 
 export interface Props {
   position?: Position
+  narrow?: boolean
+  disabled?: boolean
   content: React.ReactNode
   children: React.ReactNode
 }
 
 export default function Popup (props: Props) {
-  const { position = 'bottom-start', content, children } = props
+  const { position = 'bottom-start', narrow, disabled, content, children } = props
 
   const refTrigger = useRef<HTMLElement>(null)
   const [visible, toggle, setVisible] = useToggle()
@@ -21,9 +23,11 @@ export default function Popup (props: Props) {
   const onTargetClick = useCallback(
     (e: React.MouseEvent) => {
       e.preventDefault()
-      toggle()
+      if (!disabled) {
+        toggle()
+      }
     },
-    [toggle]
+    [disabled, toggle]
   )
 
   const onPreventDefault = useCallback((e: React.MouseEvent) => {
@@ -34,6 +38,12 @@ export default function Popup (props: Props) {
     setVisible(false)
   })
 
+  useEffect(() => {
+    if (disabled) {
+      setVisible(false)
+    }
+  }, [disabled])
+
   const target = isValidElement(children) ? (
     cloneElement(children, { onClick: onTargetClick })
   ) : (
@@ -43,7 +53,12 @@ export default function Popup (props: Props) {
   return (
     <Wrapper ref={refTrigger}>
       {target}
-      <Content visible={visible} style={computeStyle(position)} onClick={onPreventDefault}>
+      <Content
+        narrow={narrow}
+        visible={visible}
+        style={computeStyle(position)}
+        onClick={onPreventDefault}
+      >
         {content}
       </Content>
     </Wrapper>
@@ -52,13 +67,13 @@ export default function Popup (props: Props) {
 
 const Wrapper = styled.span`
   position: relative;
+  z-index: 1;
 `
 
-const Content = styled.div<{ visible: boolean }>`
+const Content = styled.div<{ visible: boolean; narrow?: boolean }>`
   position: absolute;
-  z-index: 1;
   margin: 8px 0;
-  padding: 12px;
+  padding: ${(p) => (p.narrow ? 0 : '12px')};
   background: #fff;
   box-shadow: 0px 2px 12px rgba(0, 0, 0, 0.1);
   opacity: ${(p) => (p.visible ? 1 : 0)};

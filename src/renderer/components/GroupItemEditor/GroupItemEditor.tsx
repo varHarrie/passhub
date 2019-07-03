@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 
 import Icon from '../Icon'
+import IconSelector from '../IconSelector'
 import Input from '../Input'
 import { noop } from '../../libs/utils'
 import { styled } from '../../styles'
@@ -17,7 +18,7 @@ export default function GroupItemEditor (props: Props) {
   const { className, onConfirm = noop } = props
 
   const refInput = useRef<HTMLInputElement>(null)
-  const [icon, setIcon] = useState<IconName>(props.icon || 'folder')
+  const [icon, setIcon] = useState<IconName>(props.icon || 'folder-line')
   const [title, setTitle] = useState(props.title || '')
 
   const onTitleChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
@@ -47,8 +48,12 @@ export default function GroupItemEditor (props: Props) {
         ref={refInput}
         value={title}
         placeholder='Group Title'
-        prefix={<Icon name={icon} />}
-        suffix={<Icon name='arrow-left' />}
+        prefix={
+          <IconSelector value={icon} onChange={setIcon}>
+            <Icon name={icon} />
+          </IconSelector>
+        }
+        suffix={<Icon name='arrow-left-line' />}
         onChange={onTitleChange}
         onBlur={onInputBlur}
         onKeyDown={onInputKeydown}

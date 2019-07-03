@@ -20,8 +20,8 @@ enum MenuType {
 }
 
 const contextMenu: MenuOption<MenuType>[] = [
-  { icon: 'pencil', title: 'Edit', data: MenuType.edit },
-  { icon: 'delete-bin', title: 'Delete', data: MenuType.remove }
+  { icon: 'pencil-line', title: 'Edit', data: MenuType.edit },
+  { icon: 'delete-bin-line', title: 'Delete', data: MenuType.remove }
 ]
 
 export interface Props extends RouteComponentProps<{ groupId: string; entryId?: string }> {}
@@ -82,13 +82,13 @@ export default observer(function ListView (props: Props) {
       <Header>
         <SearchInput
           solid
-          prefix={<Icon name='search' />}
-          suffix={!!keyword.length && <Icon name='close' onClick={onKeywordClear} />}
+          prefix={<Icon name='search-line' />}
+          suffix={!!keyword.length && <Icon name='close-line' onClick={onKeywordClear} />}
           value={keyword}
           onChange={onKeywordChange}
         />
         <AddButton solid onClick={onEntryAdd}>
-          <Icon name='add' />
+          <Icon name='add-line' />
         </AddButton>
       </Header>
       <Container ref={refContainer}>

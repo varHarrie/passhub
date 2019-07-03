@@ -93,7 +93,7 @@ export function createAppStore () {
 
         return Database.instance.entries.insert({
           id,
-          icon: 'file-list-2',
+          icon: 'file-list-2-line',
           title: 'Untitled',
           description: '',
           groupId,

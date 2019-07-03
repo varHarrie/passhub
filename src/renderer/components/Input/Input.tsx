@@ -1,4 +1,4 @@
-import { forwardRef } from 'react'
+import { forwardRef, useCallback } from 'react'
 
 import { styled } from '../../styles'
 import { noop } from '../../libs/utils'
@@ -33,11 +33,15 @@ function Input (props: Props, ref: React.Ref<HTMLInputElement>) {
     ...inputProps
   } = props
 
+  const onPreventDefault = useCallback((e: React.MouseEvent) => {
+    e.preventDefault()
+  }, [])
+
   return (
-    <Wrapper className={className} size={size} solid={solid}>
-      {prefix && <Prefix>{prefix}</Prefix>}
+    <Wrapper className={className} size={size} solid={solid} onMouseDown={onPreventDefault}>
+      {prefix && <Prefix onMouseDown={onPreventDefault}>{prefix}</Prefix>}
       <OriginalInput ref={ref} onChange={onChange} {...inputProps} />
-      {suffix && <Suffix>{suffix}</Suffix>}
+      {suffix && <Suffix onMouseDown={onPreventDefault}>{suffix}</Suffix>}
     </Wrapper>
   )
 }

@@ -27,8 +27,8 @@ interface GroupLike {
 }
 
 const contextMenu: MenuOption<MenuType>[] = [
-  { icon: 'pencil', title: 'Edit', data: MenuType.edit },
-  { icon: 'delete-bin', title: 'Delete', data: MenuType.remove }
+  { icon: 'pencil-line', title: 'Edit', data: MenuType.edit },
+  { icon: 'delete-bin-line', title: 'Delete', data: MenuType.remove }
 ]
 
 export interface Props extends RouteComponentProps<{ groupId?: string }> {}
@@ -77,7 +77,7 @@ export default observer(function SideView (props: Props) {
   )
 
   const onGroupStartAdd = useCallback(() => {
-    setAddingGroup({ id: '', icon: 'folder', title: '' })
+    setAddingGroup({ id: '', icon: 'folder-line', title: '' })
     refContainer.current.scrollToEnd()
   }, [])
 
@@ -99,7 +99,7 @@ export default observer(function SideView (props: Props) {
       <Header>
         <StyledLogo size='small' />
         <Title>Passhub</Title>
-        <SaveTip name='save' visible={store.saving} />
+        <SaveTip name='save-line' visible={store.saving} />
       </Header>
       <Container ref={refContainer}>
         <ContextMenu options={contextMenu} onClick={onMenuClick}>
@@ -120,7 +120,7 @@ export default observer(function SideView (props: Props) {
             onConfirm={onGroupAdd}
           />
         ) : (
-          <GroupItem data={{ id: '', icon: 'add', title: 'New' }} onClick={onGroupStartAdd} />
+          <GroupItem data={{ id: '', icon: 'add-line', title: 'New' }} onClick={onGroupStartAdd} />
         )}
       </Container>
     </Wrapper>

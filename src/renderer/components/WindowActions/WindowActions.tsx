@@ -21,10 +21,10 @@ export default function WindowActions (props: Props) {
   return (
     <Wrapper className={className}>
       <Button onClick={onMinimize}>
-        <Icon name='subtract' />
+        <Icon name='subtract-line' />
       </Button>
       <Button onClick={onClose}>
-        <Icon name='close' />
+        <Icon name='close-line' />
       </Button>
     </Wrapper>
   )

@@ -1,24 +1,21 @@
 import 'remixicon/fonts/remixicon.css'
 
-import { css, keyframes, styled } from '../../styles'
+import { styled } from '../../styles'
 import { IconName } from '../../models/icon'
 
 export type IconSize = 'xxs' | 'xs' | 'sm' | '1x' | 'lg' | 'xl' | '2x' | '3x'
 
-export type IconType = 'line' | 'fill'
-
 export interface Props {
   className?: string
   name: IconName
-  type?: IconType
   size?: IconSize
   onClick?: React.MouseEventHandler
 }
 
 export default function Icon (props: Props) {
-  const { className, name, type = 'line', size = '1x', onClick } = props
+  const { className, name, size = '1x', onClick } = props
 
-  const iconClass = `remixicon-${name}-${type} ri-${size}`
+  const iconClass = `remixicon-${name} ri-${size}`
 
   return (
     <Wrapper className={className} onClick={onClick}>

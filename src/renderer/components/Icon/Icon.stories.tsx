@@ -10,6 +10,7 @@ const Item = styled.span<{ color: string }>`
   color: ${(p) => p.color};
 `
 
+// todo:
 const icons = ['admin']
 
 storiesOf('Icon', module).add('common', () => (

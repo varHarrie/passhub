@@ -28,11 +28,11 @@ export default function FieldAddition (props: Props) {
   return (
     <Wrapper>
       <Button ref={refButton} onClick={onButtonClick}>
-        <Icon name='add' />
+        <Icon name='add-line' />
       </Button>
       <StyledMenu visible={visible}>
-        <Menu.Item icon='Type' title='Text' data={FieldType.text} onClick={onAdd} />
-        <Menu.Item icon='Lock' title='Password' data={FieldType.password} onClick={onAdd} />
+        <Menu.Item icon='text' title='Text' data={FieldType.text} onClick={onAdd} />
+        <Menu.Item icon='lock-2-line' title='Password' data={FieldType.password} onClick={onAdd} />
       </StyledMenu>
     </Wrapper>
   )

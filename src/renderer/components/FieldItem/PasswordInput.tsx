@@ -29,7 +29,7 @@ export default function PasswordInput (props: Props) {
       value={value}
       disabled={disabled}
       onChange={onChange}
-      prefix={<Icon name='lock-2' />}
+      prefix={<Icon name='lock-2-line' />}
       suffix={
         <Icons>
           {!disabled && (
@@ -37,11 +37,11 @@ export default function PasswordInput (props: Props) {
               position='bottom-end'
               content={<PasswordGenerator value={value} onChange={onGenerate} />}
             >
-              <Icon name='flashlight' />
+              <Icon name='flashlight-line' />
             </Popup>
           )}
-          <Icon name={visible ? 'eye' : 'eye-close'} onClick={onToggle} />
-          <Icon name='file-copy' onClick={onCopy} />
+          <Icon name={visible ? 'eye-line' : 'eye-close-line'} onClick={onToggle} />
+          <Icon name='file-copy-line' onClick={onCopy} />
         </Icons>
       }
     />

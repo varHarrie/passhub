@@ -21,7 +21,7 @@ export default function TextInput (props: Props) {
       disabled={disabled}
       onChange={onChange}
       prefix={<Icon name={icon} />}
-      suffix={<Icon name='file-copy' onClick={onCopy} />}
+      suffix={<Icon name='file-copy-line' onClick={onCopy} />}
     />
   )
 }

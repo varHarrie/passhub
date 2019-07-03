@@ -8,6 +8,7 @@ import Button from '../../components/Button'
 import DropdownMenu from '../../components/DropdownMenu'
 import FieldItem from '../../components/FieldItem'
 import Icon from '../../components/Icon'
+import IconSelector from '../../components/IconSelector'
 import Input from '../../components/Input'
 import ScrollArea from '../../components/ScrollArea'
 import useRouter from '../../hooks/useRouter'
@@ -18,10 +19,11 @@ import { useAppStore } from '../../store'
 import { MenuOption } from '../../components/Menu'
 import { useConfirm } from '../../components/ModalProvider'
 import { useMessage } from '../../components/MessageProvider'
+import { IconName } from '../../models/icon'
 
 const menus: MenuOption<FieldType>[] = [
   { icon: 'text', title: 'Text', data: FieldType.text },
-  { icon: 'lock-2', title: 'Password', data: FieldType.password }
+  { icon: 'lock-2-line', title: 'Password', data: FieldType.password }
 ]
 
 export interface Params {
@@ -67,6 +69,11 @@ export default observer(function EntryDetailView (props: Props) {
     },
     [entry]
   )
+
+  const onIconChange = useCallback((icon: IconName) => {
+    setEntry((en) => ({ ...en, icon }))
+  }, [])
+
   const onTitleChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const title = e.target.value
     setEntry((en) => ({ ...en, title }))
@@ -94,7 +101,7 @@ export default observer(function EntryDetailView (props: Props) {
   const onFieldCopy = useCallback((field: Field) => {
     if (field.value) {
       copy(field.value)
-      message('check', 'Copy!')
+      message('check-line', 'Copy!')
     }
   }, [])
 
@@ -102,7 +109,9 @@ export default observer(function EntryDetailView (props: Props) {
     <Wrapper>
       {entry && (
         <Header>
-          <Icon name={entry.icon} size='xl' />
+          <IconSelector disabled={!editable} value={entry.icon} onChange={onIconChange}>
+            <Icon name={entry.icon} size='xl' />
+          </IconSelector>
           <TitleInput value={entry.title} disabled={!editable} onChange={onTitleChange} />
         </Header>
       )}
@@ -123,23 +132,23 @@ export default observer(function EntryDetailView (props: Props) {
       <Footer>
         {!editable && (
           <Button onClick={onEdit}>
-            <Icon name='pencil' />
+            <Icon name='pencil-line' />
           </Button>
         )}
         {editable && (
           <Button onClick={onSave}>
-            <Icon name='check' />
+            <Icon name='check-line' />
           </Button>
         )}
         {editable && (
           <Button onClick={onCancel}>
-            <Icon name='close' />
+            <Icon name='close-line' />
           </Button>
         )}
         {editable && (
           <DropdownMenu position='top-start' items={menus} onClick={onMenuClick}>
             <Button>
-              <Icon name='add' />
+              <Icon name='add-line' />
             </Button>
           </DropdownMenu>
         )}
@@ -164,13 +173,11 @@ const Header = styled.div`
   padding: 0 100px 0 14px;
   height: 56px;
   color: #999;
-  -webkit-app-region: drag;
 `
 
 const TitleInput = styled(Input)`
   margin-left: 8px;
   flex: 1;
-  -webkit-app-region: no-drag;
 
   ${(p) =>
     p.disabled &&
