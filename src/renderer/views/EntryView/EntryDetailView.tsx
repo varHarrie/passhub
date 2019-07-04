@@ -109,10 +109,16 @@ export default observer(function EntryDetailView (props: Props) {
     <Wrapper>
       {entry && (
         <Header>
-          <IconSelector disabled={!editable} value={entry.icon} onChange={onIconChange}>
-            <Icon name={entry.icon} size='xl' />
-          </IconSelector>
-          <TitleInput value={entry.title} disabled={!editable} onChange={onTitleChange} />
+          <TitleInput
+            value={entry.title}
+            disabled={!editable}
+            onChange={onTitleChange}
+            prefix={
+              <IconSelector disabled={!editable} value={entry.icon} onChange={onIconChange}>
+                <Icon name={entry.icon} size='lg' />
+              </IconSelector>
+            }
+          />
         </Header>
       )}
       <Container>
@@ -176,7 +182,6 @@ const Header = styled.div`
 `
 
 const TitleInput = styled(Input)`
-  margin-left: 8px;
   flex: 1;
 
   ${(p) =>

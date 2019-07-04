@@ -31,7 +31,7 @@ export default function PasswordInput (props: Props) {
       onChange={onChange}
       prefix={<Icon name='lock-2-line' />}
       suffix={
-        <Icons>
+        <Actions>
           {!disabled && (
             <Popup
               position='bottom-end'
@@ -42,14 +42,29 @@ export default function PasswordInput (props: Props) {
           )}
           <Icon name={visible ? 'eye-line' : 'eye-close-line'} onClick={onToggle} />
           <Icon name='file-copy-line' onClick={onCopy} />
-        </Icons>
+        </Actions>
       }
     />
   )
 }
 
+const Actions = styled.div`
+  display: flex;
+  opacity: 0;
+  transition: opacity 0.3s;
+
+  & > div,
+  & > span {
+    margin-left: 8px;
+  }
+`
+
 const StyledInput = styled(Input)<{ percent: number }>`
   position: relative;
+
+  &:hover ${Actions} {
+    opacity: 1;
+  }
 
   &::after {
     position: absolute;
@@ -68,14 +83,9 @@ const StyledInput = styled(Input)<{ percent: number }>`
     css`
       padding: 0;
       border-color: transparent;
+
+      &:hover {
+        background: #f6f6f6;
+      }
     `}
-`
-
-const Icons = styled.div`
-  display: flex;
-
-  & > div,
-  & > span {
-    margin-left: 8px;
-  }
 `

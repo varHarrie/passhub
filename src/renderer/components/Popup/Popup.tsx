@@ -23,11 +23,9 @@ export default function Popup (props: Props) {
   const onTargetClick = useCallback(
     (e: React.MouseEvent) => {
       e.preventDefault()
-      if (!disabled) {
-        toggle()
-      }
+      toggle()
     },
-    [disabled, toggle]
+    [toggle]
   )
 
   const onPreventDefault = useCallback((e: React.MouseEvent) => {
@@ -44,10 +42,12 @@ export default function Popup (props: Props) {
     }
   }, [disabled])
 
+  const onClick = disabled ? undefined : onTargetClick
+
   const target = isValidElement(children) ? (
-    cloneElement(children, { onClick: onTargetClick })
+    cloneElement(children, { onClick })
   ) : (
-    <span onClick={onTargetClick}>{children}</span>
+    <span onClick={onClick}>{children}</span>
   )
 
   return (

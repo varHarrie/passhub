@@ -49,7 +49,6 @@ function Input (props: Props, ref: React.Ref<HTMLInputElement>) {
 export default forwardRef(Input)
 
 const Wrapper = styled.label<{ size: InputSize; solid?: boolean }>`
-  padding: 0 8px;
   display: flex;
   align-items: center;
   width: 100%;
@@ -84,18 +83,27 @@ const Wrapper = styled.label<{ size: InputSize; solid?: boolean }>`
 `
 
 const OriginalInput = styled.input`
+  padding-left: 8px;
+  padding-right: 8px;
   display: block;
   flex: 1;
   min-width: 0;
+  height: 100%;
   border: none;
   background: none;
   outline: none;
 `
 
-const Prefix = styled.span`
-  margin-right: 8px;
+const Prefix = styled.div`
+  display: flex;
+  align-items: center;
+  padding-left: 8px;
+  height: 100%;
 `
 
-const Suffix = styled.span`
-  margin-left: 8px;
+const Suffix = styled.div`
+  display: flex;
+  align-items: center;
+  padding-right: 8px;
+  height: 100%;
 `
