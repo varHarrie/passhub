@@ -11,6 +11,7 @@ import Icon from '../../components/Icon'
 import IconSelector from '../../components/IconSelector'
 import Input from '../../components/Input'
 import ScrollArea from '../../components/ScrollArea'
+import usePrompt from '../../hooks/usePrompt'
 import useRouter from '../../hooks/useRouter'
 import { css, styled } from '../../styles'
 import { Field, FieldType } from '../../models/field'
@@ -35,7 +36,7 @@ export interface Params {
 export interface Props {}
 
 export default observer(function EntryDetailView (props: Props) {
-  const { match, history } = useRouter<Params>()
+  const { match, history, location } = useRouter<Params>()
   const { groupId, entryId } = match.params
 
   const confirm = useConfirm()
@@ -104,6 +105,11 @@ export default observer(function EntryDetailView (props: Props) {
       message('check-line', 'Copy!')
     }
   }, [])
+
+  usePrompt(editable, (l) => {
+    if (location.pathname.startsWith(l.pathname)) return
+    return `Are you sure you want to quit without saving your changes?`
+  })
 
   return (
     <Wrapper>

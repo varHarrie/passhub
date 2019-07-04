@@ -42,7 +42,7 @@ export default observer(function ListView (props: Props) {
 
   const onMenuClick = useCallback(
     (_: React.MouseEvent, t: MenuType, e: Entry) => {
-      if (t === MenuType.edit) {
+      if (t === MenuType.edit && e.id !== entryId) {
         history.push(`/${groupId}/${e.id}/editable`)
       } else if (t === MenuType.remove) {
         confirm({
@@ -54,7 +54,7 @@ export default observer(function ListView (props: Props) {
         })
       }
     },
-    [groupId, history]
+    [groupId, entryId, history]
   )
 
   const onKeywordChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
@@ -72,9 +72,11 @@ export default observer(function ListView (props: Props) {
 
   const onEntrySelect = useCallback(
     (e: Entry) => {
-      history.push(`/${groupId}/${e.id}`)
+      if (e.id !== entryId) {
+        history.push(`/${groupId}/${e.id}`)
+      }
     },
-    [groupId, history]
+    [groupId, entryId, history]
   )
 
   return (

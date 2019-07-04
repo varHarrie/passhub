@@ -1,5 +1,6 @@
-import { HashRouter, Route, Switch } from 'react-router-dom'
+import { Route, Switch } from 'react-router-dom'
 
+import HashRouter from './components/HashRouter'
 import MessageProvider from './components/MessageProvider'
 import ModalProvider from './components/ModalProvider'
 import WindowActions from './components/WindowActions'

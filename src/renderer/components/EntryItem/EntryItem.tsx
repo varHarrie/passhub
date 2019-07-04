@@ -20,13 +20,13 @@ export default function EntryItem (props: Props) {
 
   const onEntryClick = useCallback(() => {
     onClick(data)
-  }, [data])
+  }, [data, onClick])
 
   const onGroupContextMenu = useCallback(
     (e: React.MouseEvent) => {
       onContextMenu(e, data)
     },
-    [data]
+    [data, onContextMenu]
   )
 
   return (
