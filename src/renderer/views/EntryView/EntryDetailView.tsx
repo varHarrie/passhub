@@ -11,6 +11,7 @@ import Icon from '../../components/Icon'
 import IconSelector from '../../components/IconSelector'
 import Input from '../../components/Input'
 import ScrollArea from '../../components/ScrollArea'
+import usePaste from '../../hooks/usePaste'
 import usePrompt from '../../hooks/usePrompt'
 import useRouter from '../../hooks/useRouter'
 import { css, styled } from '../../styles'
@@ -105,6 +106,19 @@ export default observer(function EntryDetailView (props: Props) {
       message('check-line', 'Copy!')
     }
   }, [])
+
+  usePaste(
+    (e) => {
+      const value = e.clipboardData.getData('text/plain')
+      if (editable && document.activeElement === document.body && value) {
+        setEntry((en) => ({
+          ...en,
+          fields: [...en.fields, createField(entry.id, FieldType.text, value)]
+        }))
+      }
+    },
+    [editable, entry]
+  )
 
   usePrompt(editable, (l) => {
     if (location.pathname.startsWith(l.pathname)) return
@@ -221,13 +235,13 @@ const Footer = styled.div`
   }
 `
 
-function createField (entryId: string, type: FieldType) {
+function createField (entryId: string, type: FieldType, value: string = '') {
   return {
     type,
+    value,
     entryId,
     id: uuid.v4(),
     title: '',
-    value: '',
     createdAt: Date.now(),
     modifiedAt: Date.now()
   }
