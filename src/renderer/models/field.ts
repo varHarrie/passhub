@@ -2,7 +2,8 @@ import { Base } from './base'
 
 export enum FieldType {
   text = 'TEXT',
-  password = 'PASSWORD'
+  password = 'PASSWORD',
+  image = 'IMAGE'
 }
 
 export interface Field extends Base {

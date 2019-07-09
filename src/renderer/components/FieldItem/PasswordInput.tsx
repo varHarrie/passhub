@@ -1,3 +1,5 @@
+import { useCallback } from 'react'
+
 import * as password from '../../libs/password'
 import useToggle from '../../hooks/useToggle'
 import Icon from '../Icon'
@@ -9,18 +11,24 @@ import { css, styled } from '../../styles'
 interface Props {
   value: string
   disabled?: boolean
-  onChange: React.ChangeEventHandler
-  onGenerate: (value: string) => void
   onCopy: React.MouseEventHandler
+  onChange: (value: string) => void
 }
 
 export default function PasswordInput (props: Props) {
-  const { value, disabled, onChange, onGenerate, onCopy } = props
+  const { value, disabled, onChange, onCopy } = props
 
   const [visible, onToggle] = useToggle()
   const type = visible ? 'text' : 'password'
 
   const percent = password.test(value).percent
+
+  const onInputChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      onChange(e.target.value)
+    },
+    [onChange]
+  )
 
   return (
     <StyledInput
@@ -28,14 +36,14 @@ export default function PasswordInput (props: Props) {
       type={type}
       value={value}
       disabled={disabled}
-      onChange={onChange}
+      onChange={onInputChange}
       prefix={<Icon name='lock-2-line' />}
       suffix={
         <Actions>
           {!disabled && (
             <Popup
               position='bottom-end'
-              content={<PasswordGenerator value={value} onChange={onGenerate} />}
+              content={<PasswordGenerator value={value} onChange={onChange} />}
             >
               <Icon name='flashlight-line' />
             </Popup>

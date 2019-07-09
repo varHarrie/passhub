@@ -1,6 +1,7 @@
 import { useCallback } from 'react'
 
 import Icon from '../Icon'
+import ImageAttachment from './ImageAttachment'
 import PasswordInput from './PasswordInput'
 import TextInput from './TextInput'
 import { Field, FieldType } from '../../models/field'
@@ -8,7 +9,8 @@ import { styled } from '../../styles'
 
 const controls = {
   [FieldType.password]: PasswordInput,
-  [FieldType.text]: TextInput
+  [FieldType.text]: TextInput,
+  [FieldType.image]: ImageAttachment
 }
 
 interface Props {
@@ -31,15 +33,7 @@ export default function FieldItem (props: Props) {
   )
 
   const onValueChange = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      const value = e.target.value
-      onChange({ ...data, value })
-    },
-    [data, onChange]
-  )
-
-  const onValueGenerate = useCallback(
-    (value) => {
+    (value: string) => {
       onChange({ ...data, value })
     },
     [data, onChange]
@@ -70,7 +64,6 @@ export default function FieldItem (props: Props) {
           value={data.value}
           disabled={!editable}
           onChange={onValueChange}
-          onGenerate={onValueGenerate}
           onCopy={onValueCopy}
         />
       </Container>

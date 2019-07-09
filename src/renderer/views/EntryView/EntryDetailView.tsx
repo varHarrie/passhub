@@ -14,6 +14,7 @@ import ScrollArea from '../../components/ScrollArea'
 import usePaste from '../../hooks/usePaste'
 import usePrompt from '../../hooks/usePrompt'
 import useRouter from '../../hooks/useRouter'
+import parseClipboardEvent from '../../libs/parseClipboardEvent'
 import { css, styled } from '../../styles'
 import { Field, FieldType } from '../../models/field'
 import { Entry } from '../../models/entry'
@@ -25,7 +26,8 @@ import { IconName } from '../../models/icon'
 
 const menus: MenuOption<FieldType>[] = [
   { icon: 'text', title: 'Text', data: FieldType.text },
-  { icon: 'lock-2-line', title: 'Password', data: FieldType.password }
+  { icon: 'lock-2-line', title: 'Password', data: FieldType.password },
+  { icon: 'image-2-line', title: 'Image', data: FieldType.image }
 ]
 
 export interface Params {
@@ -108,13 +110,18 @@ export default observer(function EntryDetailView (props: Props) {
   }, [])
 
   usePaste(
-    (e) => {
-      const value = e.clipboardData.getData('text/plain')
-      if (editable && document.activeElement === document.body && value) {
-        setEntry((en) => ({
-          ...en,
-          fields: [...en.fields, createField(entry.id, FieldType.text, value)]
-        }))
+    async (e) => {
+      if (editable && document.activeElement === document.body) {
+        const data = await parseClipboardEvent(e)
+
+        if (data) {
+          const type = data.type === 'image' ? FieldType.image : FieldType.text
+
+          setEntry((en) => ({
+            ...en,
+            fields: [...en.fields, createField(entry.id, type, data.content)]
+          }))
+        }
       }
     },
     [editable, entry]

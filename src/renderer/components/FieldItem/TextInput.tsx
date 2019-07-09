@@ -1,3 +1,5 @@
+import { useCallback } from 'react'
+
 import Icon from '../Icon'
 import Input from '../Input'
 import { css, styled } from '../../styles'
@@ -6,8 +8,8 @@ import { IconName } from '../../models/icon'
 interface Props {
   value: string
   disabled?: boolean
-  onChange: React.ChangeEventHandler
   onCopy: React.MouseEventHandler
+  onChange: (value: string) => void
 }
 
 export default function TextInput (props: Props) {
@@ -15,11 +17,18 @@ export default function TextInput (props: Props) {
 
   const icon = deduceIcon(value)
 
+  const onInputChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      onChange(e.target.value)
+    },
+    [onChange]
+  )
+
   return (
     <StyledInput
       value={value}
       disabled={disabled}
-      onChange={onChange}
+      onChange={onInputChange}
       prefix={<Icon name={icon} />}
       suffix={
         <Actions>

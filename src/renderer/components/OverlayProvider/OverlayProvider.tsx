@@ -9,7 +9,7 @@ export interface Props {
   children: React.ReactNode
 }
 
-export default observer(function MessageProvider (props: Props) {
+export default observer(function OverlayProvider (props: Props) {
   const { className, context, children } = props
 
   const store = useLocalStore(createOverlayStore)
