@@ -1,8 +1,9 @@
-import { useCallback } from 'react'
+import { useCallback, useRef } from 'react'
 
 import parseClipboardEvent from '../../libs/parseClipboardEvent'
 import { css, styled } from '../../styles'
 import { noop } from '../../libs/utils'
+import { usePreview } from '../ImageViewer'
 
 interface Props {
   value: string
@@ -12,6 +13,9 @@ interface Props {
 
 export default function ImageAttachment (props: Props) {
   const { value, disabled, onChange } = props
+
+  const refImage = useRef<HTMLImageElement>()
+  const preview = usePreview()
 
   const onPaste = useCallback(
     async (e: React.ClipboardEvent) => {
@@ -24,9 +28,17 @@ export default function ImageAttachment (props: Props) {
     [onChange]
   )
 
+  const onPreview = useCallback(() => {
+    preview(refImage.current)
+  }, [])
+
   return (
     <Wrapper disabled={disabled}>
-      {value ? <Image src={value} /> : <Placeholder>Paste the image here</Placeholder>}
+      {value ? (
+        <Image ref={refImage} src={value} onDoubleClick={onPreview} />
+      ) : (
+        <Placeholder>Paste the image here</Placeholder>
+      )}
       <Input value={value} disabled={disabled} onPaste={onPaste} onChange={noop} />
     </Wrapper>
   )

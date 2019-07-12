@@ -1,6 +1,7 @@
 import { Route, Switch } from 'react-router-dom'
 
 import HashRouter from './components/HashRouter'
+import ImageViewer from './components/ImageViewer'
 import MessageProvider from './components/MessageProvider'
 import ModalProvider from './components/ModalProvider'
 import WindowActions from './components/WindowActions'
@@ -18,16 +19,18 @@ export default function App () {
       <ThemeProvider theme={theme}>
         <MessageProvider>
           <ModalProvider>
-            <HashRouter>
-              <Wrapper>
-                <Switch>
-                  <Route path='/login' component={LoginView} />
-                  <Route path='/' component={MainView} />
-                </Switch>
-                <WindowActions />
-                <GlobalStyle />
-              </Wrapper>
-            </HashRouter>
+            <ImageViewer>
+              <HashRouter>
+                <Wrapper>
+                  <Switch>
+                    <Route path='/login' component={LoginView} />
+                    <Route path='/' component={MainView} />
+                  </Switch>
+                  <WindowActions />
+                  <GlobalStyle />
+                </Wrapper>
+              </HashRouter>
+            </ImageViewer>
           </ModalProvider>
         </MessageProvider>
       </ThemeProvider>
