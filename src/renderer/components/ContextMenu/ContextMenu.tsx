@@ -28,7 +28,7 @@ export default function ContextMenu<P, O> (props: Props<P, O>) {
       refPayload.current = p
       setVisible(true)
       setPosition(nextPosition)
-    }, 0)
+    }, 10)
   }, [])
 
   const onHide = useCallback(() => {

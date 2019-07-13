@@ -1,5 +1,7 @@
 import { Fragment, useCallback, useRef, useState } from 'react'
 
+import Button from '../Button'
+import Icon from '../Icon'
 import ImageContext from './ImageContext'
 import { styled } from '../../styles'
 
@@ -30,21 +32,20 @@ export default function ImageViewer (props: Props) {
       transform: `translate3d(0px, 0px, 0px) scale(${scale})`
     }
 
+    setSrc(el.src)
+    setDomVisible(true)
     setStyle(refSourceStyle.current)
 
-    setDomVisible(true)
-    setSrc(el.src)
-
     setTimeout(() => {
-      const deltaX = left + (width - innerWidth) / 2
-      const deltaY = top + (height - innerHeight) / 2
+      const deltaX = (innerWidth - width) / 2 - left
+      const deltaY = (innerHeight - height) / 2 - top
 
       setVisible(true)
       setStyle({
-        ...refSourceStyle,
+        ...refSourceStyle.current,
         transform: `translate3d(${deltaX}px, ${deltaY}px, 0px) scale(1)`
       })
-    }, 0)
+    }, 10)
   }, [])
 
   const onHide = useCallback(() => {
@@ -56,12 +57,35 @@ export default function ImageViewer (props: Props) {
     }, 300)
   }, [])
 
+  // const onStopPropagation = useCallback((e: React.MouseEvent) => {
+  //   e.stopPropagation()
+  // }, [])
+
+  // const onZoomIn = useCallback(() => {
+  //   //
+  // }, [])
+
+  // const onZoomOut = useCallback(() => {
+  //   //
+  // }, [])
+
   return (
     <Fragment>
       <ImageContext.Provider value={show}>{children}</ImageContext.Provider>
       {domVisible && (
         <Wrapper visible={visible} onClick={onHide}>
           <Image ref={refImage} src={src} style={style} />
+          {/* <Actions visible={visible} onClick={onStopPropagation}>
+            <Button solid onClick={onZoomIn}>
+              <Icon name='zoom-in-line' />
+            </Button>
+            <Button solid onClick={onZoomOut}>
+              <Icon name='zoom-out-line' />
+            </Button>
+            <Button solid>
+              <Icon name='close-line' onClick={onHide} />
+            </Button>
+          </Actions> */}
         </Wrapper>
       )}
     </Fragment>
@@ -75,7 +99,7 @@ const Wrapper = styled.div<{ visible: boolean }>`
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(255, 255, 255, ${(p) => (p.visible ? 0.8 : 0)});
+  background: rgba(255, 255, 255, ${(p) => (p.visible ? 0.9 : 0)});
   transition: all 0.3s;
 `
 
@@ -86,3 +110,16 @@ const Image = styled.img`
   transition: transform 0.3s;
   will-change: transform, top, left;
 `
+
+// const Actions = styled.div<{ visible: boolean }>`
+//   position: absolute;
+//   bottom: 20px;
+//   right: 20px;
+//   opacity: ${(p) => (p.visible ? 1 : 0)};
+//   transition: opacity 0.3s;
+
+//   & > button:not(:first-child) {
+//     display: block;
+//     margin-top: 8px;
+//   }
+// `
