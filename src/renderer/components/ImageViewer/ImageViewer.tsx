@@ -1,81 +1,91 @@
-import { Fragment, useCallback, useRef, useState } from 'react'
+import { Fragment, useCallback, useRef } from 'react'
 
 import Button from '../Button'
 import Icon from '../Icon'
 import ImageContext from './ImageContext'
 import { styled } from '../../styles'
+import { useLocalStore, observer } from 'mobx-react-lite'
+import { createImageViewerStore } from './createImageViewerStore'
+import useDragging from '../../hooks/useDragging'
 
 export interface Props {
   children: React.ReactNode
 }
 
-export default function ImageViewer (props: Props) {
+export default observer(function ImageViewer (props: Props) {
   const { children } = props
-  const refImage = useRef<HTMLImageElement>()
-  const refSourceStyle = useRef<React.CSSProperties>({})
 
-  const [src, setSrc] = useState('')
-  const [visible, setVisible] = useState(false)
-  const [domVisible, setDomVisible] = useState(false)
-  const [style, setStyle] = useState<React.CSSProperties>({})
+  const refImage = useRef<HTMLImageElement>()
+  const refFloatingImage = useRef<HTMLImageElement>()
+  const store = useLocalStore(createImageViewerStore)
 
   const show = useCallback((el: HTMLImageElement) => {
     const { width, height, top, left } = el.getBoundingClientRect()
     const { naturalWidth, naturalHeight } = el
     const { innerWidth, innerHeight } = window
 
-    const scale = width / naturalWidth
+    refImage.current = el
+    el.style.opacity = '0'
 
-    refSourceStyle.current = {
-      left: left + (width - naturalWidth) / 2,
-      top: top + (height - naturalHeight) / 2,
-      transform: `translate3d(0px, 0px, 0px) scale(${scale})`
-    }
-
-    setSrc(el.src)
-    setDomVisible(true)
-    setStyle(refSourceStyle.current)
-
-    setTimeout(() => {
-      const deltaX = (innerWidth - width) / 2 - left
-      const deltaY = (innerHeight - height) / 2 - top
-
-      setVisible(true)
-      setStyle({
-        ...refSourceStyle.current,
-        transform: `translate3d(${deltaX}px, ${deltaY}px, 0px) scale(1)`
-      })
-    }, 10)
+    store.show(
+      el.src,
+      {
+        scale: width / naturalWidth,
+        translate: { x: 0, y: 0 },
+        position: {
+          left: left + (width - naturalWidth) / 2,
+          top: top + (height - naturalHeight) / 2
+        }
+      },
+      {
+        translate: {
+          x: (innerWidth - width) / 2 - left,
+          y: (innerHeight - height) / 2 - top
+        }
+      }
+    )
   }, [])
 
-  const onHide = useCallback(() => {
-    setVisible(false)
-    setStyle(refSourceStyle.current)
-
-    setTimeout(() => {
-      setDomVisible(false)
-    }, 300)
+  const onHide = useCallback(async () => {
+    await store.hide(300)
+    refImage.current.style.opacity = '1'
   }, [])
 
-  // const onStopPropagation = useCallback((e: React.MouseEvent) => {
-  //   e.stopPropagation()
-  // }, [])
+  const onPreventDefault = useCallback((e: React.MouseEvent) => {
+    e.preventDefault()
+  }, [])
 
-  // const onZoomIn = useCallback(() => {
-  //   //
-  // }, [])
+  const onStopPropagation = useCallback((e: React.MouseEvent) => {
+    e.stopPropagation()
+  }, [])
 
-  // const onZoomOut = useCallback(() => {
-  //   //
-  // }, [])
+  const onZoomIn = useCallback(() => {
+    store.zoomIn()
+  }, [])
+
+  const onZoomOut = useCallback(() => {
+    store.zoomOut()
+  }, [])
+
+  useDragging(
+    refFloatingImage,
+    (e, p) => store.offset(e.clientX - p.x, e.clientY - p.y),
+    () => store.applyOffset()
+  )
 
   return (
     <Fragment>
       <ImageContext.Provider value={show}>{children}</ImageContext.Provider>
-      {domVisible && (
-        <Wrapper visible={visible} onClick={onHide}>
-          <Image ref={refImage} src={src} style={style} />
-          {/* <Actions visible={visible} onClick={onStopPropagation}>
+      {store.domVisible && (
+        <Wrapper visible={store.visible} onClick={onHide}>
+          <Image
+            ref={refFloatingImage}
+            src={store.src}
+            style={store.style}
+            onMouseDown={onPreventDefault}
+            onClick={onStopPropagation}
+          />
+          <Actions visible={store.visible} onClick={onStopPropagation}>
             <Button solid onClick={onZoomIn}>
               <Icon name='zoom-in-line' />
             </Button>
@@ -85,12 +95,12 @@ export default function ImageViewer (props: Props) {
             <Button solid>
               <Icon name='close-line' onClick={onHide} />
             </Button>
-          </Actions> */}
+          </Actions>
         </Wrapper>
       )}
     </Fragment>
   )
-}
+})
 
 const Wrapper = styled.div<{ visible: boolean }>`
   position: fixed;
@@ -107,19 +117,18 @@ const Image = styled.img`
   position: absolute;
   user-select: none;
   transform-origin: center center;
-  transition: transform 0.3s;
   will-change: transform, top, left;
 `
 
-// const Actions = styled.div<{ visible: boolean }>`
-//   position: absolute;
-//   bottom: 20px;
-//   right: 20px;
-//   opacity: ${(p) => (p.visible ? 1 : 0)};
-//   transition: opacity 0.3s;
+const Actions = styled.div<{ visible: boolean }>`
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  opacity: ${(p) => (p.visible ? 1 : 0)};
+  transition: opacity 0.3s;
 
-//   & > button:not(:first-child) {
-//     display: block;
-//     margin-top: 8px;
-//   }
-// `
+  & > button:not(:first-child) {
+    display: block;
+    margin-top: 8px;
+  }
+`
