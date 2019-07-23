@@ -1,5 +1,49 @@
 {
   "login": {
-    "password-error": "密码不正确！"
+    "password-error": "密码不正确"
+  },
+  "side": {
+    "menu": {
+      "edit": "编辑",
+      "remove": "删除"
+    },
+    "new": "新建",
+    "remove-confirm": "确定要删除这个组？"
+  },
+  "list": {
+    "menu": {
+      "edit": "编辑",
+      "remove": "删除"
+    },
+    "remove-confirm": "确定要删除这条记录？"
+  },
+  "entry": {
+    "menu": {
+      "text": "文本",
+      "password": "密码",
+      "image": "图片"
+    },
+    "quit-confirm": "确定不保存变更？",
+    "remove-confirm": "确定删除当前项？",
+    "copy-tip": "已复制！",
+    "new": {
+      "title": "未命名"
+    }
+  },
+  "field": {
+    "new": {
+      "username": "用户名",
+      "password": "密码",
+      "website": "网站",
+      "note": "备注"
+    }
+  },
+  "group-item-editor": {
+    "placeholder": "分组标题"
+  },
+  "confirm": {
+    "title": "确定",
+    "confirm": "是",
+    "cancel": "否"
   }
 }

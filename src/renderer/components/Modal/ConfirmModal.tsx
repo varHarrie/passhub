@@ -3,6 +3,8 @@ import Modal from './Modal'
 import { styled } from '../../styles'
 import { noop } from '../../libs/utils'
 
+import i18n from '../../libs/i18n'
+
 export interface Props {
   title?: React.ReactNode
   visible?: boolean
@@ -19,8 +21,8 @@ export default function ConfirmModal (props: Props) {
   const {
     title,
     children,
-    confirmText = 'Yes',
-    cancelText = 'No',
+    confirmText = i18n.t('confirm.confirm'),
+    cancelText = i18n.t('confirm.cancel'),
     onConfirm = noop,
     onCancel = noop,
     ...rest

@@ -6,6 +6,8 @@ import { Entry } from '../models/entry'
 import { FieldType } from '../models/field'
 import { IconName } from '../models/icon'
 
+import i18n from '../libs/i18n'
+
 export function createAppStore () {
   const store = {
     groups: [] as Group[],
@@ -94,7 +96,7 @@ export function createAppStore () {
         return Database.instance.entries.insert({
           id,
           icon: 'file-list-2-line',
-          title: 'Untitled',
+          title: i18n.t('entry.new.title'),
           description: '',
           groupId,
           createdAt: Date.now(),
@@ -104,7 +106,7 @@ export function createAppStore () {
               type: FieldType.text,
               id: uuid.v4(),
               entryId: id,
-              title: 'Username',
+              title: i18n.t('field.new.username'),
               value: '',
               createdAt: Date.now(),
               modifiedAt: Date.now()
@@ -113,7 +115,7 @@ export function createAppStore () {
               type: FieldType.password,
               id: uuid.v4(),
               entryId: id,
-              title: 'Password',
+              title: i18n.t('field.new.username'),
               value: '',
               createdAt: Date.now(),
               modifiedAt: Date.now()
@@ -122,7 +124,7 @@ export function createAppStore () {
               type: FieldType.text,
               id: uuid.v4(),
               entryId: id,
-              title: 'Website',
+              title: i18n.t('field.new.website'),
               value: '',
               createdAt: Date.now(),
               modifiedAt: Date.now()
@@ -131,7 +133,7 @@ export function createAppStore () {
               type: FieldType.text,
               id: uuid.v4(),
               entryId: id,
-              title: 'Note',
+              title: i18n.t('field.new.note'),
               value: '',
               createdAt: Date.now(),
               modifiedAt: Date.now()

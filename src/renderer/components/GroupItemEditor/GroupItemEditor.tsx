@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 
+import useTranslate from '../../hooks/useTranslate'
 import Icon from '../Icon'
 import IconSelector from '../IconSelector'
 import Input from '../Input'
@@ -17,6 +18,7 @@ export interface Props {
 export default function GroupItemEditor (props: Props) {
   const { className, onConfirm = noop } = props
 
+  const t = useTranslate()
   const refInput = useRef<HTMLInputElement>(null)
   const [icon, setIcon] = useState<IconName>(props.icon || 'folder-line')
   const [title, setTitle] = useState(props.title || '')
@@ -47,7 +49,7 @@ export default function GroupItemEditor (props: Props) {
       <CenteredInput
         ref={refInput}
         value={title}
-        placeholder='Group Title'
+        placeholder={t('group-item-editor.placeholder')}
         prefix={
           <IconSelector value={icon} onChange={setIcon}>
             <Icon name={icon} />

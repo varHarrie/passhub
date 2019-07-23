@@ -1,6 +1,6 @@
 import * as uuid from 'uuid'
 import copy from 'copy-text-to-clipboard'
-import { useCallback, useState } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 import { observer } from 'mobx-react-lite'
 import { toJS } from 'mobx'
 
@@ -11,9 +11,11 @@ import Icon from '../../components/Icon'
 import IconSelector from '../../components/IconSelector'
 import Input from '../../components/Input'
 import ScrollArea from '../../components/ScrollArea'
+import useLanguage from '../../hooks/useLanguage'
 import usePaste from '../../hooks/usePaste'
 import usePrompt from '../../hooks/usePrompt'
 import useRouter from '../../hooks/useRouter'
+import useTranslate from '../../hooks/useTranslate'
 import parseClipboardEvent from '../../libs/parseClipboardEvent'
 import { css, styled } from '../../styles'
 import { Field, FieldType } from '../../models/field'
@@ -24,11 +26,15 @@ import { useConfirm } from '../../components/ModalProvider'
 import { useMessage } from '../../components/MessageProvider'
 import { IconName } from '../../models/icon'
 
-const menus: MenuOption<FieldType>[] = [
-  { icon: 'text', title: 'Text', data: FieldType.text },
-  { icon: 'lock-2-line', title: 'Password', data: FieldType.password },
-  { icon: 'image-2-line', title: 'Image', data: FieldType.image }
-]
+import i18n from '../../libs/i18n'
+
+function getMenus (): MenuOption<FieldType>[] {
+  return [
+    { icon: 'text', title: i18n.t('entry.menu.text'), data: FieldType.text },
+    { icon: 'lock-2-line', title: i18n.t('entry.menu.password'), data: FieldType.password },
+    { icon: 'image-2-line', title: i18n.t('entry.menu.image'), data: FieldType.image }
+  ]
+}
 
 export interface Params {
   groupId: string
@@ -42,12 +48,16 @@ export default observer(function EntryDetailView (props: Props) {
   const { match, history, location } = useRouter<Params>()
   const { groupId, entryId } = match.params
 
+  const t = useTranslate()
+  const language = useLanguage()
   const confirm = useConfirm()
   const message = useMessage()
   const store = useAppStore()
   const editable = !!match.params.editable
 
   const [entry, setEntry] = useState<Entry>(() => toJS(store.entry))
+
+  const menus = useMemo(getMenus, [language])
 
   const onEdit = useCallback(() => {
     history.push(`/${groupId}/${entryId}/editable`)
@@ -94,8 +104,8 @@ export default observer(function EntryDetailView (props: Props) {
 
   const onFieldRemove = useCallback((field: Field) => {
     confirm({
-      title: 'Confirm',
-      content: 'Are you sure you want to delete this field?',
+      title: t('confirm.title'),
+      content: t('entry.remove-confirm'),
       onConfirm: () => {
         setEntry((e) => ({ ...e, fields: e.fields.filter((f) => f.id !== field.id) }))
       }
@@ -105,7 +115,7 @@ export default observer(function EntryDetailView (props: Props) {
   const onFieldCopy = useCallback((field: Field) => {
     if (field.value) {
       copy(field.value)
-      message('check-line', 'Copy!')
+      message('check-line', t('entry.copy-tip'))
     }
   }, [])
 
@@ -129,7 +139,7 @@ export default observer(function EntryDetailView (props: Props) {
 
   usePrompt(editable, (l) => {
     if (location.pathname.startsWith(l.pathname)) return
-    return `Are you sure you want to quit without saving your changes?`
+    return t('entry.quit-confirm').toString()
   })
 
   return (

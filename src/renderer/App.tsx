@@ -19,7 +19,7 @@ export default function App () {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    loadI18n('en').then(() => setLoading(false))
+    loadI18n('zh-CN').then(() => setLoading(false))
   }, [])
 
   if (loading) return null

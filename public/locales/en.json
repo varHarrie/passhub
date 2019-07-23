@@ -1,5 +1,49 @@
 {
   "login": {
     "password-error": "Incorrect password!"
+  },
+  "side": {
+    "menu": {
+      "edit": "Edit",
+      "remove": "Delete"
+    },
+    "new": "New",
+    "remove-confirm": "Are you sure you want to delete this group?"
+  },
+  "list": {
+    "menu": {
+      "edit": "Edit",
+      "remove": "Delete"
+    },
+    "remove-confirm": "Are you sure you want to delete this entry?"
+  },
+  "entry": {
+    "menu": {
+      "text": "Text",
+      "password": "Password",
+      "image": "Image"
+    },
+    "quit-confirm": "Are you sure you want to quit without saving your changes?",
+    "remove-confirm": "Are you sure you want to delete this field?",
+    "copy-tip": "Copy!",
+    "new": {
+      "title": "Untitled"
+    }
+  },
+  "field": {
+    "new": {
+      "username": "Username",
+      "password": "Password",
+      "website": "Website",
+      "note": "Note"
+    }
+  },
+  "group-item-editor": {
+    "placeholder": "Group Title"
+  },
+  "confirm": {
+    "title": "Confirm",
+    "confirm": "Yes",
+    "cancel": "No"
   }
 }

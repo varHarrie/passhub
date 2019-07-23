@@ -1,5 +1,5 @@
 import { RouteComponentProps } from 'react-router'
-import { useCallback, useRef, useState } from 'react'
+import { useCallback, useMemo, useRef, useState } from 'react'
 import { observer } from 'mobx-react-lite'
 
 import ContextMenu from '../../components/ContextMenu'
@@ -7,6 +7,8 @@ import GroupItem from '../../components/GroupItem'
 import GroupItemEditor from '../../components/GroupItemEditor'
 import Icon from '../../components/Icon'
 import Logo from '../../components/Logo'
+import useLanguage from '../../hooks/useLanguage'
+import useTranslate from '../../hooks/useTranslate'
 import ScrollArea, { Handles as ScrollAreaHandles } from '../../components/ScrollArea'
 import { css, keyframes, styled } from '../../styles'
 import { Group } from '../../models/group'
@@ -14,6 +16,8 @@ import { useAppStore } from '../../store'
 import { MenuOption } from '../../components/Menu'
 import { useConfirm } from '../../components/ModalProvider'
 import { IconName } from '../../models/icon'
+
+import i18n from '../../libs/i18n'
 
 enum MenuType {
   edit = 'edit',
@@ -26,10 +30,12 @@ interface GroupLike {
   title: string
 }
 
-const contextMenu: MenuOption<MenuType>[] = [
-  { icon: 'pencil-line', title: 'Edit', data: MenuType.edit },
-  { icon: 'delete-bin-line', title: 'Delete', data: MenuType.remove }
-]
+function getMenus (): MenuOption<MenuType>[] {
+  return [
+    { icon: 'pencil-line', title: i18n.t('side.menu.edit'), data: MenuType.edit },
+    { icon: 'delete-bin-line', title: i18n.t('side.menu.remove'), data: MenuType.remove }
+  ]
+}
 
 export interface Props extends RouteComponentProps<{ groupId?: string }> {}
 
@@ -37,20 +43,23 @@ export default observer(function SideView (props: Props) {
   const { match, history } = props
   const { groupId } = match.params
 
+  const t = useTranslate()
+  const language = useLanguage()
   const confirm = useConfirm()
   const store = useAppStore()
   const refContainer = useRef<ScrollAreaHandles>()
 
   const [editingGroup, setEditingGroup] = useState<Group>()
   const [addingGroup, setAddingGroup] = useState<GroupLike>(null)
+  const menus = useMemo(getMenus, [language])
 
-  const onMenuClick = useCallback((e: React.MouseEvent, t: MenuType, g: Group) => {
-    if (t === MenuType.edit) {
+  const onMenuClick = useCallback((e: React.MouseEvent, type: MenuType, g: Group) => {
+    if (type === MenuType.edit) {
       setEditingGroup(g)
-    } else if (t === MenuType.remove) {
+    } else if (type === MenuType.remove) {
       confirm({
-        title: 'Confirm',
-        content: 'Are you sure you want to delete this group?',
+        title: t('confirm.title'),
+        content: t('side.remove-confirm'),
         onConfirm: () => {
           store.removeGroup(g.id)
         }
@@ -102,7 +111,7 @@ export default observer(function SideView (props: Props) {
         <SaveTip name='save-line' visible={store.saving} />
       </Header>
       <Container ref={refContainer}>
-        <ContextMenu options={contextMenu} onClick={onMenuClick}>
+        <ContextMenu options={menus} onClick={onMenuClick}>
           {store.groups.map((g) =>
             editingGroup && editingGroup.id === g.id ? (
               <GroupItemEditor key={g.id} icon={g.icon} title={g.title} onConfirm={onGroupUpdate} />
@@ -120,7 +129,10 @@ export default observer(function SideView (props: Props) {
             onConfirm={onGroupAdd}
           />
         ) : (
-          <GroupItem data={{ id: '', icon: 'add-line', title: 'New' }} onClick={onGroupStartAdd} />
+          <GroupItem
+            data={{ id: '', icon: 'add-line', title: t('side.new') }}
+            onClick={onGroupStartAdd}
+          />
         )}
       </Container>
     </Wrapper>

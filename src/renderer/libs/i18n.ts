@@ -23,3 +23,5 @@ export async function loadI18n (language: SupportedLanguage) {
 
   return i18n
 }
+
+export default i18n
