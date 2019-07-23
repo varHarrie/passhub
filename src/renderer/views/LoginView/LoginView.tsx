@@ -6,6 +6,7 @@ import Icon from '../../components/Icon'
 import Input from '../../components/Input'
 import Logo from '../../components/Logo'
 import Database from '../../Database'
+import useTranslate from '../../hooks/useTranslate'
 import { styled } from '../../styles'
 import { useMessage } from '../../components/MessageProvider'
 
@@ -13,6 +14,8 @@ export interface Props extends RouteComponentProps {}
 
 export default observer(function LoginView (props: Props) {
   const { history } = props
+
+  const t = useTranslate()
   const message = useMessage()
   const refInput = useRef<HTMLInputElement>(null)
 
@@ -30,7 +33,7 @@ export default observer(function LoginView (props: Props) {
       try {
         await Database.connect('./store.passhub', password)
       } catch (error) {
-        message('close-line', 'Incorrect password!')
+        message('close-line', t('login.password-error'))
         return
       }
 

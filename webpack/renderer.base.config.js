@@ -1,6 +1,7 @@
 const path = require('path')
 const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
+const CopyPlugin = require('copy-webpack-plugin')
 
 module.exports = {
   target: 'electron-renderer',
@@ -48,6 +49,11 @@ module.exports = {
     new webpack.ProvidePlugin({
       React: 'react',
       ReactDOM: 'react-dom'
-    })
+    }),
+    new CopyPlugin([
+      {
+        from: path.resolve(__dirname, '..', 'public')
+      }
+    ])
   ]
 }
