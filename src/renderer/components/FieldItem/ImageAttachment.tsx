@@ -1,7 +1,7 @@
+import styled, { css } from 'styled-components'
 import { useCallback, useRef } from 'react'
 
 import parseClipboardEvent from '../../libs/parseClipboardEvent'
-import { css, styled } from '../../styles'
 import { noop } from '../../libs/utils'
 import { usePreview } from '../ImageViewer'
 

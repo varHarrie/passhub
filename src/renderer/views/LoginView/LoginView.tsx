@@ -1,3 +1,4 @@
+import styled from 'styled-components'
 import { RouteComponentProps } from 'react-router'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { observer } from 'mobx-react-lite'
@@ -7,7 +8,6 @@ import Input from '../../components/Input'
 import Logo from '../../components/Logo'
 import Database from '../../Database'
 import useTranslate from '../../hooks/useTranslate'
-import { styled } from '../../styles'
 import { useMessage } from '../../components/MessageProvider'
 
 export interface Props extends RouteComponentProps {}
@@ -77,7 +77,7 @@ const Wrapper = styled.div`
 `
 
 const StyledLogo = styled(Logo)`
-  background: ${(p) => p.theme.login.logoBackground};
+  background: ${(p) => p.theme.logo.background}; // todo: remove
 `
 
 const PasswordInput = styled(Input).attrs({ type: 'password' })<{

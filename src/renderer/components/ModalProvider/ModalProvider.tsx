@@ -1,8 +1,8 @@
+import styled from 'styled-components'
 import { observer } from 'mobx-react-lite'
 
 import OverlayProvider from '../OverlayProvider'
 import ModalContext from './ModalContext'
-import { styled } from '../../styles'
 
 export interface Props {
   children: React.ReactNode

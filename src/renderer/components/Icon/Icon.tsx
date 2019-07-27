@@ -1,6 +1,7 @@
 import 'remixicon/fonts/remixicon.css'
 
-import { styled } from '../../styles'
+import styled from 'styled-components'
+
 import { IconName } from '../../models/icon'
 
 export type IconSize = 'xxs' | 'xs' | 'sm' | '1x' | 'lg' | 'xl' | '2x' | '3x'

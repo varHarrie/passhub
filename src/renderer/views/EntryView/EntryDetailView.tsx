@@ -1,5 +1,6 @@
 import * as uuid from 'uuid'
 import copy from 'copy-text-to-clipboard'
+import styled, { css } from 'styled-components'
 import { useCallback, useMemo, useState } from 'react'
 import { observer } from 'mobx-react-lite'
 import { toJS } from 'mobx'
@@ -17,7 +18,6 @@ import usePrompt from '../../hooks/usePrompt'
 import useRouter from '../../hooks/useRouter'
 import useTranslate from '../../hooks/useTranslate'
 import parseClipboardEvent from '../../libs/parseClipboardEvent'
-import { css, styled } from '../../styles'
 import { Field, FieldType } from '../../models/field'
 import { Entry } from '../../models/entry'
 import { useAppStore } from '../../store'
@@ -27,7 +27,6 @@ import { useMessage } from '../../components/MessageProvider'
 import { IconName } from '../../models/icon'
 
 import i18n from '../../libs/i18n'
-
 function getMenus (): MenuOption<FieldType>[] {
   return [
     { icon: 'text', title: i18n.t('entry.menu.text'), data: FieldType.text },
@@ -206,7 +205,6 @@ const Wrapper = styled.div`
   flex-direction: column;
   flex: 1;
   height: 100%;
-  background: ${(p) => p.theme.entry.background};
 `
 
 const Header = styled.div`

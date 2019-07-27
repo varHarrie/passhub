@@ -1,3 +1,4 @@
+import styled from 'styled-components'
 import { useCallback } from 'react'
 
 import Icon from '../Icon'
@@ -5,7 +6,6 @@ import ImageAttachment from './ImageAttachment'
 import PasswordInput from './PasswordInput'
 import TextInput from './TextInput'
 import { Field, FieldType } from '../../models/field'
-import { styled } from '../../styles'
 
 const controls = {
   [FieldType.password]: PasswordInput,

@@ -1,3 +1,4 @@
+import styled from 'styled-components'
 import { useCallback, useMemo, useRef, useState } from 'react'
 import { RouteComponentProps } from 'react-router'
 import { observer } from 'mobx-react-lite'
@@ -10,7 +11,6 @@ import Input from '../../components/Input'
 import useLanguage from '../../hooks/useLanguage'
 import useTranslate from '../../hooks/useTranslate'
 import ScrollArea, { Handles as ScrollAreaHandles } from '../../components/ScrollArea'
-import { styled } from '../../styles'
 import { Entry } from '../../models/entry'
 import { useAppStore } from '../../store'
 import { MenuOption } from '../../components/Menu'
@@ -119,7 +119,6 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   height: 100%;
-  background: ${(p) => p.theme.list.background};
 `
 
 const Header = styled.div`

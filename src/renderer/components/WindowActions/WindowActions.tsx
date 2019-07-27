@@ -1,7 +1,8 @@
+import styled from 'styled-components'
 import { ipcRenderer } from 'electron'
 
+import style from '../../libs/style'
 import Icon from '../Icon'
-import { styled } from '../../styles'
 
 function onMinimize () {
   ipcRenderer.send('minimize')
@@ -40,21 +41,12 @@ const Wrapper = styled.div`
 
 const Button = styled.div`
   display: inline-flex;
-  width: ${(p) => p.theme.window.actionWidth};
-  height: ${(p) => p.theme.window.actionHeight};
+  width: ${(p) => p.theme.windowActions.width};
+  height: ${(p) => p.theme.windowActions.height};
   align-items: center;
   justify-content: center;
-  color: ${(p) => p.theme.window.actionColor};
-  background: ${(p) => p.theme.window.actionBackground};
   transition: background 0.3s, color 0.3s;
 
-  &:hover {
-    color: ${(p) => p.theme.window.actionHoverColor};
-    background: ${(p) => p.theme.window.actionHoverBackground};
-  }
-
-  &:active {
-    color: ${(p) => p.theme.window.actionActiveColor};
-    background: ${(p) => p.theme.window.actionActiveBackground};
-  }
+  ${(p) => style('color', p.theme.windowActions.color, ['', 'hover', 'active'])}
+  ${(p) => style('background', p.theme.windowActions.background, ['', 'hover', 'active'])}
 `

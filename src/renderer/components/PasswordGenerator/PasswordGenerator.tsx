@@ -1,3 +1,4 @@
+import styled from 'styled-components'
 import { useCallback, useState } from 'react'
 
 import * as password from '../../libs/password'
@@ -5,7 +6,6 @@ import Button from '../Button'
 import Checkbox from '../Checkbox'
 import Input from '../Input'
 import Slider from '../Slider'
-import { styled } from '../../styles'
 
 export interface Props {
   value: string

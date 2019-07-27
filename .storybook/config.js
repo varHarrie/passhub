@@ -1,6 +1,8 @@
 import { withKnobs } from '@storybook/addon-knobs'
 import { configure, addDecorator } from '@storybook/react'
-import { theme, ThemeProvider } from '../src/renderer/styles'
+import { ThemeProvider } from 'styled-components'
+
+import { lightTheme } from '../src/renderer/styles/lightTheme'
 import { GlobalStyle } from '../src/renderer/styles/global'
 
 const req = require.context('../src/renderer/components', true, /.stories.tsx$/)
@@ -12,7 +14,7 @@ function loadStories() {
 addDecorator(withKnobs)
 
 addDecorator((story) => (
-  <ThemeProvider theme={theme}>
+  <ThemeProvider theme={lightTheme}>
     <div style={{ padding: '80px' }}>
       {story()}
       <GlobalStyle />

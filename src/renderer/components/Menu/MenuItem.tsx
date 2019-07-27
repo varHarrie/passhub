@@ -1,8 +1,8 @@
+import styled from 'styled-components'
 import { useCallback } from 'react'
 
 import Icon from '../Icon'
 import MenuOption from './MenuOption'
-import { styled } from '../../styles'
 import { noop } from '../../libs/utils'
 
 export interface Props<T = any> extends MenuOption<T> {

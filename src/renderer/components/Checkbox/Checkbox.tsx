@@ -1,44 +1,49 @@
+import styled from 'styled-components'
 import { useCallback } from 'react'
 
-import { styled } from '../../styles'
+import style from '../../libs/style'
 import { noop } from '../../libs/utils'
+
+export type CheckboxSize = 'small' | 'medium' | 'large'
 
 export interface Props {
   checked?: boolean
+  size?: CheckboxSize
   children?: React.ReactNode
   onChange?: (checked: boolean) => void
 }
 
 export default function Checkbox (props: Props) {
-  const { checked = false, children, onChange = noop } = props
+  const { checked = false, size = 'medium', children, onChange = noop } = props
 
   const onCheckedChange = useCallback(() => {
     onChange(!checked)
   }, [checked])
 
   return (
-    <Wrapper onClick={onCheckedChange}>
-      <Mark checked={checked} />
+    <Wrapper size={size} onClick={onCheckedChange}>
+      <Mark size={size} checked={checked} />
       <Content>{children}</Content>
     </Wrapper>
   )
 }
 
-const Wrapper = styled.div`
+const Wrapper = styled.div<{ size: CheckboxSize }>`
   display: flex;
   align-items: center;
-  height: 32px;
+  height: ${(p) => p.theme.size[p.size]};
   cursor: pointer;
   user-select: none;
 `
 
-const Mark = styled.div<{ checked: boolean }>`
+const Mark = styled.div<{ checked: boolean; size: CheckboxSize }>`
   position: relative;
-  width: 18px;
-  height: 18px;
-  border-radius: 3px;
-  background: ${(p) => (p.checked ? '#999' : '#E0E0E0')};
+  width: ${(p) => p.theme.checkbox.size[p.size]};
+  height: ${(p) => p.theme.checkbox.size[p.size]};
+  border-radius: ${(p) => p.theme.checkbox.borderRadius};
   transition: background 0.3s;
+
+  ${(p) => style('background', p.theme.checkbox.background, ['', 'hover', p.checked])}
 
   &::after {
     position: absolute;

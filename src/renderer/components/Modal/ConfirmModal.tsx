@@ -1,6 +1,7 @@
+import styled from 'styled-components'
+
 import Button from '../Button'
 import Modal from './Modal'
-import { styled } from '../../styles'
 import { noop } from '../../libs/utils'
 
 import i18n from '../../libs/i18n'

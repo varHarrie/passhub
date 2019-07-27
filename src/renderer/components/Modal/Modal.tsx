@@ -1,7 +1,7 @@
+import styled from 'styled-components'
 import { Fragment, useEffect, useRef, useState } from 'react'
 
 import Portal from '../Portal'
-import { styled } from '../../styles'
 
 export interface Props {
   visible?: boolean
@@ -73,10 +73,10 @@ const Dialog = styled.div<{ visible: boolean }>`
   left: 50%;
   margin-top: ${(p) => (p.visible ? 0 : '30px')};
   max-width: 80%;
-  width: ${(p) => p.theme.modal.dialogWidth};
-  background: ${(p) => p.theme.modal.dialogBackground};
-  box-shadow: ${(p) => p.theme.modal.dialogShadow};
-  border-radius: ${(p) => p.theme.modal.dialogBorderRadius};
+  width: ${(p) => p.theme.modal.width};
+  background: ${(p) => p.theme.modal.background};
+  box-shadow: ${(p) => p.theme.modal.boxShadow};
+  border-radius: ${(p) => p.theme.modal.borderRadius};
   opacity: ${(p) => (p.visible ? 1 : 0)};
   transform: translate(-50%, -50%) scale(${(p) => (p.visible ? 1 : 0.9)});
   transition: all 0.3s;

@@ -1,4 +1,4 @@
-import { createGlobalStyle } from './styled'
+import { createGlobalStyle } from 'styled-components'
 
 export const GlobalStyle = createGlobalStyle`
   html {
@@ -12,8 +12,8 @@ export const GlobalStyle = createGlobalStyle`
 
   #root {
     height: 100%;
-    font-size: ${(p) => p.theme.window.fontSize};
-    font-family: ${(p) => p.theme.window.fontFamily};
+    font-size: ${(p) => p.theme.fontSize};
+    font-family: ${(p) => p.theme.fontFamily};
   }
 
   div, span, form, input, button, label {

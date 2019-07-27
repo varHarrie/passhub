@@ -1,3 +1,4 @@
+import styled, { ThemeProvider } from 'styled-components'
 import { Route, Switch } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 
@@ -9,9 +10,9 @@ import WindowActions from './components/WindowActions'
 import LoginView from './views/LoginView'
 import MainView from './views/MainView'
 import { GlobalStyle } from './styles/global'
-import { styled, theme, ThemeProvider } from './styles'
 import { AppStoreProvider } from './store'
 import { loadI18n } from './libs/i18n'
+import { lightTheme } from './styles/lightTheme'
 
 // import { hot } from 'react-hot-loader/root'
 
@@ -26,7 +27,7 @@ export default function App () {
 
   return (
     <AppStoreProvider>
-      <ThemeProvider theme={theme}>
+      <ThemeProvider theme={lightTheme}>
         <MessageProvider>
           <ModalProvider>
             <ImageViewer>
@@ -52,5 +53,5 @@ export default function App () {
 
 const Wrapper = styled.div`
   height: 100%;
-  background: ${(p) => p.theme.window.background};
+  background: ${(p) => p.theme.background};
 `

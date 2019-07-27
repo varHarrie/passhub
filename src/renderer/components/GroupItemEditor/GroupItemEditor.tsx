@@ -1,3 +1,4 @@
+import styled from 'styled-components'
 import { useCallback, useEffect, useRef, useState } from 'react'
 
 import useTranslate from '../../hooks/useTranslate'
@@ -5,7 +6,6 @@ import Icon from '../Icon'
 import IconSelector from '../IconSelector'
 import Input from '../Input'
 import { noop } from '../../libs/utils'
-import { styled } from '../../styles'
 import { IconName } from '../../models/icon'
 
 export interface Props {
@@ -67,7 +67,7 @@ export default function GroupItemEditor (props: Props) {
 const Wrapper = styled.div`
   display: flex;
   align-items: center;
-  height: ${(p) => p.theme.sidebar.itemHeight};
+  height: ${(p) => p.theme.groupItem.height};
 `
 
 const CenteredInput = styled(Input)`

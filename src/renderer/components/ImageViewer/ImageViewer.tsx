@@ -1,12 +1,12 @@
+import styled from 'styled-components'
 import { Fragment, useCallback, useRef } from 'react'
+import { observer, useLocalStore } from 'mobx-react-lite'
 
+import useDragging from '../../hooks/useDragging'
 import Button from '../Button'
 import Icon from '../Icon'
 import ImageContext from './ImageContext'
-import { styled } from '../../styles'
-import { useLocalStore, observer } from 'mobx-react-lite'
 import { createImageViewerStore } from './createImageViewerStore'
-import useDragging from '../../hooks/useDragging'
 
 export interface Props {
   children: React.ReactNode

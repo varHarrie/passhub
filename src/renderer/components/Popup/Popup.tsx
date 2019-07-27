@@ -1,8 +1,8 @@
+import styled from 'styled-components'
 import { cloneElement, isValidElement, useCallback, useEffect, useRef } from 'react'
 
 import useClickOutside from '../../hooks/useClickOutside'
 import useToggle from '../../hooks/useToggle'
-import { styled } from '../../styles'
 
 export type Position = 'top-start' | 'top-end' | 'bottom-start' | 'bottom-end'
 

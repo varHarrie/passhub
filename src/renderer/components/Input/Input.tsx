@@ -1,11 +1,12 @@
+import styled, { css } from 'styled-components'
 import { forwardRef, useCallback } from 'react'
 
-import { styled } from '../../styles'
+import style from '../../libs/style'
 import { noop } from '../../libs/utils'
 
 export type InputType = 'text' | 'password' | 'textarea'
 
-export type InputSize = 'medium' | 'large'
+export type InputSize = 'small' | 'medium' | 'large'
 
 export interface Props {
   className?: string
@@ -53,32 +54,24 @@ const Wrapper = styled.label<{ size: InputSize; solid?: boolean }>`
   align-items: center;
   width: 100%;
   min-width: 0;
-  height: ${(p) => p.theme.input.sizes[p.size]};
+  height: ${(p) => p.theme.size[p.size]};
   line-height: 1em;
   outline: none;
-  color: ${(p) => p.theme.input.color};
-  background: ${(p) => p.theme.input.background};
   border-radius: ${(p) => p.theme.input.borderRadius};
-  border: ${(p) => p.theme.input.border};
+  border: ${(p) => p.theme.input.normal.border};
   transition: all 0.3s;
 
-  &:focus-within {
-    color: ${(p) => p.theme.input.focusColor};
-    border: ${(p) => p.theme.input.focusBorder};
-    box-shadow: ${(p) => p.theme.input.focusShadow};
-  }
+  ${(p) => style('color', p.theme.input.normal.color, ['', ':hover', 'focus-within'])}
+  ${(p) => style('background', p.theme.input.normal.background, ['', ':hover', 'focus-within'])}
+  ${(p) => style('border-color', p.theme.input.normal.borderColor, ['', ':hover', 'focus-within'])}
 
   ${(p) =>
     p.solid &&
-    `
-      background: ${p.theme.input.solidBackground};
-      border: ${p.theme.input.solidBorder};
-
-      &:focus-within {
-        background: ${p.theme.input.solidFocusBackground};
-        border: ${p.theme.input.solidFocusBackground};
-        box-shadow: none;
-      }
+    css`
+      border: ${p.theme.input.solid.border};
+      ${style('color', p.theme.input.solid.color, ['', ':hover', 'focus-within'])}
+      ${style('background', p.theme.input.solid.background, ['', ':hover', 'focus-within'])}
+      ${style('border-color', p.theme.input.solid.borderColor, ['', ':hover', 'focus-within'])}
     `}
 `
 

@@ -1,7 +1,8 @@
+import styled from 'styled-components'
 import { Children, useEffect, useRef, useState } from 'react'
 
 import useDragging from '../../hooks/useDragging'
-import { styled } from '../../styles'
+import style from '../../libs/style'
 import { clamp } from '../../libs/utils'
 
 export type SizeType = number | string
@@ -77,8 +78,6 @@ const Divider = styled.div<{ dragging: boolean }>`
   margin: 0 -2px;
   width: 5px;
   height: 100%;
-  background-color: ${(p) =>
-    p.dragging ? p.theme.divider.hoverBackground : p.theme.divider.background};
   background-clip: padding-box;
   border-left: 2px solid transparent;
   border-right: 2px solid transparent;
@@ -86,9 +85,7 @@ const Divider = styled.div<{ dragging: boolean }>`
   user-select: none;
   transition: background-color 0.3s;
 
-  &:hover {
-    background-color: ${(p) => p.theme.divider.hoverBackground};
-  }
+  ${(p) => style('background-color', p.theme.divider.background, ['', 'hover', p.dragging])}
 `
 
 function toPixel (size: SizeType, totalSize: number) {

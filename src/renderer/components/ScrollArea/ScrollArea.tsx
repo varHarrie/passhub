@@ -1,6 +1,5 @@
+import styled from 'styled-components'
 import { forwardRef, useCallback, useEffect, useImperativeHandle, useRef, useState } from 'react'
-
-import { styled } from '../../styles'
 
 type ScrollState = 'normal' | 'top' | 'center' | 'bottom'
 

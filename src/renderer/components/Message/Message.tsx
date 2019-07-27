@@ -1,7 +1,7 @@
+import styled from 'styled-components'
 import { useEffect, useRef, useState } from 'react'
 
 import Icon from '../Icon'
-import { styled } from '../../styles'
 import { noop } from '../../libs/utils'
 import { IconName } from '../../models/icon'
 
@@ -61,7 +61,7 @@ const Wrapper = styled.div<{ visible: boolean }>`
   opacity: ${(p) => (p.visible ? 1 : 0)};
   background: ${(p) => p.theme.message.background};
   border-radius: ${(p) => p.theme.message.borderRadius};
-  box-shadow: ${(p) => p.theme.message.shadow};
+  box-shadow: ${(p) => p.theme.message.boxShadow};
   transition: all 0.3s;
 `
 

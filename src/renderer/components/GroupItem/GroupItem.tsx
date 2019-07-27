@@ -1,8 +1,9 @@
+import styled from 'styled-components'
 import { useCallback } from 'react'
 
+import style from '../../libs/style'
 import Icon from '../Icon'
 import { noop } from '../../libs/utils'
-import { styled } from '../../styles'
 import { IconName } from '../../models/icon'
 
 export interface GroupLike {
@@ -55,18 +56,13 @@ const Wrapper = styled.div<{ active?: boolean }>`
   padding: 0 14px;
   align-items: center;
   width: 100%;
-  height: ${(p) => p.theme.sidebar.itemHeight};
-  background: ${(p) =>
-    p.active ? p.theme.sidebar.itemActiveBackground : p.theme.sidebar.itemBackground};
-  color: ${(p) =>
-    p.active ? p.theme.sidebar.itemTitleActiveColor : p.theme.sidebar.itemTitleColor};
+  height: ${(p) => p.theme.groupItem.height};
   cursor: pointer;
   user-select: none;
   transition: all 0.3s;
 
-  &:hover {
-    background: ${(p) => p.theme.sidebar.itemHoverBackground};
-  }
+  ${(p) => style('background', p.theme.groupItem.background, ['', 'hover', p.active])}
+  ${(p) => style('color', p.theme.groupItem.color, ['', 'hover', p.active])}
 
   &::after {
     position: absolute;
@@ -74,9 +70,9 @@ const Wrapper = styled.div<{ active?: boolean }>`
     left: 0;
     display: block;
     content: '';
-    width: ${(p) => (p.active ? p.theme.sidebar.itemMarkActiveWidth : 0)};
-    height: ${(p) => p.theme.sidebar.itemMarkHeight};
-    background: ${(p) => p.theme.sidebar.itemMarkBackground};
+    width: ${(p) => (p.active ? p.theme.groupItem.markActiveWidth : 0)};
+    height: ${(p) => p.theme.groupItem.markHeight};
+    background: ${(p) => p.theme.groupItem.markBackground};
     transition: all 0.3s;
   }
 `

@@ -1,8 +1,9 @@
+import styled, { css } from 'styled-components'
 import { forwardRef } from 'react'
 
-import { styled } from '../../styles'
+import style from '../../libs/style'
 
-export type ButtonSize = 'medium' | 'large'
+export type ButtonSize = 'small' | 'medium' | 'large'
 
 interface Props {
   className?: string
@@ -25,46 +26,26 @@ const Wrapper = styled.button<{ solid?: boolean; size: ButtonSize }>`
   align-items: center;
   justify-content: center;
   padding: 0 8px;
-  min-width: ${(p) => p.theme.button.sizes[p.size]};
-  height: ${(p) => p.theme.button.sizes[p.size]};
-  line-height: ${(p) => p.theme.button.sizes[p.size]};
+  min-width: ${(p) => p.theme.size[p.size]};
+  height: ${(p) => p.theme.size[p.size]};
+  line-height: ${(p) => p.theme.size[p.size]};
   outline: none;
-  color: ${(p) => p.theme.button.color};
-  background: ${(p) => p.theme.button.background};
-  border: ${(p) => p.theme.button.border};
+  border: ${(p) => p.theme.button.normal.border};
   border-radius: ${(p) => p.theme.button.borderRadius};
   text-align: center;
   cursor: pointer;
   transition: all 0.3s;
 
-  &:hover {
-    color: ${(p) => p.theme.button.hoverColor};
-    background: ${(p) => p.theme.button.hoverBackground};
-    border: ${(p) => p.theme.button.hoverBorder};
-  }
-
-  &:active {
-    color: ${(p) => p.theme.button.activeColor};
-    background: ${(p) => p.theme.button.activeBackground};
-    border: ${(p) => p.theme.button.activeBorder};
-  }
+  ${(p) => style('color', p.theme.button.normal.color, ['', 'hover', 'active'])}
+  ${(p) => style('background', p.theme.button.normal.background, ['', 'hover', 'active'])}
+  ${(p) => style('border-color', p.theme.button.normal.borderColor, ['', 'hover', 'active'])}
 
   ${(p) =>
     p.solid &&
-    `
-      background: ${p.theme.button.solidBackground};
-      border: ${p.theme.button.solidBorder};
-
-      &:hover {
-        color: ${p.theme.button.solidHoverColor};
-        background: ${p.theme.button.solidHoverBackground};
-        border: ${p.theme.button.solidHoverBorder};
-      }
-
-      &:active {
-        color: ${p.theme.button.solidActiveColor};
-        background: ${p.theme.button.solidActiveBackground};
-        border: ${p.theme.button.solidActiveBorder};
-      }
+    css`
+      border: ${p.theme.button.solid.border};
+      ${style('color', p.theme.button.solid.color, ['', 'hover', 'active'])}
+      ${style('background', p.theme.button.solid.background, ['', 'hover', 'active'])}
+      ${style('border-color', p.theme.button.solid.borderColor, ['', 'hover', 'active'])}
   `}
 `

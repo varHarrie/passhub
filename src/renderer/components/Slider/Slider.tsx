@@ -1,7 +1,7 @@
+import styled from 'styled-components'
 import { useMemo, useRef } from 'react'
 
 import useDragging from '../../hooks/useDragging'
-import { styled } from '../../styles'
 import { clamp, noop } from '../../libs/utils'
 
 export interface Props {

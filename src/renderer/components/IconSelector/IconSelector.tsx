@@ -1,9 +1,9 @@
+import styled from 'styled-components'
 import { useCallback } from 'react'
 
 import Icon from '../Icon'
 import Popup from '../Popup'
 import ScrollArea from '../ScrollArea'
-import { styled } from '../../styles'
 import { AVAILABLE_ICON_NAMES, IconName } from '../../models/icon'
 import { noop } from '../../libs/utils'
 import { Position } from '../Popup/Popup'
@@ -59,6 +59,8 @@ function IconItem (props: IconItemProps) {
 const Wrapper = styled(ScrollArea)`
   height: 100px;
   width: 150px;
+  border: 1px solid #e0e0e0;
+  border-radius: 3px;
 `
 
 const Inner = styled.div`

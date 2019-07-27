@@ -1,9 +1,9 @@
+import styled from 'styled-components'
 import { RouteComponentProps } from 'react-router'
 import { useEffect } from 'react'
 import { observer } from 'mobx-react-lite'
 
 import EntryDetailView from './EntryDetailView'
-import { styled } from '../../styles'
 import { useAppStore } from '../../store'
 
 export interface Params {

@@ -1,7 +1,7 @@
+import styled from 'styled-components'
 import { observer, useLocalStore } from 'mobx-react-lite'
 
 import { createOverlayStore } from './OverlayStore'
-import { styled } from '../../styles'
 
 export interface Props {
   className?: string

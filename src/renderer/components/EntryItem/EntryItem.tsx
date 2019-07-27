@@ -1,8 +1,8 @@
+import styled from 'styled-components'
 import { useCallback } from 'react'
 
 import Icon from '../Icon'
 import { Entry } from '../../models/entry'
-import { styled } from '../../styles'
 import { noop } from '../../libs/utils'
 
 export interface Props {

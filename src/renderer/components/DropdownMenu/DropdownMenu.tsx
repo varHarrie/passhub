@@ -1,9 +1,9 @@
+import styled from 'styled-components'
 import { useRef } from 'react'
 
 import useClickOutside from '../../hooks/useClickOutside'
 import useToggle from '../../hooks/useToggle'
 import Menu, { MenuOption } from '../Menu'
-import { styled } from '../../styles'
 
 export type Position = 'top-start' | 'top-end' | 'bottom-start' | 'bottom-end'
 

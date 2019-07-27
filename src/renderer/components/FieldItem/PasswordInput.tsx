@@ -1,3 +1,4 @@
+import styled, { css } from 'styled-components'
 import { useCallback } from 'react'
 
 import * as password from '../../libs/password'
@@ -6,7 +7,6 @@ import Icon from '../Icon'
 import Input from '../Input'
 import PasswordGenerator from '../PasswordGenerator'
 import Popup from '../Popup'
-import { css, styled } from '../../styles'
 
 interface Props {
   value: string

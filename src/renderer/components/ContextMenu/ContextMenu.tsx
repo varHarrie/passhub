@@ -1,9 +1,9 @@
+import styled, { css } from 'styled-components'
 import { useCallback, useEffect, useRef, useState } from 'react'
 
 import ContextMenuTrigger from './ContextMenuTrigger'
 import MenuContext from './MenuContext'
 import Menu, { MenuOption } from '../Menu'
-import { css, styled } from '../../styles'
 import { noop } from '../../libs/utils'
 
 export interface Props<P, O> {

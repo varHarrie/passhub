@@ -1,8 +1,8 @@
+import styled from 'styled-components'
 import { storiesOf } from '@storybook/react'
 import { text } from '@storybook/addon-knobs'
 
 import Icon from '.'
-import { styled } from '../../styles'
 import { FILLED_ICON_NAMES, NORMAL_ICON_NAMES, OUTLINED_ICON_NAMES } from '../../models/icon'
 
 const Item = styled.span<{ color: string }>`

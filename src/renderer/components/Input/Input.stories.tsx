@@ -8,7 +8,7 @@ storiesOf('Input', module)
   .add('common', () => (
     <Input
       solid={boolean('Solid', false)}
-      size={select('Size', ['medium', 'large'], 'medium')}
+      size={select('Size', ['small', 'medium', 'large'], 'medium')}
       value={text('Value', 'Hello World')}
       placeholder={text('Placeholder', 'placeholder')}
     />
@@ -16,7 +16,7 @@ storiesOf('Input', module)
   .add('with Icon', () => (
     <Input
       solid={boolean('Solid', false)}
-      size={select('Size', ['medium', 'large'], 'medium')}
+      size={select('Size', ['small', 'medium', 'large'], 'medium')}
       value={text('Value', 'Hello World')}
       placeholder={text('Placeholder', 'placeholder')}
       prefix={

@@ -1,3 +1,4 @@
+import styled, { css, keyframes } from 'styled-components'
 import { RouteComponentProps } from 'react-router'
 import { useCallback, useMemo, useRef, useState } from 'react'
 import { observer } from 'mobx-react-lite'
@@ -10,7 +11,6 @@ import Logo from '../../components/Logo'
 import useLanguage from '../../hooks/useLanguage'
 import useTranslate from '../../hooks/useTranslate'
 import ScrollArea, { Handles as ScrollAreaHandles } from '../../components/ScrollArea'
-import { css, keyframes, styled } from '../../styles'
 import { Group } from '../../models/group'
 import { useAppStore } from '../../store'
 import { MenuOption } from '../../components/Menu'
@@ -18,7 +18,6 @@ import { useConfirm } from '../../components/ModalProvider'
 import { IconName } from '../../models/icon'
 
 import i18n from '../../libs/i18n'
-
 enum MenuType {
   edit = 'edit',
   remove = 'remove'
@@ -162,7 +161,7 @@ const Header = styled.div`
 `
 
 const StyledLogo = styled(Logo)`
-  background: ${(p) => p.theme.sidebar.logoBackground};
+  background: ${(p) => p.theme.logo.background}; // todo: remove
 `
 
 const Title = styled.div`
@@ -173,7 +172,6 @@ const Title = styled.div`
 
 const SaveTip = styled(Icon)<{ visible: boolean }>`
   opacity: 0;
-  color: ${(p) => p.theme.sidebar.savingColor};
   transition: opacity 0.3s;
 
   ${(p) =>
