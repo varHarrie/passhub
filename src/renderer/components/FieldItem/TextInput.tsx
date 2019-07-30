@@ -1,8 +1,8 @@
+import styled, { css } from 'styled-components'
 import { useCallback } from 'react'
 
 import Icon from '../Icon'
 import Input from '../Input'
-import { css, styled } from '../../styles'
 import { IconName } from '../../models/icon'
 
 interface Props {

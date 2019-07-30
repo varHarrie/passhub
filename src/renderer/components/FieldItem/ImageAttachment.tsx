@@ -54,17 +54,15 @@ const Wrapper = styled.label<{ disabled?: boolean }>`
   border: 1px solid #e0e0e0;
   white-space: nowrap;
   user-select: none;
-  transition: all 0.3s;
+  transition: border-color 0.3s, background 0.3s;
 
   &:focus-within {
     border: 1px solid #999;
-    box-shadow: 0 0 0 3px #eee;
   }
 
   ${(p) =>
     p.disabled &&
     css`
-      padding: 0;
       border-color: transparent;
 
       &:hover {
