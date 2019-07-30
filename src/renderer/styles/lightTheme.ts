@@ -32,7 +32,7 @@ export const lightTheme = {
     solid: {
       color: [colors.gray3, colors.gray4, colors.gray4],
       background: [colors.gray1, colors.gray1, colors.gray2],
-      borderColor: ['noon', 'noon', 'noon'],
+      borderColor: ['none', 'none', 'none'],
       border: 'none'
     }
   },

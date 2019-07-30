@@ -8,12 +8,12 @@ export default function style (
       const value = options[index]
       const pair = `${property}: ${value};`
 
-      if (typeof selector === 'boolean') {
-        return selector ? pair : ''
-      } else if (selector) {
-        return `&:${selector} { ${pair} }`
+      if (typeof selector === 'string') {
+        return selector ? `&:${selector} { ${pair} }` : pair
+      } else if (selector === true) {
+        return `&& { ${pair} }`
       } else {
-        return pair
+        return ''
       }
     })
     .join('\n')
