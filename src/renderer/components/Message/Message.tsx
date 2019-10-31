@@ -32,7 +32,9 @@ export default function Message (props: Props) {
 
   useEffect(() => {
     if (visible) {
-      setTimeout(() => setDomVisible(true), 0)
+      requestAnimationFrame(() => {
+        setDomVisible(true)
+      })
     } else if (duration) {
       setDomVisible(false)
       clearTimeout(refHideTimer.current)

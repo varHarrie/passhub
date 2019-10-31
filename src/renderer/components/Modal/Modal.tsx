@@ -21,7 +21,9 @@ export default function Modal (props: Props) {
 
   useEffect(() => {
     if (visible) {
-      setTimeout(() => setDomVisible(true), 0)
+      requestAnimationFrame(() => {
+        setDomVisible(true)
+      })
     } else {
       clearTimeout(refTimer.current)
       refTimer.current = setTimeout(() => {

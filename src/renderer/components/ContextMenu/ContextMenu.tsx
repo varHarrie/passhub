@@ -24,11 +24,11 @@ export default function ContextMenu<P, O> (props: Props<P, O>) {
     const nextPosition = { top: e.clientY, left: e.clientX }
     setVisible(false)
 
-    setTimeout(() => {
+    requestAnimationFrame(() => {
       refPayload.current = p
       setVisible(true)
       setPosition(nextPosition)
-    }, 10)
+    })
   }, [])
 
   const onHide = useCallback(() => {

@@ -55,13 +55,13 @@ export function createImageViewerStore () {
         this.meta = { ...source, translate: { x: 0, y: 0 }, offset: { x: 0, y: 0 } }
         this.cacheMeta = toJS(this.meta)
 
-        setTimeout(() => {
+        requestAnimationFrame(() => {
           this.visible = true
           this.animating = true
           this.meta = { ...toJS(this.meta), ...target, scale: 1 }
 
           resolve()
-        }, 10)
+        })
       })
     },
     hide (duration) {
